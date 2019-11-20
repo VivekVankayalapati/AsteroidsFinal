@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.Iterator;
 import javax.swing.*;
 import asteroids.participants.Asteroid;
+import asteroids.participants.Bullet;
 import asteroids.participants.Ship;
 
 /**
@@ -191,6 +192,22 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     }
 
     /**
+     * TODO docs
+     * @return
+     */
+	public boolean tooManyBullets() {
+        int count = 0;
+        for (Participant p : this)
+        {
+            if (p instanceof Bullet)
+            {
+                count++;
+            }
+        }
+        return count >= Constants.BULLET_LIMIT;
+    }
+
+    /**
      * Schedules a transition m msecs in the future
      */
     private void scheduleTransition (int m)
@@ -271,6 +288,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         {
             ship.turnRight();
         }
+        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null){
+            ship.shoot();
+        }
     }
 
     @Override
@@ -282,4 +302,5 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     public void keyReleased (KeyEvent e)
     {
     }
+
 }

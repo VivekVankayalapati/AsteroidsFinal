@@ -118,6 +118,19 @@ public class Ship extends Participant implements AsteroidDestroyer
     }
 
     /**
+     * TODO docs
+     */
+    public void shoot(){
+        if(!controller.tooManyBullets())
+        {
+            Bullet bullet = new Bullet(getX(), getYNose(), getRotation());
+            controller.addParticipant(bullet);
+            //TODO sound
+        }
+        
+    }
+
+    /**
      * This method is invoked when a ParticipantCountdownTimer completes its countdown.
      */
     @Override

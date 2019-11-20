@@ -5,6 +5,7 @@ import java.awt.Shape;
 import java.awt.geom.*;
 import asteroids.destroyers.AsteroidDestroyer;
 import asteroids.destroyers.ShipDestroyer;
+import asteroids.game.Constants;
 import asteroids.game.Controller;
 import asteroids.game.Participant;
 
@@ -147,6 +148,23 @@ public class Asteroid extends Participant implements ShipDestroyer
             // Expire the asteroid
             Participant.expire(this);
 
+            // Iterate through the sizes of the asteroid
+            int size = this.getSize() - 1;
+
+            if(size == 1)
+            {
+                Asteroid smallerAsteroid1 = new Asteroid(Constants.RANDOM.nextInt(4), size, this.getX(), this.getY(), Constants.MAXIMUM_MEDIUM_ASTEROID_SPEED, controller);
+                Asteroid smallerAsteroid2 = new Asteroid(Constants.RANDOM.nextInt(4), size, this.getX(), this.getY(), Constants.MAXIMUM_MEDIUM_ASTEROID_SPEED, controller);
+                controller.addParticipant(smallerAsteroid1);
+                controller.addParticipant(smallerAsteroid2);
+            }
+            else if(size == 0) // Prevents trying to make an asteroid of  < 0
+            {
+                Asteroid smallestAsteroid1 = new Asteroid(Constants.RANDOM.nextInt(4), size, this.getX(), this.getY(), Constants.MAXIMUM_SMALL_ASTEROID_SPEED, controller);
+                Asteroid smallestAsteroid2 = new Asteroid(Constants.RANDOM.nextInt(4), size, this.getX(), this.getY(), Constants.MAXIMUM_SMALL_ASTEROID_SPEED, controller);
+                controller.addParticipant(smallestAsteroid1);
+                controller.addParticipant(smallestAsteroid2);
+            }
             // Inform the controller
             controller.asteroidDestroyed();
         }
