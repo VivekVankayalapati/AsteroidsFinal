@@ -10,6 +10,13 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# VSCode Setting Files
+.vscode/
+
+# Eclipse Setting Files
+.metadata/
+.settings/
+
 # Package Files #
 *.jar
 *.war
