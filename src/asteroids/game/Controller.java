@@ -22,7 +22,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /** When this timer goes off, it is time to refresh the animation */
     private Timer refreshTimer;
     
-    private boolean isaccel;
+    private boolean isAccel;
 
 	
     /**
@@ -185,7 +185,10 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
         // Decrement lives
         lives--;
-
+        
+        // Make isAccel false
+        isAccel = false;
+        
         // Since the ship was destroyed, schedule a transition
         scheduleTransition(END_DELAY);
     }
@@ -256,8 +259,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             }
             if(accelerate && ship != null){
                 ship.accelerate();
+                
             }
-
+            
             // Move the participants to their new locations
             pstate.moveParticipants();
 
@@ -320,6 +324,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         }
         if (e.getKeyCode() == KeyEvent.VK_UP && ship != null || e.getKeyCode() == KeyEvent.VK_W && ship != null)
         {
+            isAccel = true;
             accelerate = true;
 
         }
@@ -348,6 +353,8 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         }
         if (e.getKeyCode() == KeyEvent.VK_UP && ship != null || e.getKeyCode() == KeyEvent.VK_W && ship != null)
         {
+            isAccel = false;
+            ship.notAccelerating();
             accelerate = false;
 
         }
@@ -358,7 +365,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     
     public boolean getIsAccel()
     {
-        return isaccel;
+        return isAccel;
     }
 
 }

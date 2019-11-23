@@ -85,4 +85,30 @@ public class SoundManager
         }
 
     }
+
+    /**
+     * TODO Docs
+     */
+    public void stopSound(){
+        stopSound(this.soundFile);
+    }
+    /**
+     * TODO Docs
+     */
+    public static void stopSound(Clip soundFile){
+        if(soundFile != null){
+            if(soundFile.isRunning()){
+                soundFile.stop();
+            }
+        }
+    }
+
+    /**
+     * TODO Docs
+     * @return
+     */
+    public boolean isRunning()
+    {
+        return this.soundFile.isRunning();
+    }
 }
