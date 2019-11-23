@@ -115,7 +115,10 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     private void placeAsteroids ()
     {
-        addParticipant(new Asteroid(0, 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, SIZE-EDGE_OFFSET, EDGE_OFFSET, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, SIZE-EDGE_OFFSET, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, SIZE-EDGE_OFFSET, SIZE-EDGE_OFFSET, 3, this));
     }
 
     /**
@@ -288,6 +291,30 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         {
             ship.turnRight();
         }
+        if (e.getKeyCode() == KeyEvent.VK_D && ship != null)
+        {
+            ship.turnRight();
+        }        
+        if (e.getKeyCode() == KeyEvent.VK_LEFT && ship != null)
+        {
+            ship.turnLeft();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_A && ship != null)
+        {
+            ship.turnLeft();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN && ship != null)
+        {
+            ship.accelerate();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S && ship != null)
+        {
+            ship.accelerate();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && ship != null)
+        {
+            ship.accelerate();
+        }
         if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null){
             ship.shoot();
         }
@@ -301,6 +328,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     @Override
     public void keyReleased (KeyEvent e)
     {
+    	//ship.move();
     }
 
 }
