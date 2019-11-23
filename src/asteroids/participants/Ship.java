@@ -56,14 +56,7 @@ public class Ship extends Participant implements AsteroidDestroyer
         polyFlame.closePath();
         outlineFlame = polyFlame;
         
-        Path2D.Double poly = new Path2D.Double();
-        poly.moveTo(21, 0);
-        poly.lineTo(-21, 12);
-        poly.lineTo(-14, 10);
-        poly.lineTo(-14, -10);
-        poly.lineTo(-21, -12);
-        poly.closePath();
-        outline = poly;
+        outline = shipIcon();
 
 
         firing = new SoundManager("/sounds/fire.wav");
@@ -180,5 +173,15 @@ public class Ship extends Participant implements AsteroidDestroyer
 
         }
         
+    }
+    public Path2D.Double shipIcon(){
+        Path2D.Double poly = new Path2D.Double();
+        poly.moveTo(21, 0);
+        poly.lineTo(-21, 12);
+        poly.lineTo(-14, 10);
+        poly.lineTo(-14, -10);
+        poly.lineTo(-21, -12);
+        poly.closePath();
+        return poly;
     }
 }

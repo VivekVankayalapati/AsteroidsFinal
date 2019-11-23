@@ -115,8 +115,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         display.setLegend("");
     }
 
+
+
+
     /**
-     * Places an asteroid near one corner of the screen. Gives it a random velocity and rotation.
+     * Places an asteroid near each corner of the screen. Gives it a random velocity and rotation.
      */
     private void placeAsteroids ()
     {
@@ -149,6 +152,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
         // Place the ship
         placeShip();
+        
         fire = false;
         turnLeft = false;
         turnRight = false;
