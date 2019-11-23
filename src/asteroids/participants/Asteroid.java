@@ -148,6 +148,12 @@ public class Asteroid extends Participant implements ShipDestroyer
             // Expire the asteroid
             Participant.expire(this);
 
+            // Adds the debris for when an Asteroid is collided with
+            for(int i = 0; i <= 15; i++)
+            {
+               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000));
+            }
+
             // Iterate through the sizes of the asteroid
             int size = this.getSize() - 1;
 

@@ -13,40 +13,76 @@ public class SoundManager
 
     /**
      * TODO Docs
-     * @param soundFile
-     * @return
      */
-    public Clip setClip (String soundFile)
+    private Clip soundFile;
+
+    /**
+     * TODO Docs
+     *
+     */
+    private int loops;
+
+    /**
+     * TODO Docs
+     * @param soundFile
+     */
+    public SoundManager(String soundFile)
     {
-        
+        this(soundFile, 0);
+    }
+
+    /**
+     * TODO Docs
+     * @param soundFile
+     * @param loops
+     */
+    public SoundManager(String soundFile, int loops)
+    {
         try (BufferedInputStream sound = new BufferedInputStream(getClass().getResourceAsStream(soundFile)))
         {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(sound));
-            return clip;
+            this.soundFile = clip;
+
         }
-        catch(Exception e){
-            return null;
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            this.soundFile = null;
         }
+        this.loops = loops;
     }
 
+    public void playSound()
+    {
+        playSound(this.soundFile, loops);
+    }
     /**
      * TODO Docs
+     * Static to allow access to playing sound files outside of SoundManager objects.
      */
     public static void playSound (Clip soundFile)
     {
-        playSound(soundFile, 1);
+        playSound(soundFile, 0);
     }
 
     /**
      * TODO Docs
+     * Static to allow access to playing sound files outside of SoundManager objects.
      */
     public static void playSound (Clip soundFile, int loops)
     {
-        if(soundFile.isRunning()){
-            soundFile.stop();
+        if(soundFile != null)
+        {
+            if(soundFile.isRunning()){
+                soundFile.stop();
+            }
+            soundFile.setFramePosition(0);
+            soundFile.loop(loops);
         }
-        soundFile.setFramePosition(0);
-        soundFile.loop(loops);
+        else{
+            System.out.println("Sound file is null");
+        }
+
     }
 }

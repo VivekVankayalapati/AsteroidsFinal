@@ -1,12 +1,14 @@
 package asteroids.participants;
 
 import static asteroids.game.Constants.*;
+
 import java.awt.Shape;
 import java.awt.geom.*;
 import asteroids.destroyers.*;
 import asteroids.game.Controller;
 import asteroids.game.Participant;
 import asteroids.game.ParticipantCountdownTimer;
+import asteroids.game.SoundManager;
 
 /**
  * Represents ships
@@ -18,6 +20,11 @@ public class Ship extends Participant implements AsteroidDestroyer
 
     /** Game controller */
     private Controller controller;
+
+    /**
+     * Sound Manager for the firing.
+     */
+    private SoundManager firing;
 
     /**
      * Constructs a ship at the specified coordinates that is pointed in the given direction.
@@ -36,6 +43,9 @@ public class Ship extends Participant implements AsteroidDestroyer
         poly.lineTo(-21, -12);
         poly.closePath();
         outline = poly;
+
+
+        firing = new SoundManager("/sounds/fire.wav");
 
         // Schedule an acceleration in two seconds
         new ParticipantCountdownTimer(this, "move", 2000);
@@ -125,7 +135,9 @@ public class Ship extends Participant implements AsteroidDestroyer
         {
             Bullet bullet = new Bullet(getX(), getYNose(), getRotation());
             controller.addParticipant(bullet);
-            //TODO sound
+
+            firing.playSound();
+
         }
         
     }
