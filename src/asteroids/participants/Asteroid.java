@@ -185,7 +185,7 @@ public class Asteroid extends Participant implements ShipDestroyer, BulletDestro
             }
             destroyed.playSound();
             // Inform the controller
-            controller.asteroidDestroyed();
+            controller.asteroidDestroyed(this.getSize());
         }
     }
 }
