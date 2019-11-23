@@ -7,7 +7,6 @@ import java.awt.geom.*;
 import asteroids.destroyers.*;
 import asteroids.game.Controller;
 import asteroids.game.Participant;
-import asteroids.game.ParticipantCountdownTimer;
 import asteroids.game.SoundManager;
 
 /**
@@ -16,7 +15,7 @@ import asteroids.game.SoundManager;
 public class Ship extends Participant implements AsteroidDestroyer
 {
     /** The outline of the ship */
-    private Shape outline;
+    private Shape outline, outlineFlame;
 
     /** Game controller */
     private Controller controller;
@@ -31,6 +30,10 @@ public class Ship extends Participant implements AsteroidDestroyer
      */
     private SoundManager destroyed;
 
+    /**
+     * TODO Docs
+     */
+    private SoundManager thrust;
 
     /**
      * Constructs a ship at the specified coordinates that is pointed in the given direction.
@@ -65,9 +68,8 @@ public class Ship extends Participant implements AsteroidDestroyer
 
         firing = new SoundManager("/sounds/fire.wav");
         destroyed = new SoundManager("/sounds/bangShip.wav");
+        thrust = new SoundManager("/sounds/thrust.wav");
 
-        // Schedule an acceleration in two seconds
-        new ParticipantCountdownTimer(this, "move", 2000);
     }
 
     /**
@@ -132,6 +134,16 @@ public class Ship extends Participant implements AsteroidDestroyer
     public void accelerate ()
     {
         accelerate(SHIP_ACCELERATION);
+        if(!thrust.isRunning()){
+            thrust.playSound();
+        }
+        
+    }
+
+    public void notAccelerating(){
+        if(thrust.isRunning()){
+            thrust.stopSound();
+        }
     }
 
     /**
