@@ -53,6 +53,14 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * TODO Docs
      */
+    private SoundManager beat1;
+    private SoundManager beat2;
+    private int beat;
+    private Timer heartBeat;
+
+    /**
+     * TODO Docs
+     */
     private boolean turnLeft, turnRight, accelerate, fire;
 
     /**
@@ -65,6 +73,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
         // Set up the refresh timer.
         refreshTimer = new Timer(FRAME_INTERVAL, this);
+        heartBeat = new Timer(INITIAL_BEAT, this);
 
         // Clear the transitionTime
         transitionTime = Long.MAX_VALUE;
@@ -72,6 +81,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         // Record the display object
         display = new Display(this);
 
+        beat1 = new SoundManager("/sounds/beat1.wav");
+        beat2 = new SoundManager("/sounds/beat2.wav");
+        beat = 1;
         // Bring up the splash screen and start the refresh timer
         splashScreen();
         display.setVisible(true);
@@ -123,11 +135,18 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     private void placeShip ()
     {
+        heartBeat.start();
         // Place a new ship
         Participant.expire(ship);
         ship = new Ship(SIZE / 2, SIZE / 2, -Math.PI / 2, this);
         addParticipant(ship);
-        isAccel = false;
+
+        // Reset rocket values
+        turnLeft = false;
+        turnRight = false;
+        fire = false;
+        accelerate = false;
+
         display.setLegend("");
     }
 
@@ -155,6 +174,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     private void clear ()
     {
         pstate.clear();
+        heartBeat.setDelay(INITIAL_BEAT);
         display.setLegend("");
         ship = null;
     }
@@ -172,11 +192,6 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
         // Place the ship
         placeShip();
-        
-        fire = false;
-        turnLeft = false;
-        turnRight = false;
-        accelerate = false;
         // Reset statistics
         lives = 3;
         score = 0;
@@ -206,11 +221,10 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         // Null out the ship
         ship = null;
 
+        heartBeat.stop();
+
         // Decrement lives
         lives--;
-        
-        // Make isAccel false
-        isAccel = false;
         
         // Since the ship was destroyed, schedule a transition
         scheduleTransition(END_DELAY);
@@ -265,7 +279,20 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         {
             initialScreen();
         }
-
+        else if(e.getSource() == heartBeat && beat == 1)
+        {
+            int beatDelay = Math.max(heartBeat.getDelay() - BEAT_DELTA, FASTEST_BEAT);
+            heartBeat.setDelay(beatDelay);
+            beat1.playSound();
+            beat = 2;
+        }
+        else if(e.getSource() == heartBeat && beat == 2)
+        {
+            int beatDelay = Math.max(heartBeat.getDelay() - BEAT_DELTA, FASTEST_BEAT);
+            heartBeat.setDelay(beatDelay);
+            beat2.playSound();
+            beat = 1;
+        }
         // Time to refresh the screen and deal with keyboard input
         else if (e.getSource() == refreshTimer)
         {
@@ -407,7 +434,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     
     public boolean getIsAccel()
     {
-        return isAccel;
+        return accelerate;
     }
 
 }
