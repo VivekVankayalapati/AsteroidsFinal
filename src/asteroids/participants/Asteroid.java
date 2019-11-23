@@ -44,7 +44,15 @@ public class Asteroid extends Participant implements ShipDestroyer
         {
             throw new IllegalArgumentException();
         }
-
+        if(size == 2){
+            destroyed = new SoundManager("/sounds/bangLarge.wav");
+        }
+        else if(size == 1){
+            destroyed = new SoundManager("/sounds/megalovania.wav");
+        }
+        else{
+            destroyed = new SoundManager("/sounds/bangSmall.wav");
+        }
         // Create the asteroid
         this.controller = controller;
         this.size = size;
@@ -174,6 +182,7 @@ public class Asteroid extends Participant implements ShipDestroyer
                 controller.addParticipant(smallestAsteroid1);
                 controller.addParticipant(smallestAsteroid2);
             }
+            destroyed.playSound();
             // Inform the controller
             controller.asteroidDestroyed();
         }

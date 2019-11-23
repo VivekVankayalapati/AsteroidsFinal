@@ -36,7 +36,7 @@ public class Constants
      * Amount of "friction" that can be applied to ships so that they eventually
      * stop. Should be negative.
      */
-    public final static double SHIP_FRICTION = -0.05;
+    public final static double SHIP_FRICTION = -0.35;
 
     /**
      * Constant of acceleration of ship. Should be positive.s
