@@ -8,6 +8,7 @@ import asteroids.destroyers.ShipDestroyer;
 import asteroids.game.Constants;
 import asteroids.game.Controller;
 import asteroids.game.Participant;
+import asteroids.game.SoundManager;
 
 /**
  * Represents asteroids
@@ -22,6 +23,8 @@ public class Asteroid extends Participant implements ShipDestroyer
 
     /** The game controller */
     private Controller controller;
+
+    private SoundManager destroyed;
 
     /**
      * Throws an IllegalArgumentException if size or variety is out of range.

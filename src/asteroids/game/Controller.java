@@ -146,7 +146,10 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
         // Place the ship
         placeShip();
-
+        fire = false;
+        turnLeft = false;
+        turnRight = false;
+        accelerate = false;
         // Reset statistics
         lives = 1;
 
@@ -239,7 +242,18 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             // It may be time to make a game transition
             performTransition();
 
-
+            if(turnLeft && ship != null){
+                ship.turnLeft();
+            }
+            if(turnRight && ship != null){
+                ship.turnRight();
+            }
+            if(fire && ship != null){
+                ship.shoot();
+            }
+            if(accelerate && ship != null){
+                ship.accelerate();
+            }
 
             // Move the participants to their new locations
             pstate.moveParticipants();
@@ -301,7 +315,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             turnLeft = true;
 
         }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN && ship != null || e.getKeyCode() == KeyEvent.VK_S && ship != null)
+        if (e.getKeyCode() == KeyEvent.VK_UP && ship != null || e.getKeyCode() == KeyEvent.VK_W && ship != null)
         {
             accelerate = true;
 
@@ -319,13 +333,23 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     @Override
     public void keyReleased (KeyEvent e)
     {
-    	if (e.getKeyCode() == KeyEvent.VK_UP && ship != null)
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship != null || e.getKeyCode() == KeyEvent.VK_D && ship != null)
         {
-            ship.move();
+            turnRight = false;
+
+        }       
+        if (e.getKeyCode() == KeyEvent.VK_LEFT && ship != null || e.getKeyCode() == KeyEvent.VK_A && ship != null)
+        {
+            turnLeft = false;
+
         }
-        if (e.getKeyCode() == KeyEvent.VK_W && ship != null)
+        if (e.getKeyCode() == KeyEvent.VK_UP && ship != null || e.getKeyCode() == KeyEvent.VK_W && ship != null)
         {
-            ship.move();
+            accelerate = false;
+
+        }
+        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null || e.getKeyCode() == KeyEvent.VK_SPACE && ship != null){
+            fire = false;
         }
     }
 
