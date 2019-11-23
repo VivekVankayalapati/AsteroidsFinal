@@ -12,6 +12,7 @@ import asteroids.game.SoundManager;
 
 /**
  * Represents ships
+ * @deprecated
  */
 public class AlienShip extends Participant implements AsteroidDestroyer
 {

@@ -151,7 +151,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         turnRight = false;
         accelerate = false;
         // Reset statistics
-        lives = 1;
+        lives = 3;
 
         // Start listening to events (but don't listen twice)
         display.removeKeyListener(this);
