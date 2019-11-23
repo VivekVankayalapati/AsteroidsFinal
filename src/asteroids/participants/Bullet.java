@@ -3,6 +3,7 @@ package asteroids.participants;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import asteroids.destroyers.AsteroidDestroyer;
+import asteroids.destroyers.BulletDestroyer;
 import asteroids.destroyers.ShipDestroyer;
 import asteroids.game.Participant;
 import asteroids.game.ParticipantCountdownTimer;
@@ -57,7 +58,7 @@ public class Bullet extends Participant implements AsteroidDestroyer
     @Override
     public void collidedWith (Participant p)
     {
-        if(p instanceof ShipDestroyer)
+        if(p instanceof BulletDestroyer)
         {
             Participant.expire(this);
         }

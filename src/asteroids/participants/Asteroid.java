@@ -4,6 +4,7 @@ import static asteroids.game.Constants.*;
 import java.awt.Shape;
 import java.awt.geom.*;
 import asteroids.destroyers.AsteroidDestroyer;
+import asteroids.destroyers.BulletDestroyer;
 import asteroids.destroyers.ShipDestroyer;
 import asteroids.game.Constants;
 import asteroids.game.Controller;
@@ -13,7 +14,7 @@ import asteroids.game.SoundManager;
 /**
  * Represents asteroids
  */
-public class Asteroid extends Participant implements ShipDestroyer
+public class Asteroid extends Participant implements ShipDestroyer, BulletDestroyer
 {
     /** The size of the asteroid (0 = small, 1 = medium, 2 = large) */
     private int size;
@@ -48,7 +49,7 @@ public class Asteroid extends Participant implements ShipDestroyer
             destroyed = new SoundManager("/sounds/bangLarge.wav");
         }
         else if(size == 1){
-            destroyed = new SoundManager("/sounds/megalovania.wav");
+            destroyed = new SoundManager("/sounds/bangMedium.wav");
         }
         else{
             destroyed = new SoundManager("/sounds/bangSmall.wav");

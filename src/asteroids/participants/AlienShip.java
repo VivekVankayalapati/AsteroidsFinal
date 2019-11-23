@@ -13,7 +13,7 @@ import asteroids.game.SoundManager;
 /**
  * Represents ships
  */
-public class Ship extends Participant implements AsteroidDestroyer
+public class AlienShip extends Participant implements AsteroidDestroyer
 {
     /** The outline of the ship */
     private Shape outline;
@@ -35,7 +35,7 @@ public class Ship extends Participant implements AsteroidDestroyer
     /**
      * Constructs a ship at the specified coordinates that is pointed in the given direction.
      */
-    public Ship (int x, int y, double direction, Controller controller)
+    public AlienShip (int x, int y, double direction, Controller controller)
     {
         this.controller = controller;
         setPosition(x, y);
@@ -52,7 +52,7 @@ public class Ship extends Participant implements AsteroidDestroyer
 
 
         firing = new SoundManager("/sounds/fire.wav");
-        destroyed = new SoundManager("/sounds/bangShip.wav");
+        destroyed = new SoundManager("/sounds/Skrillex - Scary Monsters And Nice Sprites.mid");
 
         // Schedule an acceleration in two seconds
         new ParticipantCountdownTimer(this, "move", 2000);
@@ -152,5 +152,20 @@ public class Ship extends Participant implements AsteroidDestroyer
 
         }
         
+    }
+
+    /**
+     * This method is invoked when a ParticipantCountdownTimer completes its countdown.
+     */
+    @Override
+    public void countdownComplete (Object payload)
+    {
+        // Give a burst of acceleration, then schedule another
+        // burst for 200 msecs from now.
+        if (payload.equals("move"))
+        {
+           // accelerate();
+            new ParticipantCountdownTimer(this, "move", 200);
+        }
     }
 }
