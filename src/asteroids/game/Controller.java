@@ -115,10 +115,10 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     private void placeAsteroids ()
     {
-        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
-        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, SIZE-EDGE_OFFSET, EDGE_OFFSET, 3, this));
-        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, SIZE-EDGE_OFFSET, 3, this));
-        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, SIZE-EDGE_OFFSET, SIZE-EDGE_OFFSET, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET+RANDOM.nextInt(150)-75, EDGE_OFFSET+RANDOM.nextInt(150)-75, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, SIZE-EDGE_OFFSET+RANDOM.nextInt(150)-75, EDGE_OFFSET+RANDOM.nextInt(150)-75, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET+RANDOM.nextInt(150)-75, SIZE-EDGE_OFFSET+RANDOM.nextInt(150)-75, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, SIZE-EDGE_OFFSET+RANDOM.nextInt(150)-75, SIZE-EDGE_OFFSET+RANDOM.nextInt(150)-75, 3, this));
     }
 
     /**
@@ -303,19 +303,20 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         {
             ship.turnLeft();
         }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN && ship != null)
+        if (e.getKeyCode() == KeyEvent.VK_UP && ship != null)
         {
             ship.accelerate();
         }
-        if (e.getKeyCode() == KeyEvent.VK_S && ship != null)
+        if (e.getKeyCode() == KeyEvent.VK_W && ship != null)
         {
             ship.accelerate();
         }
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && ship != null)
-        {
-            ship.accelerate();
+        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null)
+	{
+            ship.shoot();
         }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null){
+	if(e.getKeyCode() == KeyEvent.VK_SPACE && ship != null)
+	{
             ship.shoot();
         }
     }
@@ -328,7 +329,14 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     @Override
     public void keyReleased (KeyEvent e)
     {
-    	//ship.move();
+    	if (e.getKeyCode() == KeyEvent.VK_UP && ship != null)
+        {
+            ship.move();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_W && ship != null)
+        {
+            ship.move();
+        }
     }
 
 }
