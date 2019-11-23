@@ -21,9 +21,21 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
     /** When this timer goes off, it is time to refresh the animation */
     private Timer refreshTimer;
-    
+
+    /**
+     * TODO Docs
+     */
     private boolean isAccel;
 
+    /**
+     * TODO Docs
+     */
+    private int score;
+
+    /**
+     * TODO Docs
+     */
+    private int level;
 	
     /**
      * The time at which a transition to a new stage of the game should be made. A transition is scheduled a few seconds
@@ -38,6 +50,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /** The game display */
     private Display display;
 
+    /**
+     * TODO Docs
+     */
     private boolean turnLeft, turnRight, accelerate, fire;
 
     /**
@@ -112,6 +127,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         Participant.expire(ship);
         ship = new Ship(SIZE / 2, SIZE / 2, -Math.PI / 2, this);
         addParticipant(ship);
+        isAccel = false;
         display.setLegend("");
     }
 
@@ -127,6 +143,10 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         addParticipant(new Asteroid(RANDOM.nextInt(4), 2, SIZE-EDGE_OFFSET+RANDOM.nextInt(150)-75, EDGE_OFFSET+RANDOM.nextInt(150)-75, 3, this));
         addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET+RANDOM.nextInt(150)-75, SIZE-EDGE_OFFSET+RANDOM.nextInt(150)-75, 3, this));
         addParticipant(new Asteroid(RANDOM.nextInt(4), 2, SIZE-EDGE_OFFSET+RANDOM.nextInt(150)-75, SIZE-EDGE_OFFSET+RANDOM.nextInt(150)-75, 3, this));
+        for(int i = 1; i < level; i++)
+        {
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, RANDOM.nextInt(750)-75, RANDOM.nextInt(750)-75, 3, this));
+        }
     }
 
     /**
@@ -147,7 +167,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         // Clear the screen
         clear();
 
-        // Plac asteroids
+        // Place asteroids
         placeAsteroids();
 
         // Place the ship
@@ -159,6 +179,8 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         accelerate = false;
         // Reset statistics
         lives = 3;
+        score = 0;
+        level = 1;
 
         // Start listening to events (but don't listen twice)
         display.removeKeyListener(this);
@@ -184,9 +206,6 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         // Null out the ship
         ship = null;
 
-        // Display a legend
-        display.setLegend("Ouch!");
-
         // Decrement lives
         lives--;
         
@@ -200,8 +219,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * An asteroid has been destroyed
      */
-    public void asteroidDestroyed ()
+    public void asteroidDestroyed (int size)
     {
+        score += Constants.ASTEROID_SCORE[size];
         // If all the asteroids are gone, schedule a transition
         if (countAsteroids() == 0)
         {
@@ -284,14 +304,32 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         {
             // Clear the transition time
             transitionTime = Long.MAX_VALUE;
-
+            
             // If there are no lives left, the game is over. Show the final
             // screen.
             if (lives <= 0)
             {
                 finalScreen();
             }
+            else if(countAsteroids() > 0)
+            {
+                placeShip();
+            }
+            else
+            {
+                newLevel();
+            }
         }
+    }
+
+    /**
+     * TODO Docs
+     */
+    private void newLevel()
+    {
+        level += 1;
+        placeShip();
+        placeAsteroids();
     }
 
     /**
