@@ -21,7 +21,10 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
     /** When this timer goes off, it is time to refresh the animation */
     private Timer refreshTimer;
+    
+    private boolean isaccel;
 
+	
     /**
      * The time at which a transition to a new stage of the game should be made. A transition is scheduled a few seconds
      * in the future to give the user time to see what has happened before doing something like going to a new level or
@@ -351,6 +354,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null || e.getKeyCode() == KeyEvent.VK_SPACE && ship != null){
             fire = false;
         }
+    }
+    
+    public boolean getIsAccel()
+    {
+        return isaccel;
     }
 
 }
