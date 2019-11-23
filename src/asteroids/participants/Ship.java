@@ -41,6 +41,18 @@ public class Ship extends Participant implements AsteroidDestroyer
         setPosition(x, y);
         setRotation(direction);
 
+        Path2D.Double polyFlame = new Path2D.Double();
+        polyFlame.moveTo(21, 0);
+        polyFlame.lineTo(-21, 12);
+        polyFlame.lineTo(-14, 10);
+        polyFlame.lineTo(-14, -10);
+        polyFlame.lineTo(-25, 0);
+        polyFlame.lineTo(-14, 10);
+        polyFlame.lineTo(-14, -10);
+        polyFlame.lineTo(-21, -12);
+        polyFlame.closePath();
+        outlineFlame = polyFlame;
+        
         Path2D.Double poly = new Path2D.Double();
         poly.moveTo(21, 0);
         poly.lineTo(-21, 12);
@@ -81,6 +93,10 @@ public class Ship extends Participant implements AsteroidDestroyer
     @Override
     protected Shape getOutline ()
     {
+        if (controller.getIsAccel())
+        {
+            return outlineFlame;
+        }
         return outline;
     }
 
