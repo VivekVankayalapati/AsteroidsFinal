@@ -35,6 +35,8 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /** The game display */
     private Display display;
 
+    private boolean turnLeft, turnRight, accelerate, fire;
+
     /**
      * Constructs a controller to coordinate the game and screen
      */
@@ -237,6 +239,8 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             // It may be time to make a game transition
             performTransition();
 
+
+
             // Move the participants to their new locations
             pstate.moveParticipants();
 
@@ -287,36 +291,23 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     @Override
     public void keyPressed (KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship != null)
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship != null || e.getKeyCode() == KeyEvent.VK_D && ship != null)
         {
-            ship.turnRight();
+            turnRight = true;
+
+        }       
+        if (e.getKeyCode() == KeyEvent.VK_LEFT && ship != null || e.getKeyCode() == KeyEvent.VK_A && ship != null)
+        {
+            turnLeft = true;
+
         }
-        if (e.getKeyCode() == KeyEvent.VK_D && ship != null)
+        if (e.getKeyCode() == KeyEvent.VK_DOWN && ship != null || e.getKeyCode() == KeyEvent.VK_S && ship != null)
         {
-            ship.turnRight();
-        }        
-        if (e.getKeyCode() == KeyEvent.VK_LEFT && ship != null)
-        {
-            ship.turnLeft();
+            accelerate = true;
+
         }
-        if (e.getKeyCode() == KeyEvent.VK_A && ship != null)
-        {
-            ship.turnLeft();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN && ship != null)
-        {
-            ship.accelerate();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_S && ship != null)
-        {
-            ship.accelerate();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && ship != null)
-        {
-            ship.accelerate();
-        }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null){
-            ship.shoot();
+        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null || e.getKeyCode() == KeyEvent.VK_SPACE && ship != null){
+            fire = true;
         }
     }
 
