@@ -133,6 +133,9 @@ public class Ship extends Participant implements AsteroidDestroyer
         
     }
 
+    /**
+     * Fix to cancel the sound when the ship isn't accelerating (it would just continue otherwise).
+     */
     public void notAccelerating(){
         if(thrust.isRunning()){
             thrust.stopSound();

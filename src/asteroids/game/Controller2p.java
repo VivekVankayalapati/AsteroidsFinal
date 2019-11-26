@@ -9,14 +9,17 @@ import asteroids.participants.Bullet;
 import asteroids.participants.Ship;
 
 /**
- * Controls a game of Asteroids.
+ * Controls a game of Asteroids for strictly 2 players.
  */
-public class Controller2p extends Controller implements KeyListener, ActionListener, Iterable<Participant>
+public class Controller2p extends Controller
 {
 
     /** The ship (if one is active) or null (otherwise) */
     private Ship ship1;
     private Ship ship2;
+    /**
+     * Values that can track the last ship that was destroyed. Must be set when a ship is destroyed and created.
+     */
     private boolean ship1Destroyed;
     private boolean ship2Destroyed;
 
@@ -24,24 +27,11 @@ public class Controller2p extends Controller implements KeyListener, ActionListe
     private int lives1;
     private int lives2;
 
-    /** The game display */
-    //private Display display;
-
     /**
      * TODO Docs
      */
     private boolean turnLeft1, turnRight1, accelerate1, fire1;
     private boolean turnLeft2, turnRight2, accelerate2, fire2;
-
-    /**
-     * This makes it possible to use an enhanced for loop to iterate through the Participants being managed by a
-     * Controller2p.
-     */
-    @Override
-    public Iterator<Participant> iterator ()
-    {
-        return pstate.iterator();
-    }
 
     /**
      * Returns the ship, or null if there isn't one
@@ -78,7 +68,6 @@ public class Controller2p extends Controller implements KeyListener, ActionListe
     private void placeShip (int ship)
     {
         heartBeat.start();
-        System.out.println("Placed Ship at delay: " + heartBeat.getDelay());
         // Place a new ship
         if(ship == 1){
             if(lives1 > 0){
@@ -88,7 +77,7 @@ public class Controller2p extends Controller implements KeyListener, ActionListe
                 ship1Destroyed = false;
             }
         }
-        else{
+        else if(ship == 2){
             if(lives2 > 0){
                 Participant.expire(ship2);
                 ship2 = new Ship(2 * SIZE / 3, 2 * SIZE / 3, -Math.PI / 2, this);
@@ -172,17 +161,6 @@ public class Controller2p extends Controller implements KeyListener, ActionListe
         }
     }
 
-    private void ship2Destroyed() {
-        ship2 = null;
-        ship2Destroyed = true;
-        heartBeat.stop();
-
-        // Decrement lives
-        lives2--;
-
-        // Since the ship was destroyed, schedule a transition
-        scheduleTransition(END_DELAY);
-    }
 
     /**
      * TODO Docs
@@ -202,33 +180,20 @@ public class Controller2p extends Controller implements KeyListener, ActionListe
     }
 
     /**
-     * An asteroid has been destroyed
+     * TODO Docs
      */
-    public void asteroidDestroyed (int size)
-    {
-        score += Constants.ASTEROID_SCORE[size];
-        // If all the asteroids are gone, schedule a transition
-        if (countAsteroids() == 0)
-        {
-            scheduleTransition(END_DELAY);
-        }
+    private void ship2Destroyed() {
+        ship2 = null;
+        ship2Destroyed = true;
+        heartBeat.stop();
+
+        // Decrement lives
+        lives2--;
+
+        // Since the ship was destroyed, schedule a transition
+        scheduleTransition(END_DELAY);
     }
 
-    /**
-     * TODO docs
-     * @return
-     */
-	public boolean tooManyBullets() {
-        int count = 0;
-        for (Participant p : this)
-        {
-            if (p instanceof Bullet)
-            {
-                count++;
-            }
-        }
-        return count >= Constants.BULLET_LIMIT;
-    }
 
     /**
      * This method will be invoked because of button presses and timer events.
@@ -391,11 +356,6 @@ public class Controller2p extends Controller implements KeyListener, ActionListe
     }
 
     @Override
-    public void keyTyped (KeyEvent e)
-    {
-    }
-
-    @Override
     public void keyReleased (KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship1 != null)
@@ -438,7 +398,12 @@ public class Controller2p extends Controller implements KeyListener, ActionListe
             fire2 = false;
         }
     }
-    
+
+    /**
+     * TODO Docs
+     * @param ship
+     * @return
+     */
     public boolean getIsAccel(Ship ship)
     {
         if(ship.equals(ship1)){

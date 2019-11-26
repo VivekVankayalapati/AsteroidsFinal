@@ -214,6 +214,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
     /**
      * The ship has been destroyed
+     * Has the new parameter ship in order to be able to be overridden without problem with the 2 player controller.
      */
     public void shipDestroyed (Ship ship)
     {
@@ -427,6 +428,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         }
     }
 
+    /**
+     * TODO Docs
+     * @param ship
+     * @return
+     */
     public boolean getIsAccel(Ship ship)
     {
         return accelerate;
