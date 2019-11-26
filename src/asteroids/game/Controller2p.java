@@ -401,6 +401,7 @@ public class Controller2p extends Controller
      * @param ship
      * @return
      */
+    @Override
     public boolean getIsAccel(Ship ship)
     {
         if(ship.equals(ship1)){

@@ -19,6 +19,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /** The ship (if one is active) or null (otherwise) */
     private Ship ship;
 
+    /**
+     * TODO Docs
+     */
+    private boolean shipDestroyed;
+
     /** When this timer goes off, it is time to refresh the animation */
     protected Timer refreshTimer;
 
@@ -138,14 +143,13 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * Place a new ship in the center of the screen. Remove any existing ship first.
      */
-    protected void placeShip (Ship ship)
+    protected void placeShip ()
     {
         heartBeat.start();
         // Place a new ship
         Participant.expire(ship);
         ship = new Ship(SIZE / 2, SIZE / 2, -Math.PI / 2, this);
-        this.ship = ship;
-        addParticipant(this.ship);
+        addParticipant(ship);
 
         // Reset rocket values
         turnLeft = false;
@@ -153,6 +157,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         fire = false;
         accelerate = false;
 
+        shipDestroyed = false;
         display.setLegend("");
     }
 
@@ -197,7 +202,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         placeAsteroids();
 
         // Place the ship
-        placeShip(ship);
+        placeShip();
         // Reset statistics
         lives = 3;
         score = 0;
@@ -233,7 +238,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
         // Decrement lives
         lives--;
-
+        shipDestroyed = true;
         // Since the ship was destroyed, schedule a transition
         scheduleTransition(END_DELAY);
     }
@@ -348,7 +353,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             }
             else if(countAsteroids() > 0)
             {
-                placeShip(ship);
+                if(shipDestroyed)
+                {
+                    placeShip();
+                }
+                
             }
             else
             {
@@ -363,7 +372,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     protected void newLevel()
     {
         level += 1;
-        placeShip(ship);
+        placeShip();
         placeAsteroids();
     }
 
