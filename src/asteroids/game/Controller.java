@@ -77,10 +77,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         // Record the display object
         display = new Display(this);
 
+        // Create the heartbeat
         beat1 = new SoundManager("/sounds/beat1.wav");
         beat2 = new SoundManager("/sounds/beat2.wav");
-       // (new SoundManager("/sounds/megalovania.wav")).playSound();
         beat = 1;
+
         // Bring up the splash screen and start the refresh timer
         splashScreen();
         display.setVisible(true);
@@ -100,9 +101,15 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * Returns the ship, or null if there isn't one
      */
-    public Ship getShip ()
+    public Ship getShip (Ship ship)
     {
-        return ship;
+        if(ship.equals(this.ship)){
+            return this.ship;
+        }
+        else{
+            throw new IllegalArgumentException("That ship isn't assigned to this controller");
+        }
+
     }
 
     /**

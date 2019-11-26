@@ -2,10 +2,7 @@ package asteroids.game;
 
 import static asteroids.game.Constants.*;
 import java.awt.event.*;
-import java.util.Iterator;
 import javax.swing.*;
-import asteroids.participants.Asteroid;
-import asteroids.participants.Bullet;
 import asteroids.participants.Ship;
 
 /**
