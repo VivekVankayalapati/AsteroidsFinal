@@ -3,12 +3,13 @@ package asteroids.game;
 import static asteroids.game.Constants.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 import asteroids.participants.Ship;
 
 /**
  * Controls a game of Asteroids for strictly 2 players.
  */
-public class Controller2p extends Controller
+public class Controller2p extends EnhancedController
 {
 
     /** The ship (if one is active) or null (otherwise) */
@@ -141,6 +142,18 @@ public class Controller2p extends Controller
 
         // Give focus to the game screen
         display.requestFocusInWindow();
+    }
+
+    /**
+     * TODO Docs
+     */
+    protected int getLives(Ship ship){
+        if(ship.equals(ship1)){
+            return lives1;
+        }
+        else{
+            return lives2;
+        }
     }
 
     /**
@@ -412,5 +425,7 @@ public class Controller2p extends Controller
         }
 
     }
+
+    
 
 }

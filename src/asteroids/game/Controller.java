@@ -17,12 +17,12 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     protected ParticipantState pstate;
 
     /** The ship (if one is active) or null (otherwise) */
-    private Ship ship;
+    protected Ship ship;
 
     /**
      * TODO Docs
      */
-    private boolean shipDestroyed;
+    protected boolean shipDestroyed;
 
     /** When this timer goes off, it is time to refresh the animation */
     protected Timer refreshTimer;
@@ -46,7 +46,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     protected long transitionTime;
 
     /** Number of lives left */
-    private int lives;
+    protected int lives;
 
     /** The game display */
     protected Display display;
@@ -62,7 +62,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * TODO Docs
      */
-    private boolean turnLeft, turnRight, accelerate, fire;
+    protected boolean turnLeft, turnRight, accelerate, fire;
 
     /**
      * Constructs a controller to coordinate the game and screen
@@ -278,6 +278,13 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     protected void scheduleTransition (int m)
     {
         transitionTime = System.currentTimeMillis() + m;
+    }
+
+    /**
+     * TODO Docs
+     */
+    protected int getLives(){
+        return lives;
     }
 
     /**
