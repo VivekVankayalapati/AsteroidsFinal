@@ -14,7 +14,7 @@ public class Display extends JFrame
     private Screen screen;
 
     /**
-     * Lays out the game and creates the controller
+     * Lays out the game and creates the controller2p
      */
     public Display (Controller controller)
     {
@@ -24,7 +24,7 @@ public class Display extends JFrame
         // Default behavior on closing
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // The main playing area and the controller
+        // The main playing area and the controller2p
         screen = new Screen(controller);
 
         // This panel contains the screen to prevent the screen from being
@@ -48,7 +48,7 @@ public class Display extends JFrame
         setContentPane(mainPanel);
         pack();
 
-        // Connect the controller to the start button
+        // Connect the controller2p to the start button
         startGame.addActionListener(controller);
     }
 

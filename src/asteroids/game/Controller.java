@@ -14,49 +14,45 @@ import asteroids.participants.Ship;
 public class Controller implements KeyListener, ActionListener, Iterable<Participant>
 {
     /** The state of all the Participants */
-    private ParticipantState pstate;
+    protected ParticipantState pstate;
 
     /** The ship (if one is active) or null (otherwise) */
     private Ship ship;
 
     /** When this timer goes off, it is time to refresh the animation */
-    private Timer refreshTimer;
+    protected Timer refreshTimer;
+
 
     /**
      * TODO Docs
      */
-    private boolean isAccel;
+    protected int score;
 
     /**
      * TODO Docs
      */
-    private int score;
+    protected int level;
 
-    /**
-     * TODO Docs
-     */
-    private int level;
-	
     /**
      * The time at which a transition to a new stage of the game should be made. A transition is scheduled a few seconds
      * in the future to give the user time to see what has happened before doing something like going to a new level or
      * resetting the current level.
      */
-    private long transitionTime;
+    protected long transitionTime;
 
     /** Number of lives left */
     private int lives;
 
     /** The game display */
-    private Display display;
+    protected Display display;
 
     /**
      * TODO Docs
      */
-    private SoundManager beat1;
-    private SoundManager beat2;
-    private int beat;
-    private Timer heartBeat;
+    protected SoundManager beat1;
+    protected SoundManager beat2;
+    protected int beat;
+    protected Timer heartBeat;
 
     /**
      * TODO Docs
@@ -83,7 +79,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
         beat1 = new SoundManager("/sounds/beat1.wav");
         beat2 = new SoundManager("/sounds/beat2.wav");
-        (new SoundManager("/sounds/megalovania.wav")).playSound();
+       // (new SoundManager("/sounds/megalovania.wav")).playSound();
         beat = 1;
         // Bring up the splash screen and start the refresh timer
         splashScreen();
@@ -114,6 +110,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     private void splashScreen ()
     {
+        System.out.println("Pass Two");
         // Clear the screen, reset the level, and display the legend
         clear();
         display.setLegend("Asteroids");
@@ -134,13 +131,14 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * Place a new ship in the center of the screen. Remove any existing ship first.
      */
-    private void placeShip ()
+    protected void placeShip (Ship ship)
     {
         heartBeat.start();
         // Place a new ship
         Participant.expire(ship);
         ship = new Ship(SIZE / 2, SIZE / 2, -Math.PI / 2, this);
-        addParticipant(ship);
+        this.ship = ship;
+        addParticipant(this.ship);
 
         // Reset rocket values
         turnLeft = false;
@@ -157,7 +155,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * Places an asteroid near each corner of the screen. Gives it a random velocity and rotation.
      */
-    private void placeAsteroids ()
+    protected void placeAsteroids ()
     {
         addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET+RANDOM.nextInt(150)-75, EDGE_OFFSET+RANDOM.nextInt(150)-75, 3, this));
         addParticipant(new Asteroid(RANDOM.nextInt(4), 2, SIZE-EDGE_OFFSET+RANDOM.nextInt(150)-75, EDGE_OFFSET+RANDOM.nextInt(150)-75, 3, this));
@@ -172,7 +170,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * Clears the screen so that nothing is displayed
      */
-    private void clear ()
+    protected void clear ()
     {
         pstate.clear();
         heartBeat.setDelay(INITIAL_BEAT);
@@ -183,7 +181,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * Sets things up and begins a new game.
      */
-    private void initialScreen ()
+    protected void initialScreen ()
     {
         // Clear the screen
         clear();
@@ -192,7 +190,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         placeAsteroids();
 
         // Place the ship
-        placeShip();
+        placeShip(ship);
         // Reset statistics
         lives = 3;
         score = 0;
@@ -217,16 +215,17 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * The ship has been destroyed
      */
-    public void shipDestroyed ()
+    public void shipDestroyed (Ship ship)
     {
+        this.ship = ship;
         // Null out the ship
-        ship = null;
+        this.ship = null;
 
         heartBeat.stop();
 
         // Decrement lives
         lives--;
-        
+
         // Since the ship was destroyed, schedule a transition
         scheduleTransition(END_DELAY);
     }
@@ -248,7 +247,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      * TODO docs
      * @return
      */
-	public boolean tooManyBullets() {
+    public boolean tooManyBullets() {
         int count = 0;
         for (Participant p : this)
         {
@@ -263,7 +262,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * Schedules a transition m msecs in the future
      */
-    private void scheduleTransition (int m)
+    protected void scheduleTransition (int m)
     {
         transitionTime = System.currentTimeMillis() + m;
     }
@@ -311,9 +310,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             }
             if(accelerate && ship != null){
                 ship.accelerate();
-                
+
             }
-            
+
             // Move the participants to their new locations
             pstate.moveParticipants();
 
@@ -325,14 +324,14 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * If the transition time has been reached, transition to a new state
      */
-    private void performTransition ()
+    protected void performTransition ()
     {
         // Do something only if the time has been reached
         if (transitionTime <= System.currentTimeMillis())
         {
             // Clear the transition time
             transitionTime = Long.MAX_VALUE;
-            
+
             // If there are no lives left, the game is over. Show the final
             // screen.
             if (lives <= 0)
@@ -341,7 +340,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             }
             else if(countAsteroids() > 0)
             {
-                placeShip();
+                placeShip(ship);
             }
             else
             {
@@ -353,17 +352,17 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * TODO Docs
      */
-    private void newLevel()
+    protected void newLevel()
     {
         level += 1;
-        placeShip();
+        placeShip(ship);
         placeAsteroids();
     }
 
     /**
      * Returns the number of asteroids that are active participants
      */
-    private int countAsteroids ()
+    protected int countAsteroids ()
     {
         int count = 0;
         for (Participant p : this)
@@ -380,21 +379,17 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      * If a key of interest is pressed, record that it is down.
      */
     @Override
-    public void keyPressed (KeyEvent e)
-    {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship != null || e.getKeyCode() == KeyEvent.VK_D && ship != null)
-        {
+    public void keyPressed (KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship != null || e.getKeyCode() == KeyEvent.VK_D && ship != null) {
             turnRight = true;
 
-        }       
-        if (e.getKeyCode() == KeyEvent.VK_LEFT && ship != null || e.getKeyCode() == KeyEvent.VK_A && ship != null)
-        {
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT && ship != null || e.getKeyCode() == KeyEvent.VK_A && ship != null) {
             turnLeft = true;
 
         }
         if (e.getKeyCode() == KeyEvent.VK_UP && ship != null || e.getKeyCode() == KeyEvent.VK_W && ship != null)
         {
-            isAccel = true;
             accelerate = true;
 
         }
@@ -415,7 +410,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         {
             turnRight = false;
 
-        }       
+        }
         if (e.getKeyCode() == KeyEvent.VK_LEFT && ship != null || e.getKeyCode() == KeyEvent.VK_A && ship != null)
         {
             turnLeft = false;
@@ -423,7 +418,6 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         }
         if (e.getKeyCode() == KeyEvent.VK_UP && ship != null || e.getKeyCode() == KeyEvent.VK_W && ship != null)
         {
-            isAccel = false;
             ship.notAccelerating();
             accelerate = false;
 
@@ -432,8 +426,8 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             fire = false;
         }
     }
-    
-    public boolean getIsAccel()
+
+    public boolean getIsAccel(Ship ship)
     {
         return accelerate;
     }

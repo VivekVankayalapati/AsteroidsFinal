@@ -13,7 +13,7 @@ public class Screen extends JPanel
     /** Legend that is displayed across the screen */
     private String legend;
 
-    /** Game controller */
+    /** Game controller2p */
     private Controller controller;
 
     /**

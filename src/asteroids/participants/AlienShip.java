@@ -5,7 +5,7 @@ import static asteroids.game.Constants.*;
 import java.awt.Shape;
 import java.awt.geom.*;
 import asteroids.destroyers.*;
-import asteroids.game.Controller;
+import asteroids.game.Controller2p;
 import asteroids.game.Participant;
 import asteroids.game.ParticipantCountdownTimer;
 import asteroids.game.SoundManager;
@@ -19,8 +19,8 @@ public class AlienShip extends Participant implements AsteroidDestroyer
     /** The outline of the ship */
     private Shape outline;
 
-    /** Game controller */
-    private Controller controller;
+    /** Game controller2p */
+    private Controller2p controller2p;
 
     /**
      * Sound Manager for the firing.
@@ -36,9 +36,9 @@ public class AlienShip extends Participant implements AsteroidDestroyer
     /**
      * Constructs a ship at the specified coordinates that is pointed in the given direction.
      */
-    public AlienShip (int x, int y, double direction, Controller controller)
+    public AlienShip (int x, int y, double direction, Controller2p controller2p)
     {
-        this.controller = controller;
+        this.controller2p = controller2p;
         setPosition(x, y);
         setRotation(direction);
 
@@ -133,10 +133,10 @@ public class AlienShip extends Participant implements AsteroidDestroyer
             destroyed.playSound();
             for(int i = 0; i <= 15; i++)
             {
-               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000));
+               controller2p.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000));
             }
-            // Tell the controller the ship was destroyed
-            controller.shipDestroyed();
+            // Tell the controller2p the ship was destroyed
+            //controller2p.shipDestroyed(this);
         }
     }
 
@@ -144,10 +144,10 @@ public class AlienShip extends Participant implements AsteroidDestroyer
      * TODO docs
      */
     public void shoot(){
-        if(!controller.tooManyBullets())
+        if(!controller2p.tooManyBullets())
         {
             Bullet bullet = new Bullet(getX(), getYNose(), getRotation());
-            controller.addParticipant(bullet);
+            controller2p.addParticipant(bullet);
 
             firing.playSound();
 

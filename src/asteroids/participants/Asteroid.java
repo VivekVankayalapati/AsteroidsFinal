@@ -22,7 +22,7 @@ public class Asteroid extends Participant implements ShipDestroyer, BulletDestro
     /** The outline of the asteroid */
     private Shape outline;
 
-    /** The game controller */
+    /** The game controller2p */
     private Controller controller;
 
     private SoundManager destroyed;
@@ -184,7 +184,7 @@ public class Asteroid extends Participant implements ShipDestroyer, BulletDestro
                 controller.addParticipant(smallestAsteroid2);
             }
             destroyed.playSound();
-            // Inform the controller
+            // Inform the controller2p
             controller.asteroidDestroyed(this.getSize());
         }
     }

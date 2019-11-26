@@ -17,7 +17,7 @@ public class Ship extends Participant implements AsteroidDestroyer
     /** The outline of the ship */
     private Shape outline, outlineFlame;
 
-    /** Game controller */
+    /** Game controller2p */
     private Controller controller;
 
     /**
@@ -88,7 +88,7 @@ public class Ship extends Participant implements AsteroidDestroyer
     @Override
     protected Shape getOutline ()
     {
-        if (controller.getIsAccel())
+        if (controller.getIsAccel(this))
         {
             return outlineFlame;
         }
@@ -155,8 +155,8 @@ public class Ship extends Participant implements AsteroidDestroyer
             {
                controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000));
             }
-            // Tell the controller the ship was destroyed
-            controller.shipDestroyed();
+            // Tell the controller2p the ship was destroyed
+            controller.shipDestroyed(this);
         }
     }
 
