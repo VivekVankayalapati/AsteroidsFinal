@@ -122,7 +122,7 @@ public class AlienShip extends Ship
             destroyed.playSound();
             for(int i = 0; i <= 15; i++)
             {
-               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000));
+               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000, true));
             }
             // Tell the controller2p the ship was destroyed
             //controller2p.shipDestroyed(this);

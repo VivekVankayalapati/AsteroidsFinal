@@ -4,6 +4,7 @@ import static asteroids.game.Constants.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import asteroids.participants.OneUp;
 import asteroids.participants.Ship;
 
 /**
@@ -213,23 +214,8 @@ public class Controller2p extends EnhancedController
     {
         // The start button has been pressed. Stop whatever we're doing
         // and bring up the initial screen
-        if (e.getSource() instanceof JButton)
-        {
-            initialScreen();
-        }
-        else if(e.getSource() == heartBeat && beat == 1)
-        {
-            int beatDelay = Math.max(heartBeat.getDelay() - BEAT_DELTA, FASTEST_BEAT);
-            heartBeat.setDelay(beatDelay);
-            beat1.playSound();
-            beat = 2;
-        }
-        else if(e.getSource() == heartBeat && beat == 2)
-        {
-            int beatDelay = Math.max(heartBeat.getDelay() - BEAT_DELTA, FASTEST_BEAT);
-            heartBeat.setDelay(beatDelay);
-            beat2.playSound();
-            beat = 1;
+        if(e.getSource() instanceof JButton || e.getSource() == heartBeat || e.getSource() == powerupTimer) {
+            super.actionPerformed(e);
         }
         // Time to refresh the screen and deal with keyboard input
         else if (e.getSource() == refreshTimer)
@@ -266,14 +252,12 @@ public class Controller2p extends EnhancedController
             
             /**
              * TODO Docs
-             * Optimally wants the lives to be added independently but that's quite difficult.
              */
             if(getNewLife(2 * EXTRA_LIFE_SCORE)){
                 
                 System.out.println(score);
                 lives1 += 1;
                 lives2 += 1;
-                System.out.println("Added life. Total: " + lives);
                 lastScore = score; // zero's the score so new lives aren't infinitely added
             }
             
@@ -437,6 +421,23 @@ public class Controller2p extends EnhancedController
             return accelerate2;
         }
 
+    }
+
+    /**
+     * TODO Docs
+     * @param ship
+     */
+    @Override
+    public void OneUpDestroyed(Participant ship)
+    {
+        if(ship instanceof Ship && ship.equals(this.ship1))
+        {
+            lives1 += 1;
+        }
+        else if(ship instanceof Ship && ship.equals(this.ship2))
+        {
+            lives2 += 1;
+        }
     }
 
     

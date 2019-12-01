@@ -5,6 +5,7 @@ import static asteroids.game.Constants.*;
 import java.awt.Shape;
 import java.awt.geom.*;
 import asteroids.destroyers.*;
+import asteroids.game.Constants;
 import asteroids.game.Controller;
 import asteroids.game.Participant;
 import asteroids.game.SoundManager;
@@ -154,9 +155,11 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
             Participant.expire(this);
 
             destroyed.playSound();
+
+            // Adds the ship dust (with lines) when the ship is destroyed.
             for(int i = 0; i <= 15; i++)
             {
-               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000));
+               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed() * 0.25, Constants.DEBRIS_DURATION, true));
             }
             // Tell the controller2p the ship was destroyed
             controller.shipDestroyed(this);

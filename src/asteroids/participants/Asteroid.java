@@ -161,10 +161,10 @@ public class Asteroid extends Participant implements ShipDestroyer, BulletDestro
             // Expire the asteroid
             Participant.expire(this);
 
-            // Adds the debris for when an Asteroid is collided with
+            // Adds the debris (without ship lines) for when an Asteroid is collided with.
             for(int i = 0; i <= 15; i++)
             {
-               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000));
+               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed() * 0.25, Constants.DEBRIS_DURATION, false));
             }
 
             // Iterate through the sizes of the asteroid

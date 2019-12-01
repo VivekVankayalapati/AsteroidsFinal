@@ -96,6 +96,11 @@ public class Constants
     public final static int BULLET_LIMIT = 8;
 
     /**
+     * Duration in milliseconds before debris disappears.
+     */
+    public final static int DEBRIS_DURATION = 1000;
+
+    /**
      * Scaling factors used for asteroids of size 0, 1, and 2.
      */
     public final static double[] ASTEROID_SCALE = { 0.5, 1.0, 2.0 };
@@ -160,7 +165,15 @@ public class Constants
      */
     public final static int SHIP_SEPARATION = 6;
 
+    // Enhanced Constants
+    /**
+     * TODO Docs
+     */
     public final static int EXTRA_LIFE_SCORE = 4000;
 
 	public static final int POWERUP_DURATION = 3000;
+
+	public static final int POWERUP_TIMER = 10000;
+
+    public static final int POWERUP_DELTA = 1000;
 }

@@ -122,7 +122,6 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     private void splashScreen ()
     {
-        System.out.println("Pass Two");
         // Clear the screen, reset the level, and display the legend
         clear();
         display.setLegend("Asteroids");
@@ -379,6 +378,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     protected void newLevel()
     {
         level += 1;
+        heartBeat.setDelay(INITIAL_BEAT);
         placeShip();
         placeAsteroids();
     }

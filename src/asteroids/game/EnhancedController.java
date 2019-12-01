@@ -59,31 +59,17 @@ public class EnhancedController extends Controller
     {
         // The start button has been pressed. Stop whatever we're doing
         // and bring up the initial screen
-        if (e.getSource() instanceof JButton)
-        {
-            initialScreen();
+        if(e.getSource() instanceof JButton || e.getSource() == heartBeat) {
+            super.actionPerformed(e);
         }
-        else if(e.getSource() == heartBeat && beat == 1)
+        else if (e.getSource() == powerupTimer && level >= 2)
         {
-            int beatDelay = Math.max(heartBeat.getDelay() - BEAT_DELTA, FASTEST_BEAT);
-            heartBeat.setDelay(beatDelay);
-            beat1.playSound();
-            beat = 2;
-        }
-        else if(e.getSource() == heartBeat && beat == 2)
-        {
-            int beatDelay = Math.max(heartBeat.getDelay() - BEAT_DELTA, FASTEST_BEAT);
-            heartBeat.setDelay(beatDelay);
-            beat2.playSound();
-            beat = 1;
-        }
-        else if (e.getSource() == powerupTimer)
-        {
-            System.out.println("Timer finished");
-            if(RANDOM.nextInt(10) > 3 && level >= 1 && lives > 0){
+            // Sets a powerup 60% of the time.
+            if(RANDOM.nextInt(10) > 3 && lives > 0){
                 
-                OneUp oneup = new OneUp(SIZE/2, SIZE/2, 5000, this);
-                System.out.println("Placed oneup");
+                OneUp oneup = new OneUp(SIZE/2, SIZE/2, POWERUP_DURATION, this);
+                // Increases the time between powerups between each placement of the powerup
+                powerupTimer.setDelay(POWERUP_TIMER + POWERUP_DELTA);
                 addParticipant(oneup);
             }
         }
@@ -128,9 +114,13 @@ public class EnhancedController extends Controller
      */
     protected boolean getNewLife(int score){
 
-        return Math.abs(score - lastScore) >= score;
+        return Math.abs(this.score - lastScore) >= score;
     }
 
+    /**
+     * TODO Docs
+     * @param ship
+     */
     public void OneUpDestroyed(Participant ship) 
     {
         if(ship instanceof Ship && ship.equals(this.ship))
