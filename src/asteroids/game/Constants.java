@@ -159,4 +159,8 @@ public class Constants
      * Distance between ships when used to display lives
      */
     public final static int SHIP_SEPARATION = 6;
+
+    public final static int EXTRA_LIFE_SCORE = 4000;
+
+	public static final int POWERUP_DURATION = 3000;
 }

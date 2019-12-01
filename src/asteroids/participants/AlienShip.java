@@ -5,7 +5,7 @@ import static asteroids.game.Constants.*;
 import java.awt.Shape;
 import java.awt.geom.*;
 import asteroids.destroyers.*;
-import asteroids.game.Controller2p;
+import asteroids.game.Controller;
 import asteroids.game.Participant;
 import asteroids.game.ParticipantCountdownTimer;
 import asteroids.game.SoundManager;
@@ -14,13 +14,13 @@ import asteroids.game.SoundManager;
  * Represents ships
  * @deprecated
  */
-public class AlienShip extends Participant implements AsteroidDestroyer
+public class AlienShip extends Ship
 {
     /** The outline of the ship */
     private Shape outline;
 
     /** Game controller2p */
-    private Controller2p controller2p;
+    private Controller controller;
 
     /**
      * Sound Manager for the firing.
@@ -36,20 +36,9 @@ public class AlienShip extends Participant implements AsteroidDestroyer
     /**
      * Constructs a ship at the specified coordinates that is pointed in the given direction.
      */
-    public AlienShip (int x, int y, double direction, Controller2p controller2p)
+    public AlienShip (int x, int y, double direction, Controller controller)
     {
-        this.controller2p = controller2p;
-        setPosition(x, y);
-        setRotation(direction);
-
-        Path2D.Double poly = new Path2D.Double();
-        poly.moveTo(21, 0);
-        poly.lineTo(-21, 12);
-        poly.lineTo(-14, 10);
-        poly.lineTo(-14, -10);
-        poly.lineTo(-21, -12);
-        poly.closePath();
-        outline = poly;
+        super(x, y, direction, controller);
 
 
         firing = new SoundManager("/sounds/fire.wav");
@@ -133,7 +122,7 @@ public class AlienShip extends Participant implements AsteroidDestroyer
             destroyed.playSound();
             for(int i = 0; i <= 15; i++)
             {
-               controller2p.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000));
+               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000));
             }
             // Tell the controller2p the ship was destroyed
             //controller2p.shipDestroyed(this);
@@ -144,10 +133,10 @@ public class AlienShip extends Participant implements AsteroidDestroyer
      * TODO docs
      */
     public void shoot(){
-        if(!controller2p.tooManyBullets())
+        if(!controller.tooManyBullets())
         {
-            Bullet bullet = new Bullet(getX(), getYNose(), getRotation());
-            controller2p.addParticipant(bullet);
+            Bullet bullet = new Bullet(getX(), getYNose(), getRotation(), this);
+            controller.addParticipant(bullet);
 
             firing.playSound();
 

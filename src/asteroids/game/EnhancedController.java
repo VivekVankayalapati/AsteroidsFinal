@@ -1,7 +1,12 @@
 package asteroids.game;
 
 import static asteroids.game.Constants.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+import asteroids.participants.OneUp;
 import asteroids.participants.Ship;
+
 
 /**
  * Controls a game of Asteroids.
@@ -11,13 +16,12 @@ public class EnhancedController extends Controller
 
     protected int lastScore;
 
-    /**
-     * The game is over. Displays a message to that effect.
-     */
-    private void finalScreen ()
-    {
-        display.setLegend(GAME_OVER);
-        display.removeKeyListener(this);
+    protected Timer powerupTimer;
+
+    public EnhancedController(){
+        super();
+        powerupTimer = new Timer(10000, this);
+        powerupTimer.start();
     }
 
     /**
@@ -47,47 +51,92 @@ public class EnhancedController extends Controller
         display.requestFocusInWindow();
     }
 
-
     /**
-     * If the transition time has been reached, transition to a new state
+     * This method will be invoked because of button presses and timer events.
      */
-    protected void performTransition ()
+    @Override
+    public void actionPerformed (ActionEvent e)
     {
-        // Do something only if the time has been reached
-        if (transitionTime <= System.currentTimeMillis())
+        // The start button has been pressed. Stop whatever we're doing
+        // and bring up the initial screen
+        if (e.getSource() instanceof JButton)
         {
-            // Clear the transition time
-            transitionTime = Long.MAX_VALUE;
-
-            // If there are no lives left, the game is over. Show the final
-            // screen.
-            if (lives <= 0)
-            {
-                finalScreen();
-            }
-            else if(countAsteroids() > 0)
-            {
-                if(shipDestroyed)
-                {
-                    placeShip();
-                }
+            initialScreen();
+        }
+        else if(e.getSource() == heartBeat && beat == 1)
+        {
+            int beatDelay = Math.max(heartBeat.getDelay() - BEAT_DELTA, FASTEST_BEAT);
+            heartBeat.setDelay(beatDelay);
+            beat1.playSound();
+            beat = 2;
+        }
+        else if(e.getSource() == heartBeat && beat == 2)
+        {
+            int beatDelay = Math.max(heartBeat.getDelay() - BEAT_DELTA, FASTEST_BEAT);
+            heartBeat.setDelay(beatDelay);
+            beat2.playSound();
+            beat = 1;
+        }
+        else if (e.getSource() == powerupTimer)
+        {
+            System.out.println("Timer finished");
+            if(RANDOM.nextInt(10) > 3 && level >= 1 && lives > 0){
                 
+                OneUp oneup = new OneUp(SIZE/2, SIZE/2, 5000, this);
+                System.out.println("Placed oneup");
+                addParticipant(oneup);
             }
-            else
+        }
+        // Time to refresh the screen and deal with keyboard input
+        else if (e.getSource() == refreshTimer)
+        {
+            // It may be time to make a game transition
+            performTransition();
+
+            if(turnLeft && ship != null){
+                ship.turnLeft();
+            }
+            if(turnRight && ship != null){
+                ship.turnRight();
+            }
+            if(fire && ship != null){
+                ship.shoot();
+            }
+            if(accelerate && ship != null){
+                ship.accelerate();
+
+            }
+                        
+            if(getNewLife(EXTRA_LIFE_SCORE))
             {
-                newLevel();
+                
+                lives += 1;
+                lastScore = score; // zero's the score so new lives aren't infinitely added
             }
+            
+
+            // Move the participants to their new locations
+            pstate.moveParticipants();
+
+            // Refresh screen
+            display.refresh();
         }
     }
 
     /**
      * TODO Docs
-     * @param ship
-     * @return
      */
-    public boolean getIsAccel(Ship ship)
-    {
-        return accelerate;
+    protected boolean getNewLife(int score){
+
+        return Math.abs(score - lastScore) >= score;
     }
+
+    public void OneUpDestroyed(Participant ship) 
+    {
+        if(ship instanceof Ship && ship.equals(this.ship))
+        {
+            lives += 1;
+        }
+	}
 
 }

@@ -5,6 +5,7 @@ import java.awt.Shape;
 import java.awt.geom.*;
 import asteroids.destroyers.AsteroidDestroyer;
 import asteroids.destroyers.BulletDestroyer;
+import asteroids.destroyers.OneUpDestroyer;
 import asteroids.destroyers.ShipDestroyer;
 import asteroids.game.Constants;
 import asteroids.game.Controller;
@@ -14,7 +15,7 @@ import asteroids.game.SoundManager;
 /**
  * Represents asteroids
  */
-public class Asteroid extends Participant implements ShipDestroyer, BulletDestroyer
+public class Asteroid extends Participant implements ShipDestroyer, BulletDestroyer, OneUpDestroyer
 {
     /** The size of the asteroid (0 = small, 1 = medium, 2 = large) */
     private int size;

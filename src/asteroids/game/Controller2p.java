@@ -264,6 +264,19 @@ public class Controller2p extends EnhancedController
 
             }
             
+            /**
+             * TODO Docs
+             * Optimally wants the lives to be added independently but that's quite difficult.
+             */
+            if(getNewLife(2 * EXTRA_LIFE_SCORE)){
+                
+                System.out.println(score);
+                lives1 += 1;
+                lives2 += 1;
+                System.out.println("Added life. Total: " + lives);
+                lastScore = score; // zero's the score so new lives aren't infinitely added
+            }
+            
             // Move the participants to their new locations
             pstate.moveParticipants();
 

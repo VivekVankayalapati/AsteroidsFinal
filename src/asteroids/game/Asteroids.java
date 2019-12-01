@@ -30,7 +30,7 @@ public class Asteroids
         }
         else if (choice == 1)
         {
-            new Controller2p();
+            new EnhancedController();
         }
     }
 }

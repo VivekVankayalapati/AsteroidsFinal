@@ -4,7 +4,7 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import asteroids.destroyers.AsteroidDestroyer;
 import asteroids.destroyers.BulletDestroyer;
-import asteroids.destroyers.ShipDestroyer;
+import asteroids.destroyers.OneUpDestroyer;
 import asteroids.game.Participant;
 import asteroids.game.ParticipantCountdownTimer;
 import asteroids.game.Constants;
@@ -13,7 +13,7 @@ import asteroids.game.Constants;
  * TODO docs
  * @author Aidan Copinga
  */
-public class Bullet extends Participant implements AsteroidDestroyer
+public class Bullet extends Participant implements AsteroidDestroyer, OneUpDestroyer
 {
 
     /**
@@ -27,10 +27,16 @@ public class Bullet extends Participant implements AsteroidDestroyer
     private ParticipantCountdownTimer bulletDuration;
 
     /**
+     * TODO Docs
+     */
+    private Ship parent;
+
+    /**
      * TODO docs
      */
-    public Bullet(double posX, double posY, double theta)
+    public Bullet(double posX, double posY, double theta, Ship parent)
     {
+        this.parent = parent;
         this.setPosition(posX, posY);
         this.setVelocity(Constants.BULLET_SPEED, theta);
         this.bullet = new Ellipse2D.Double(0, 0, 1, 1);
@@ -50,6 +56,10 @@ public class Bullet extends Participant implements AsteroidDestroyer
      */
     public ParticipantCountdownTimer getDuration(){
         return bulletDuration;
+    }
+
+    public Ship getParent(){
+        return parent;
     }
 
     /**
