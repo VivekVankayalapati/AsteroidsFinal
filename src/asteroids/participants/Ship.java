@@ -180,7 +180,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
         }
         
     }
-    public Path2D.Double shipIcon(){
+    private Path2D.Double shipIcon(){
         Path2D.Double poly = new Path2D.Double();
         poly.moveTo(21, 0);
         poly.lineTo(-21, 12);
@@ -189,5 +189,12 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
         poly.lineTo(-21, -12);
         poly.closePath();
         return poly;
+    }
+
+    /**
+     * TODO Docs
+     */
+    public void teleport() {
+        setPosition(Constants.SIZE * Constants.RANDOM.nextDouble(),Constants.SIZE * Constants.RANDOM.nextDouble());
     }
 }

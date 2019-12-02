@@ -7,6 +7,7 @@ import asteroids.destroyers.OneUpDestroyer;
 import asteroids.game.EnhancedController;
 import asteroids.game.Participant;
 import asteroids.game.ParticipantCountdownTimer;
+import asteroids.game.SoundManager;
 
 public class OneUp extends Participant 
 {
@@ -25,6 +26,8 @@ public class OneUp extends Participant
      */
     private ParticipantCountdownTimer powerupDuration;
 
+
+    private SoundManager spawnSound;
     /**
      * TODO Docs
      */
@@ -44,11 +47,14 @@ public class OneUp extends Participant
 
         this.outline = poly;
 
+        this.spawnSound = new SoundManager("/sounds/smb_powerup_appears.wav");
+
         this.powerupDuration = new ParticipantCountdownTimer(this, time);
         
     }
     @Override
     protected Shape getOutline() {
+        spawnSound.playSound();
         return outline;
     }
 

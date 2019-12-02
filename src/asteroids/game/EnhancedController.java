@@ -14,12 +14,18 @@ import asteroids.participants.Ship;
 public class EnhancedController extends Controller
 {
 
+    /**
+     * TODO Docs
+     */
     protected int lastScore;
 
     protected Timer powerupTimer;
 
+    protected SoundManager newLife;
+
     public EnhancedController(){
         super();
+        newLife = new SoundManager("/sounds/smb_1-up.wav");
         powerupTimer = new Timer(10000, this);
         powerupTimer.start();
     }
@@ -62,7 +68,7 @@ public class EnhancedController extends Controller
         if(e.getSource() instanceof JButton || e.getSource() == heartBeat) {
             super.actionPerformed(e);
         }
-        else if (e.getSource() == powerupTimer && level >= 2)
+        else if (e.getSource() == powerupTimer && level >= 2 && countAsteroids() > 0)
         {
             // Sets a powerup 60% of the time.
             if(RANDOM.nextInt(10) > 3 && lives > 0){
@@ -92,11 +98,13 @@ public class EnhancedController extends Controller
                 ship.accelerate();
 
             }
+
                         
             if(getNewLife(EXTRA_LIFE_SCORE))
             {
                 
                 lives += 1;
+                newLife.playSound();
                 lastScore = score; // zero's the score so new lives aren't infinitely added
             }
             
@@ -126,7 +134,26 @@ public class EnhancedController extends Controller
         if(ship instanceof Ship && ship.equals(this.ship))
         {
             lives += 1;
+            newLife.playSound();
         }
 	}
+
+    /**
+     * If a key of interest is pressed, record that it is down.
+     */
+    @Override
+    public void keyPressed (KeyEvent e) {
+        super.keyPressed(e);
+        // Only refreshes through the keyPressed method because it's hard to time 1 frame of teleport.
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL && ship != null ||e.getKeyCode() == KeyEvent.VK_T && ship != null){
+            ship.teleport();
+        }
+        // Gives the player 99 lives when pausebreak is pressed (only in single player enhanced)
+        if(e.getKeyCode() == KeyEvent.VK_PAUSE){
+            newLife.playSound();
+            lives = 99;
+        }
+
+    }
 
 }

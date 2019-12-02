@@ -21,7 +21,7 @@ public class Asteroids
      */
     private static void chooseVersion ()
     {
-        String[] options = { "Classic", "Enhanced" };
+        String[] options = { "Classic", "Enhanced", "Enhanced 2-player" };
         int choice = JOptionPane.showOptionDialog(null, "Which version would you like to run?", "Choose a Version",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 0)
@@ -29,6 +29,10 @@ public class Asteroids
             new Controller();
         }
         else if (choice == 1)
+        {
+            new EnhancedController();
+        }
+        else if (choice == 2)
         {
             new Controller2p();
         }

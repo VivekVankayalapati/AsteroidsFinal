@@ -417,7 +417,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             accelerate = true;
 
         }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null || e.getKeyCode() == KeyEvent.VK_SPACE && ship != null){
+        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null || e.getKeyCode() == KeyEvent.VK_SPACE && ship != null || e.getKeyCode() == KeyEvent.VK_S && ship != null){
             fire = true;
         }
     }
@@ -446,7 +446,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             accelerate = false;
 
         }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null || e.getKeyCode() == KeyEvent.VK_SPACE && ship != null){
+        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship != null || e.getKeyCode() == KeyEvent.VK_SPACE && ship != null || e.getKeyCode() == KeyEvent.VK_S && ship != null){
             fire = false;
         }
     }

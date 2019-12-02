@@ -3,8 +3,6 @@ package asteroids.game;
 import static asteroids.game.Constants.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import asteroids.participants.OneUp;
 import asteroids.participants.Ship;
 
 /**
@@ -58,6 +56,7 @@ public class Controller2p extends EnhancedController
         turnRight2 = false;
         fire2 = false;
         accelerate2 = false;
+
         display.removeKeyListener(this);
     }
 
@@ -341,6 +340,9 @@ public class Controller2p extends EnhancedController
         if(e.getKeyCode() == KeyEvent.VK_DOWN && ship1 != null){
             fire1 = true;
         }
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL && ship1 != null){
+            ship1.teleport();
+        }
 
         if (e.getKeyCode() == KeyEvent.VK_D && ship2 != null)
         {
@@ -360,6 +362,10 @@ public class Controller2p extends EnhancedController
         if(e.getKeyCode() == KeyEvent.VK_S && ship2 != null){
             fire2 = true;
         }
+        if(e.getKeyCode() == KeyEvent.VK_T && ship2 != null){
+            ship2.teleport();
+        }
+
     }
 
     @Override
