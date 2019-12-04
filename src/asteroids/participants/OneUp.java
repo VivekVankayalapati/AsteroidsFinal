@@ -1,7 +1,7 @@
 package asteroids.participants;
 
 import java.awt.Shape;
-import java.awt.geom.Path2D;
+import java.awt.geom.*;
 
 import asteroids.destroyers.OneUpDestroyer;
 import asteroids.game.EnhancedController;
@@ -37,13 +37,12 @@ public class OneUp extends Participant
         setPosition(x, y);
 
         Path2D.Double poly = new Path2D.Double();
-        // TODO Make this poly not the ship
-        poly.moveTo(-21, -15);
-        poly.lineTo(-0, -15);
-        poly.lineTo(-0, 21);
-        poly.lineTo(-21, 0);
-        poly.lineTo(0, 0);
-        
+        poly.moveTo(30, 40);
+        poly.lineTo(15, 55);
+        poly.lineTo(0, 40);
+        poly.lineTo(7.5, 32.5);
+        poly.lineTo(15,40);
+        poly.lineTo(22.5, 32.5);
         poly.closePath();
 
         this.outline = poly;
