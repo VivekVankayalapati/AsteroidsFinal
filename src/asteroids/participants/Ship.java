@@ -16,7 +16,7 @@ import asteroids.game.SoundManager;
 public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroyer
 {
     /** The outline of the ship */
-    private Shape outline, outlineFlame;
+    private Shape outline, outlineFlame, outlineInvincibility, outlineFlameInvincibility;
 
     /** Game controller2p */
     private Controller controller;
@@ -45,19 +45,11 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
         setPosition(x, y);
         setRotation(direction);
 
-        Path2D.Double polyFlame = new Path2D.Double();
-        polyFlame.moveTo(21, 0);
-        polyFlame.lineTo(-21, 12);
-        polyFlame.lineTo(-14, 10);
-        polyFlame.lineTo(-14, -10);
-        polyFlame.lineTo(-25, 0);
-        polyFlame.lineTo(-14, 10);
-        polyFlame.lineTo(-14, -10);
-        polyFlame.lineTo(-21, -12);
-        polyFlame.closePath();
-        outlineFlame = polyFlame;
+        
+        outlineFlame = flameIcon();
         
         outline = shipIcon();
+        
 
 
         firing = new SoundManager("/sounds/fire.wav");
@@ -89,12 +81,15 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     @Override
     protected Shape getOutline ()
     {
+
         if (controller.getIsAccel(this))
         {
             return outlineFlame;
         }
         return outline;
     }
+
+    
 
     /**
      * Customizes the base move method by imposing friction
@@ -149,7 +144,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     @Override
     public void collidedWith (Participant p)
     {
-        if (p instanceof ShipDestroyer)
+        if (p instanceof ShipDestroyer && !controller.hasInvincibility())
         {
             // Expire the ship from the game
             Participant.expire(this);
@@ -159,7 +154,8 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
             // Adds the ship dust (with lines) when the ship is destroyed.
             for(int i = 0; i <= 15; i++)
             {
-               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed() * 0.25, Constants.DEBRIS_DURATION, true));
+                // Speed of the debris is equal to some value times the speed of the ship plus the average asteroid speed (in case the ship is not moving to have some sort of change in momentum)
+               controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed() * 0.25 + 5, Constants.DEBRIS_DURATION, true));
             }
             // Tell the controller2p the ship was destroyed
             controller.shipDestroyed(this);
@@ -180,7 +176,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
         }
         
     }
-    private Path2D.Double shipIcon(){
+    public static Path2D.Double shipIcon(){
         Path2D.Double poly = new Path2D.Double();
         poly.moveTo(21, 0);
         poly.lineTo(-21, 12);
@@ -189,6 +185,21 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
         poly.lineTo(-21, -12);
         poly.closePath();
         return poly;
+    }
+
+    private Path2D.Double flameIcon()
+    {
+        Path2D.Double polyFlame = new Path2D.Double();
+        polyFlame.moveTo(21, 0);
+        polyFlame.lineTo(-21, 12);
+        polyFlame.lineTo(-14, 10);
+        polyFlame.lineTo(-14, -10);
+        polyFlame.lineTo(-25, 0);
+        polyFlame.lineTo(-14, 10);
+        polyFlame.lineTo(-14, -10);
+        polyFlame.lineTo(-21, -12);
+        polyFlame.closePath();
+        return polyFlame;
     }
 
     /**

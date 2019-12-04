@@ -20,14 +20,16 @@ public class EnhancedController extends Controller
     protected int lastScore;
 
     protected Timer powerupTimer;
+    protected Timer invincibilityTimer;
 
     protected SoundManager newLife;
 
     public EnhancedController(){
         super();
         newLife = new SoundManager("/sounds/smb_1-up.wav");
-        powerupTimer = new Timer(10000, this);
+        powerupTimer = new Timer(POWERUP_TIMER, this);
         powerupTimer.start();
+        invincibilityTimer = new Timer(750, this);
     }
 
     /**
@@ -35,26 +37,13 @@ public class EnhancedController extends Controller
      */
     protected void initialScreen ()
     {
-        // Clear the screen
-        clear();
-
-        // Place asteroids
-        placeAsteroids();
-
-        // Place the ship
-        placeShip();
-        // Reset statistics
-        lives = 3;
-        score = 0;
-        lastScore = 0;
-        level = 1;
-
-        // Start listening to events (but don't listen twice)
-        display.removeKeyListener(this);
-        display.addKeyListener(this);
-
-        // Give focus to the game screen
-        display.requestFocusInWindow();
+        super.initialScreen();
+        powerupTimer.stop();
+        powerupTimer.setDelay(POWERUP_TIMER);
+        powerupTimer.start();
+        if(invincibilityTimer.isRunning()){
+            invincibilityTimer.stop();
+        }
     }
 
     /**
@@ -68,12 +57,16 @@ public class EnhancedController extends Controller
         if(e.getSource() instanceof JButton || e.getSource() == heartBeat) {
             super.actionPerformed(e);
         }
+        else if(e.getSource() == invincibilityTimer && hasInvincibility())
+        {
+            invincibilityTimer.stop();
+        }
         else if (e.getSource() == powerupTimer && level >= 2 && countAsteroids() > 0)
         {
             // Sets a powerup 60% of the time.
             if(RANDOM.nextInt(10) > 3 && lives > 0){
                 
-                OneUp oneup = new OneUp(SIZE/2, SIZE/2, POWERUP_DURATION, this);
+                OneUp oneup = new OneUp(RANDOM.nextDouble() * SIZE, RANDOM.nextDouble() * SIZE, POWERUP_DURATION, this);
                 // Increases the time between powerups between each placement of the powerup
                 powerupTimer.setDelay(POWERUP_TIMER + POWERUP_DELTA);
                 addParticipant(oneup);
@@ -98,6 +91,9 @@ public class EnhancedController extends Controller
                 ship.accelerate();
 
             }
+            display.setLevel(this.level);
+            display.setScore(this.score);
+            display.setLives(this.lives);
 
                         
             if(getNewLife(EXTRA_LIFE_SCORE))
@@ -120,6 +116,17 @@ public class EnhancedController extends Controller
     /**
      * TODO Docs
      */
+    @Override
+    protected void placeShip()
+    {
+        super.placeShip();
+        System.out.println("is Invincible");
+        invincibilityTimer.start();
+    }
+
+    /**
+     * TODO Docs
+     */
     protected boolean getNewLife(int score){
 
         return Math.abs(this.score - lastScore) >= score;
@@ -127,11 +134,11 @@ public class EnhancedController extends Controller
 
     /**
      * TODO Docs
-     * @param ship
+     * @param p
      */
-    public void OneUpDestroyed(Participant ship) 
+    public void OneUpDestroyed(Participant p) 
     {
-        if(ship instanceof Ship && ship.equals(this.ship))
+        if(p instanceof Ship && p.equals(this.ship))
         {
             lives += 1;
             newLife.playSound();
@@ -153,7 +160,19 @@ public class EnhancedController extends Controller
             newLife.playSound();
             lives = 99;
         }
+        if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+            newLevel();
+        }
 
+    }
+
+    /**
+     * TODO Docs
+     */
+    @Override
+    public boolean hasInvincibility()
+    {
+        return invincibilityTimer.isRunning();
     }
 
 }

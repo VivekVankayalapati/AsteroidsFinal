@@ -38,23 +38,24 @@ public class OneUp extends Participant
 
         Path2D.Double poly = new Path2D.Double();
         // TODO Make this poly not the ship
-        poly.moveTo(21, 0);
-        poly.lineTo(-21, 12);
-        poly.lineTo(-14, 10);
-        poly.lineTo(-14, -10);
-        poly.lineTo(-21, -12);
+        poly.moveTo(-21, -15);
+        poly.lineTo(-0, -15);
+        poly.lineTo(-0, 21);
+        poly.lineTo(-21, 0);
+        poly.lineTo(0, 0);
+        
         poly.closePath();
 
         this.outline = poly;
 
         this.spawnSound = new SoundManager("/sounds/smb_powerup_appears.wav");
-
+        spawnSound.playSound();
         this.powerupDuration = new ParticipantCountdownTimer(this, time);
         
     }
     @Override
     protected Shape getOutline() {
-        spawnSound.playSound();
+        
         return outline;
     }
 
