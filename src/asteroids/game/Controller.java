@@ -4,9 +4,12 @@ import static asteroids.game.Constants.*;
 import java.awt.event.*;
 import java.util.Iterator;
 import javax.swing.*;
+
+import asteroids.participants.AlienShip;
 import asteroids.participants.Asteroid;
 import asteroids.participants.Bullet;
 import asteroids.participants.Ship;
+
 
 /**
  * Controls a game of Asteroids.
@@ -18,6 +21,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
     /** The ship (if one is active) or null (otherwise) */
     protected Ship ship;
+
+    protected AlienShip alien;
+    
 
     /**
      * TODO Docs
@@ -160,6 +166,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         display.setLegend("");
     }
 
+    
 
 
 
@@ -176,6 +183,16 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         {
             addParticipant(new Asteroid(RANDOM.nextInt(4), 2, RANDOM.nextInt(750)-75, RANDOM.nextInt(750)-75, 3, this));
         }
+    }
+
+    protected void placeAliens ()
+    {
+        heartBeat.start();
+        // Place a new alien
+        Participant.expire(alien);
+        alien = new AlienShip(SIZE / 3, SIZE / 3, -Math.PI / 2, this,2);
+        
+        addParticipant(alien);
     }
 
     /**
@@ -204,6 +221,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
         // Place asteroids
         placeAsteroids();
+        placeAliens();
 
         // Place the ship
         placeShip();
@@ -324,6 +342,8 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             // It may be time to make a game transition
             performTransition();
 
+            
+
             if(turnLeft && ship != null){
                 ship.turnLeft();
             }
@@ -332,6 +352,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             }
             if(fire && ship != null){
                 ship.shoot();
+                
             }
             if(accelerate && ship != null){
                 ship.accelerate();
@@ -342,7 +363,10 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             display.setLives(this.lives);
 
             // Move the participants to their new locations
+            
             pstate.moveParticipants();
+
+            
 
             // Refresh screen
             display.refresh();
@@ -388,9 +412,20 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     {
         clear();
         level += 1;
-        heartBeat.setDelay(INITIAL_BEAT);
-        placeShip();
-        placeAsteroids();
+        if (level ==2)
+        {
+            heartBeat.setDelay(INITIAL_BEAT);
+            placeShip();
+            placeAsteroids();
+            placeAliens(); //different params
+        }
+        else
+        {
+            heartBeat.setDelay(INITIAL_BEAT);
+            placeShip();
+            placeAsteroids();
+            placeAliens(); //different params
+        }
     }
 
     /**

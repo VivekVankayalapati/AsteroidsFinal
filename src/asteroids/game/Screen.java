@@ -27,6 +27,8 @@ public class Screen extends JPanel
     /** Game controller2p */
     private Controller controller;
 
+    
+
     /**
      * Creates an empty screen
      */
@@ -150,4 +152,6 @@ public class Screen extends JPanel
 
     
     }
+
+
 }
