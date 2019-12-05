@@ -10,11 +10,12 @@ import asteroids.game.Participant;
 import asteroids.game.ParticipantCountdownTimer;
 import asteroids.game.SoundManager;
 
+
 /**
  * Represents ships
- * @deprecated
+ * 
  */
-public class AlienShip extends Ship
+public class AlienShip extends Participant implements ShipDestroyer, AsteroidDestroyer
 {
     /** The outline of the ship */
     private Shape outline;
@@ -32,21 +33,51 @@ public class AlienShip extends Ship
      */
     private SoundManager destroyed;
 
+    
+
 
     /**
-     * Constructs a ship at the specified coordinates that is pointed in the given direction.
+     * Constructs a alien ship at the specified coordinates that is pointed in the given direction.
      */
-    public AlienShip (int x, int y, double direction, Controller controller)
+    public AlienShip (int x, int y, double direction, Controller controller,int level)
     {
-        super(x, y, direction, controller);
+        //super(x, y, direction, controller);
+
+        this.controller = controller;
+        setPosition(x, y);
+        setRotation(direction);
+       
+        
+
+        outline = AlienIcon();
+
+        if (level==2)
+        {
+            setSpeed(SPEED_LIMIT/3);
+            setVelocity(getSpeed(), direction);
+        }
+        else
+        {
+
+        }
+        
+
+        
+
+
+
+
+        
 
 
         firing = new SoundManager("/sounds/fire.wav");
         destroyed = new SoundManager("/sounds/Skrillex - Scary Monsters And Nice Sprites.mid");
 
-        // Schedule an acceleration in two seconds
-        new ParticipantCountdownTimer(this, "move", 2000);
+        // Schedule a movement in ten seconds
+        new ParticipantCountdownTimer(this, "move", 10000);
     }
+
+
 
     /**
      * Returns the x-coordinate of the point on the screen where the ship's nose is located.
@@ -59,7 +90,7 @@ public class AlienShip extends Ship
     }
 
     /**
-     * Returns the x-coordinate of the point on the screen where the ship's nose is located.
+     * Returns the y-coordinate of the point on the screen where the ship's nose is located.
      */
     public double getYNose ()
     {
@@ -70,7 +101,7 @@ public class AlienShip extends Ship
 
     @Override
     protected Shape getOutline ()
-    {
+    {  
         return outline;
     }
 
@@ -80,25 +111,26 @@ public class AlienShip extends Ship
     @Override
     public void move ()
     {
-        applyFriction(SHIP_FRICTION);
+        
+        if (RANDOM.nextInt(3)==0)
+        {
+            setDirection(0);
+            //shoot();
+        }
+        else if (RANDOM.nextInt(3)==1)
+        {
+            setDirection(1);
+        }
+        else
+        {
+            setDirection(-1);
+        }
+        
         super.move();
+        
     }
 
-    /**
-     * Turns right by Pi/16 radians
-     */
-    public void turnRight ()
-    {
-        rotate(Math.PI / 16);
-    }
-
-    /**
-     * Turns left by Pi/16 radians
-     */
-    public void turnLeft ()
-    {
-        rotate(-Math.PI / 16);
-    }
+    
 
     /**
      * Accelerates by SHIP_ACCELERATION
@@ -124,22 +156,29 @@ public class AlienShip extends Ship
             {
                controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000, true));
             }
-            // Tell the controller2p the ship was destroyed
-            //controller2p.shipDestroyed(this);
+            
         }
     }
 
     /**
      * TODO docs
      */
-    public void shoot(){
+    public void shoot(int level, Ship ship){
         if(!controller.tooManyBullets())
         {
-            Bullet bullet = new Bullet(getX(), getYNose(), getRotation(), this);
-            controller.addParticipant(bullet);
-
-            firing.playSound();
-
+            if (level <3)
+            {
+               Bullet bullet = new Bullet(getX(), getY(), Math.atan2(ship.getY(),ship.getX()), this); //Randomize later
+               controller.addParticipant(bullet);
+               firing.playSound();
+            }
+            else if (level >= 3)
+            {
+                Bullet bullet = new Bullet(getX(), getY(), 2*Math.PI, this);
+                controller.addParticipant(bullet);
+                firing.playSound();               
+            }
+            
         }
         
     }
@@ -150,12 +189,34 @@ public class AlienShip extends Ship
     @Override
     public void countdownComplete (Object payload)
     {
-        // Give a burst of acceleration, then schedule another
-        // burst for 200 msecs from now.
+        // noves, then schedule another
+        // burst for 10000 msecs from now.
         if (payload.equals("move"))
         {
-           // accelerate();
-            new ParticipantCountdownTimer(this, "move", 200);
+            move();
+            //shoot();
+            
+            new ParticipantCountdownTimer(this, "move", 10000);
         }
     }
+
+    private Path2D.Double AlienIcon()
+    {
+        Path2D.Double poly = new Path2D.Double();
+		poly.moveTo(-9, 0);
+		poly.lineTo(-4, -4);
+		poly.lineTo(4, -4);
+		poly.lineTo(9, 0);
+		poly.lineTo(-9, 0);
+		poly.lineTo(-4, 4);
+		poly.lineTo(-2, 8);
+		poly.lineTo(2, 8);
+		poly.lineTo(4, 4);
+		poly.lineTo(-4, 4);
+		poly.lineTo(4, 4);
+		poly.lineTo(9, 0);
+		poly.closePath();
+        return poly;
+    }
+
 }

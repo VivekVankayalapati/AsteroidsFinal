@@ -29,12 +29,15 @@ public class Display extends JFrame
 
         // This panel contains the screen to prevent the screen from being
         // resized
+        
         JPanel screenPanel = new JPanel();
         screenPanel.setLayout(new GridBagLayout());
         screenPanel.add(screen);
+        
 
         // This panel contains buttons and labels
         JPanel controls = new JPanel();
+        
 
         // The button that starts the game
         JButton startGame = new JButton(START_LABEL);
@@ -67,4 +70,5 @@ public class Display extends JFrame
     {
         screen.setLegend(s);
     }
+
 }

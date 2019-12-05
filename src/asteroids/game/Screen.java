@@ -16,6 +16,8 @@ public class Screen extends JPanel
     /** Game controller2p */
     private Controller controller;
 
+    
+
     /**
      * Creates an empty screen
      */
@@ -63,4 +65,6 @@ public class Screen extends JPanel
         int size = g.getFontMetrics().stringWidth(legend);
         g.drawString(legend, (SIZE - size) / 2, SIZE / 2);
     }
+
+
 }
