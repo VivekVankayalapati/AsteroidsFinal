@@ -156,7 +156,7 @@ public class Asteroid extends Participant implements ShipDestroyer, BulletDestro
     @Override
     public void collidedWith (Participant p)
     {
-        if (p instanceof AsteroidDestroyer)
+        if (p instanceof AsteroidDestroyer && !controller.hasInvincibility())
         {
             // Expire the asteroid
             Participant.expire(this);

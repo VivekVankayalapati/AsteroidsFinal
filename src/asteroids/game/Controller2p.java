@@ -133,6 +133,11 @@ public class Controller2p extends EnhancedController
         // Place the ships
         placeShip(1);
         placeShip(2);
+        display.setLevel(this.level);
+        display.setScore(this.score);
+        display.setPlayers(2);
+        display.setLives(lives1, 1);
+        display.setLives(lives2, 2);
 
 
 
@@ -259,6 +264,11 @@ public class Controller2p extends EnhancedController
                 lives2 += 1;
                 lastScore = score; // zero's the score so new lives aren't infinitely added
             }
+
+            display.setLevel(this.level);
+            display.setScore(this.score);
+            display.setLives(lives1, 1);
+            display.setLives(lives2, 2);
             
             // Move the participants to their new locations
             pstate.moveParticipants();

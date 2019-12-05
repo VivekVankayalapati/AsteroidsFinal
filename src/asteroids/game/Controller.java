@@ -214,20 +214,26 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         // Clear the screen
         clear();
 
+        // Reset statistics
+        lives = 3;
+        score = 0;
+        level = 1;
+
         // Place asteroids
         placeAsteroids();
         placeAliens();
 
         // Place the ship
         placeShip();
-        // Reset statistics
-        lives = 3;
-        score = 0;
-        level = 1;
+        
 
         // Start listening to events (but don't listen twice)
         display.removeKeyListener(this);
         display.addKeyListener(this);
+
+        display.setLevel(this.level);
+        display.setScore(this.score);
+        display.setLives(this.lives);
 
         // Give focus to the game screen
         display.requestFocusInWindow();
@@ -352,6 +358,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
                 ship.accelerate();
 
             }
+            display.setScore(this.score);
+            display.setLevel(this.level);
+            display.setLives(this.lives);
 
             // Move the participants to their new locations
             
@@ -401,6 +410,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     protected void newLevel()
     {
+        clear();
         level += 1;
         if (level ==2)
         {
@@ -494,6 +504,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     public boolean getIsAccel(Ship ship)
     {
         return accelerate;
+    }
+
+    public boolean hasInvincibility()
+    {
+        return false;
     }
 
 }
