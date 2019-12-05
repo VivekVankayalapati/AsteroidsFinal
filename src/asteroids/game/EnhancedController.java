@@ -120,7 +120,6 @@ public class EnhancedController extends Controller
     protected void placeShip()
     {
         super.placeShip();
-        System.out.println("is Invincible");
         invincibilityTimer.start();
     }
 

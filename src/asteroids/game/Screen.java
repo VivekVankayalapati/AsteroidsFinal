@@ -108,17 +108,24 @@ public class Screen extends JPanel
 
 
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 40));
-
-        int scoreSize = g.getFontMetrics().stringWidth(this.score);
         int dist = 40; // represents the length of the display object from the edge of the screen
-        int offset = (int) ((dist + 5 + 14 * (double) maxLives / 2) - scoreSize / 2); // Centering the score above the ship live counter
-        int levelSize = g.getFontMetrics().stringWidth(this.level);
 
-        g.drawString(this.score, offset, 50);
-        g.drawString(this.level, SIZE - dist - levelSize / 2, 50);
+        // To avoid a null pointer exception when the application opens
+        if(this.score != null && this.level != null)
+        {
+            int scoreSize = g.getFontMetrics().stringWidth(this.score);
+            int offset = (int) ((dist + 5 + 14 * (double) maxLives / 2) - scoreSize / 2); // Centering the score above the ship live counter
+            int levelSize = g.getFontMetrics().stringWidth(this.level);
 
-        if(this.players > 1){
-            for(int p = 0; p < this.players; p++){
+            g.drawString(this.score, offset, 50);
+            g.drawString(this.level, SIZE - dist - levelSize / 2, 50);
+        }
+        
+
+        if(this.players > 1)
+        {
+            for(int p = 0; p < this.players; p++)
+            {
                 g.drawString((p + 1) + ": ", dist, 70 + 45* (p + 1));
                 for(int i = 0; i < playerLives[p]; i++){
                     AffineTransform trans = AffineTransform.getTranslateInstance(dist + g.getFontMetrics().stringWidth((p + 1) + ":   ") + 14 * (maxLives - playerLives[p]) + 28 * i, 55 + 45* (p + 1));
@@ -126,7 +133,6 @@ public class Screen extends JPanel
                     Shape ship = Ship.shipIcon();
                     Shape newShip = trans.createTransformedShape(ship);
                     g.draw(newShip);
-                    System.out.println("test" + p);
                 }
             }
         }
