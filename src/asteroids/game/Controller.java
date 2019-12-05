@@ -187,10 +187,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
     protected void placeAliens ()
     {
-        heartBeat.start();
         // Place a new alien
         Participant.expire(alien);
-        alien = new AlienShip(SIZE / 3, SIZE / 3, -Math.PI / 2, this,2);
+        alien = new AlienShip(SIZE / 3, SIZE / 3, -Math.PI / 2, this,2, this.ship);
         
         addParticipant(alien);
     }
@@ -221,10 +220,10 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
         // Place asteroids
         placeAsteroids();
-        placeAliens();
 
         // Place the ship
         placeShip();
+        placeAliens();
         
 
         // Start listening to events (but don't listen twice)
