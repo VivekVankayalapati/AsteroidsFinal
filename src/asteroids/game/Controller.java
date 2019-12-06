@@ -25,6 +25,12 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      * The alienship
      */
     protected AlienShip alien;
+
+
+    /** 
+     * TODO Docs
+     */
+    protected HighScores highScoreList;
     
 
     /**
@@ -103,6 +109,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         beat2 = new SoundManager("/sounds/beat2.wav");
         beat = 1;
 
+        highScoreList = new HighScores("/game/highscores.txt");
+        
+
         // Bring up the splash screen and start the refresh timer
         splashScreen();
         display.setVisible(true);
@@ -153,6 +162,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     {
         display.setLegend(GAME_OVER);
         display.removeKeyListener(this);
+        //highScoreList.getFile();
     }
 
     /**
