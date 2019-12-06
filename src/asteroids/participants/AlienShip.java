@@ -29,18 +29,16 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     private SoundManager firing;
 
     /**
-     * TODO Docs
+     * Manages alien ship sounds
      */
-    private SoundManager destroyed;
-    private SoundManager saucerSound;
-
+    private SoundManager destroyed,saucerSound;
+    
+    /**Ship for targeting */
     private Ship ship;
-
+    /**Records game level */
     private int level;
 
-    /**TODO Docs
-     * 
-     */
+    /**Records starting x position of alienship */
     private int xi;
 
     
@@ -91,7 +89,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     }
 
     /**
-     * Customizes the base move method by imposing friction
+     * Moves ship either left or right based on initial position in a zigzag pattern
      */
     public void moveShip ()
     {
@@ -122,11 +120,11 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
             }
             else if (RANDOM.nextInt(3)==1)
             {
-                //setDirection(Math.PI+1);
+                setDirection(Math.PI+1);
             }
             else
             {
-                //setDirection(Math.PI-1);
+                setDirection(Math.PI-1);
             } 
         }
         
@@ -143,20 +141,21 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
             // Expire the ship from the game
             Participant.expire(this);
 
-        
+            //Generates debris from destruction
             for(int i = 0; i <= 15; i++)
             {
                controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000, true));
             }
-
+            //Plays sound
             destroyed.playSound();
+            //Marks as destroyed
             controller.AlienDestroyed(p);
             
         }
     }
 
     /**
-     * TODO docs
+     * ALien ship fires randomly or towards ship based on level
      */
     public void shoot(){
         if(!controller.tooManyBullets()){
@@ -192,8 +191,8 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
         {
             
         }
-        // noves, then schedule another
-        // burst for 10000 msecs from now.
+        // Moves, then schedule another
+        // burst for 1000 msecs from now.
         if (payload.equals("move"))
         {
             moveShip();
@@ -203,6 +202,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
         
     }
 
+    /**Draws ship and scales based on level */
     private Path2D.Double AlienIcon()
     {
         AffineTransform at = new AffineTransform();

@@ -5,25 +5,24 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 /**
- * TODO Docs
- * @author Aidan Copinga
+ * Manages the sound file for usage by participants
  */
 public class SoundManager
 {
 
     /**
-     * TODO Docs
+     * Records sounds
      */
     private Clip soundFile;
 
     /**
-     * TODO Docs
+     * Determines numbers of loops for soundfiles
      *
      */
     private int loops;
 
     /**
-     * TODO Docs
+     * Calls main constructor with loops being 0
      * @param soundFile
      */
     public SoundManager(String soundFile)
@@ -32,7 +31,7 @@ public class SoundManager
     }
 
     /**
-     * TODO Docs
+     * Manages audio gathering and playback 
      * @param soundFile
      * @param loops
      */
@@ -53,13 +52,14 @@ public class SoundManager
         this.loops = loops;
     }
 
+    /**Plays the sound */
     public void playSound()
     {
         playSound(this.soundFile, loops);
     }
     /**
-     * TODO Docs
-     * Static to allow access to playing sound files outside of SoundManager objects.
+     * 
+     * Static version of playSound with loops of 0 to allow access to playing sound files outside of SoundManager objects.
      */
     public static void playSound (Clip soundFile)
     {
@@ -67,8 +67,8 @@ public class SoundManager
     }
 
     /**
-     * TODO Docs
-     * Static to allow access to playing sound files outside of SoundManager objects.
+     * 
+     * Static version of playSound to allow access to playing sound files outside of SoundManager objects.
      */
     public static void playSound (Clip soundFile, int loops)
     {
@@ -87,13 +87,13 @@ public class SoundManager
     }
 
     /**
-     * TODO Docs
+     * Stops playback of soundfile
      */
     public void stopSound(){
         stopSound(this.soundFile);
     }
     /**
-     * TODO Docs
+     * Stops playback of soundfile
      */
     public static void stopSound(Clip soundFile){
         if(soundFile != null){
@@ -104,7 +104,7 @@ public class SoundManager
     }
 
     /**
-     * TODO Docs
+     * Records existence state of soundFile
      * @return
      */
     public boolean isRunning()

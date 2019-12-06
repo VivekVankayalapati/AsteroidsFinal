@@ -167,13 +167,13 @@ public class Constants
 
     // Enhanced Constants
     /**
-     * TODO Docs
+     * Score determination for extra lives
      */
     public final static int EXTRA_LIFE_SCORE = 4000;
-
+    /**msec length of powerups */
 	public static final int POWERUP_DURATION = 3000;
-
+    /**timer value for powerup appearance */
 	public static final int POWERUP_TIMER = 10000;
-
+    /** Adds additional time between powerup appearance */
     public static final int POWERUP_DELTA = 1000;
 }

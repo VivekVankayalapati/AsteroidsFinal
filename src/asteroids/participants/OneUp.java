@@ -12,24 +12,26 @@ import asteroids.game.SoundManager;
 public class OneUp extends Participant 
 {
     /**
-     * TODO Docs
+     * Enhanced mode controller
      */
     private EnhancedController controller;
 
     /**
-     * TODO Docs
+     * Outline of powerup 
      */
     private Shape outline;
 
     /**
-     * TODO docs
+     * Duration of powerup
      */
     private ParticipantCountdownTimer powerupDuration;
 
-
+    /**
+     * Sounds for powerup
+     */
     private SoundManager spawnSound;
     /**
-     * TODO Docs
+     * Generates powerup at given location for a given time
      */
     public OneUp(double x, double y, int time, EnhancedController controller)
     {
@@ -52,6 +54,7 @@ public class OneUp extends Participant
         this.powerupDuration = new ParticipantCountdownTimer(this, time);
         
     }
+    /** Gets outline of powerup */
     @Override
     protected Shape getOutline() {
         
@@ -59,7 +62,7 @@ public class OneUp extends Participant
     }
 
     /**
-     * TODO docs
+     * Methood is called when ParticipantCountdownTimer completes
      */
     @Override
     public void countdownComplete(Object payload){
@@ -67,7 +70,7 @@ public class OneUp extends Participant
     }
 
     /**
-     * TODO docs
+     * Determines if powerup is obstrained by ship
      */
     @Override
     public void collidedWith(Participant p) {

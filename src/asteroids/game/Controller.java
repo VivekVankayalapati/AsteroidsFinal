@@ -36,7 +36,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     protected Timer refreshTimer;
 
     /**
-     * TODO Docs
+     * Tracks time for between alian appearances
      */
     protected Timer alienTimer;
 
@@ -181,7 +181,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
 
     /**
-     * Places an asteroid near each corner of the screen. Gives it a random velocity and rotation.
+     * Places an asteroid near each corner of the screen. Gives it a random velocity and rotation. Adds asteroids based on difficulty level
      */
     protected void placeAsteroids ()
     {
@@ -196,7 +196,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     }
 
     /**
-     * TODO Docs
+     * Places alien, removes alien if one exists
      */
     protected void placeAliens ()
     {
@@ -323,8 +323,8 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     }
 
     /**
-     * TODO docs
-     * @return
+     * Caps number of bullets on screen
+     * 
      */
     public boolean tooManyBullets() {
         int count = 0;
@@ -347,7 +347,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     }
 
     /**
-     * TODO Docs
+     * Gets number of lives
      */
     protected int getLives(){
         return lives;
@@ -389,7 +389,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             performTransition();
 
             
-
+            //Moves ship based on user input and ship existence
             if(turnLeft && ship != null){
                 ship.turnLeft();
             }
@@ -404,6 +404,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
                 ship.accelerate();
 
             }
+            //Displays scores
             display.setScore(this.score);
             display.setLevel(this.level);
             display.setLives(this.lives);
@@ -452,7 +453,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     }
 
     /**
-     * TODO Docs
+     * Sets game for a new level
      */
     protected void newLevel()
     {
@@ -510,7 +511,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     public void keyTyped (KeyEvent e)
     {
     }
-
+    /**Records when keys are no longer pressed */
     @Override
     public void keyReleased (KeyEvent e)
     {
@@ -536,7 +537,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     }
 
     /**
-     * TODO Docs
+     * Gets the acceleration of ship
      * @param ship
      * @return
      */
@@ -544,7 +545,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     {
         return accelerate;
     }
-
+    /**Records invincibility state of ship */
     public boolean hasInvincibility()
     {
         return false;
