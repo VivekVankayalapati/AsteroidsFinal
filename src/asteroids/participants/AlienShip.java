@@ -51,6 +51,8 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
      */
     public AlienShip (int x, int y, double direction, Controller controller,int level, Ship ship)
     {
+        new ParticipantCountdownTimer(this, "replace", RANDOM.nextInt(5001)+5000);
+
         if (RANDOM.nextInt(2) == 0)
         {
             xi = -5;
@@ -75,7 +77,8 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
         
         firing = new SoundManager("/sounds/fire.wav");
 
-        // Schedule a movement in ten seconds
+        
+        // Schedule a movement in one seconds
         new ParticipantCountdownTimer(this, "move", 1000);
     }
 
@@ -119,11 +122,11 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
             }
             else if (RANDOM.nextInt(3)==1)
             {
-                setDirection(Math.PI+1);
+                //setDirection(Math.PI+1);
             }
             else
             {
-                setDirection(Math.PI-1);
+                //setDirection(Math.PI-1);
             } 
         }
         
@@ -159,7 +162,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
         {
             if (this.level < 3 )
             {
-               Bullet bullet = new Bullet(getX(), getY(), (Math.atan2(-this.ship.getY() + getY(),-this.ship.getX()) + getX())+ RANDOM.nextDouble()*(Math.PI/18)-(Math.PI/36), this); //Randomize later
+               Bullet bullet = new Bullet(getX(), getY(), (Math.atan2(-this.ship.getY() + getY(),-this.ship.getX()) + getX())+ RANDOM.nextDouble()*(Math.PI/18)-(Math.PI/36), this); 
                controller.addParticipant(bullet);
                firing.playSound();
             }
@@ -184,6 +187,10 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     @Override
     public void countdownComplete (Object payload)
     {
+        if(payload.equals("replace"))
+        {
+            
+        }
         // noves, then schedule another
         // burst for 10000 msecs from now.
         if (payload.equals("move"))
@@ -193,6 +200,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
             
         new ParticipantCountdownTimer(this, "move", 1000);
         }
+        
     }
 
     private Path2D.Double AlienIcon()
