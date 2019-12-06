@@ -27,12 +27,12 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     private SoundManager firing;
 
     /**
-     * TODO Docs
+     * Sound for destruction
      */
     private SoundManager destroyed;
 
     /**
-     * TODO Docs
+     * Sound for boosting of ship
      */
     private SoundManager thrust;
 
@@ -163,7 +163,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     }
 
     /**
-     * TODO docs
+     * Method for ship to shoot a bullet
      */
     public void shoot(){
         if(!controller.tooManyBullets())
@@ -176,6 +176,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
         }
         
     }
+    /** Outline of ship */
     public static Path2D.Double shipIcon(){
         Path2D.Double poly = new Path2D.Double();
         poly.moveTo(21, 0);
@@ -187,6 +188,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
         return poly;
     }
 
+    /**Outline of ship with flame */
     private Path2D.Double flameIcon()
     {
         Path2D.Double polyFlame = new Path2D.Double();
@@ -203,7 +205,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     }
 
     /**
-     * TODO Docs
+     * Teleport command
      */
     public void teleport() {
         setPosition(Constants.SIZE * Constants.RANDOM.nextDouble(),Constants.SIZE * Constants.RANDOM.nextDouble());

@@ -13,24 +13,24 @@ import asteroids.participants.Ship;
 public class Controller2p extends EnhancedController
 {
 
-    /** The ship (if one is active) or null (otherwise) */
-    private Ship ship1;
-    private Ship ship2;
+    /** The ships (if one is active) or null (otherwise) */
+    private Ship ship1,ship2;
+    
     /**
      * Values that can track the last ship that was destroyed. Must be set when a ship is destroyed and created.
      */
-    private boolean ship1Destroyed;
-    private boolean ship2Destroyed;
+    private boolean ship1Destroyed,ship2Destroyed;
+    
 
-    /** Number of lives left */
-    private int lives1;
-    private int lives2;
+    /** Number of lives left for each ship */
+    private int lives1,lives2;
+    
 
     /**
-     * TODO Docs
+     * Records user input/direction for a two player game
      */
-    private boolean turnLeft1, turnRight1, accelerate1, fire1;
-    private boolean turnLeft2, turnRight2, accelerate2, fire2;
+    private boolean turnLeft1, turnRight1, accelerate1, fire1,turnLeft2, turnRight2, accelerate2, fire2;
+    
 
     /**
      * Returns the ship, or null if there isn't one
@@ -63,7 +63,7 @@ public class Controller2p extends EnhancedController
     }
 
     /**
-     * Place a new ship in the center of the screen. Remove any existing ship first.
+     * Places ships in the center of the screen. Remove any existing ships first.
      */
     private void placeShip (int ship)
     {
@@ -135,6 +135,7 @@ public class Controller2p extends EnhancedController
         // Place the ships
         placeShip(1);
         placeShip(2);
+        //Displays on-screen display
         display.setLevel(this.level);
         display.setScore(this.score);
         display.setPlayers(2);
@@ -152,7 +153,7 @@ public class Controller2p extends EnhancedController
     }
 
     /**
-     * TODO Docs
+     * Returns lives left for a given ship
      */
     protected int getLives(Ship ship){
         if(ship.equals(ship1)){
@@ -164,7 +165,7 @@ public class Controller2p extends EnhancedController
     }
 
     /**
-     * Creates an alien based off of one of the two ships, randomly chosen.
+     * Creates an alien targeting one of the two ships, randomly chosen.
      */
     @Override
     protected void placeAliens(){
@@ -205,7 +206,7 @@ public class Controller2p extends EnhancedController
 
 
     /**
-     * TODO Docs
+     * Records if ship 1 is destroyed
      */
     private void ship1Destroyed()
     {
@@ -222,7 +223,7 @@ public class Controller2p extends EnhancedController
     }
 
     /**
-     * TODO Docs
+     * Records if ship 2 is destroyed
      */
     private void ship2Destroyed() {
         ship2 = null;
@@ -254,6 +255,7 @@ public class Controller2p extends EnhancedController
             // It may be time to make a game transition
             performTransition();
 
+            //Moves ships based on user input
             if(turnLeft1 && ship1 != null){
                 ship1.turnLeft();
             }
@@ -282,7 +284,7 @@ public class Controller2p extends EnhancedController
             }
             
             /**
-             * TODO Docs
+             * If score is reached, gives a new life bonus to ships
              */
             if(getNewLife(2 * EXTRA_LIFE_SCORE)){
                 
@@ -291,7 +293,7 @@ public class Controller2p extends EnhancedController
                 lives2 += 1;
                 lastScore = score; // zero's the score so new lives aren't infinitely added
             }
-
+            //Displays score and level and lives
             display.setLevel(this.level);
             display.setScore(this.score);
             display.setLives(lives1, 1);
@@ -340,7 +342,7 @@ public class Controller2p extends EnhancedController
     }
 
     /**
-     * TODO Docs
+     * Resets game for a new level
      */
     @Override
     protected void newLevel()
@@ -405,6 +407,9 @@ public class Controller2p extends EnhancedController
 
     }
 
+    /** 
+     * Records if key is released
+    */
     @Override
     public void keyReleased (KeyEvent e)
     {
@@ -450,9 +455,9 @@ public class Controller2p extends EnhancedController
     }
 
     /**
-     * TODO Docs
+     * Acceleration of ship
      * @param ship
-     * @return
+     * @return ship acceleration
      */
     @Override
     public boolean getIsAccel(Ship ship)
@@ -467,7 +472,7 @@ public class Controller2p extends EnhancedController
     }
 
     /**
-     * TODO Docs
+     * Records if ship destroyed another ship, gives live bonus
      * @param ship
      */
     @Override

@@ -7,22 +7,24 @@ import asteroids.game.ParticipantCountdownTimer;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
-
+/**
+ * Two different debris types for other particpants
+ */
 public class Debris extends Participant
 {
 
     /**
-     * TODO docs
+     * debris type
      */
     private Shape debris;
 
     /**
-     * TODO docs
+     * duration of debris existence
      */
     private ParticipantCountdownTimer debrisDuration;
 
     /**
-     * TODO Docs
+     * Genates debris either as particles or lines
      * @param posX
      * @param posY
      * @param maxSpeed
@@ -45,16 +47,18 @@ public class Debris extends Participant
         setInert(true);
     }
 
+    /**Returns debris shape */
     @Override
     protected Shape getOutline() {
         return debris;
     }
 
+    /**Overriding to ensure it doesn't collide */
     @Override
     public void collidedWith(Participant p) {
 
     }
-
+    /**Removes debris after given time */
     @Override
     public void countdownComplete(Object payload){
         Participant.expire(this);

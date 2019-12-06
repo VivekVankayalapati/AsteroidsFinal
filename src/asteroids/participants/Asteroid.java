@@ -60,7 +60,7 @@ public class Asteroid extends Participant implements ShipDestroyer, BulletDestro
         setRotation(2 * Math.PI * RANDOM.nextDouble());
         createAsteroidOutline(variety, size);
     }
-
+    /**gets the outline of the asteroid */
     @Override
     protected Shape getOutline ()
     {
@@ -166,7 +166,7 @@ public class Asteroid extends Participant implements ShipDestroyer, BulletDestro
 
             // Iterate through the sizes of the asteroid
             int size = this.getSize() - 1;
-
+            //Genertes smaller asteroids when collided
             if(size == 1)
             {
                 Asteroid smallerAsteroid1 = new Asteroid(Constants.RANDOM.nextInt(4), size, this.getX(), this.getY(), Constants.MAXIMUM_MEDIUM_ASTEROID_SPEED, controller);

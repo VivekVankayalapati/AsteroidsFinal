@@ -72,22 +72,32 @@ public class Display extends JFrame
     }
 
     /**
-     * TODO Docs
+     * Places score on screen
      */
     public void setScore(int score){
         screen.setScore(score);
     }
-
+    /**
+     * Places level on screen
+     */
     public void setLevel(int level){
         screen.setLevel(level);
     }
-
+    /**
+     * Places players on screen
+     */
     public void setPlayers(int players){
         screen.setPlayers(players);
     }
+    /**
+     * Places lives on screen by player
+     */
     public void setLives(int lives, int player){
         screen.setLives(lives, player);
     }
+    /**
+     * Places lives for single player
+     */
     public void setLives(int lives){
         screen.setLives(lives, 1);
     }

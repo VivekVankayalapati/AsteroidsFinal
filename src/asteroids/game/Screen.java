@@ -15,13 +15,15 @@ public class Screen extends JPanel
 {
     /** Legend that is displayed across the screen */
     private String legend;
-
-    private String score, level = "";
-
+    /**Score to display on screen */
+    private String score;
+    /**Level to display on screen */
+    private String level = "";
+    /**Records and caps lives */
     private int lives, maxLives;
-    
+    /**stores lives in array for 2p mode */
     private int[] playerLives;
-
+    /**Records players */
     private int players;
 
     /** Game controller2p */
@@ -53,7 +55,7 @@ public class Screen extends JPanel
     {
         this.legend = legend;
     }
-
+    //These methods converts score, level, players, lives to strings for display
     public void setScore(int score){
         this.score = score + "";
     }
@@ -66,6 +68,11 @@ public class Screen extends JPanel
         this.players = players;
         
     }
+    /**
+     * Tracks and caps lives of players
+     * @param lives
+     * @param player
+     */
     public void setLives(int lives, int player){
         if(lives > maxLives){
             this.maxLives = lives;
@@ -123,7 +130,7 @@ public class Screen extends JPanel
             g.drawString(this.level, SIZE - dist - levelSize / 2, 50);
         }
         
-
+        //Constrains the display of score, lives, etc.
         if(this.players > 1)
         {
             for(int p = 0; p < this.players; p++)

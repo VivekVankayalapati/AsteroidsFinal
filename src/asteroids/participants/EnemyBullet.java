@@ -11,24 +11,23 @@ import asteroids.game.ParticipantCountdownTimer;
 import asteroids.game.Constants;
 
 /**
- * TODO docs
- * @author Aidan Copinga
+ * Bullet used by alienShip
  */
 public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, ShipDestroyer, BulletDestroyer
 {
 
     /**
-     * TODO docs
+     * Bullet shape
      */
     private Shape bullet;
 
     /**
-     * TODO docs
+     * Duration of bullet existence
      */
     private ParticipantCountdownTimer bulletDuration;
 
     /**
-     * TODO docs
+     * Generates bullet at given position and direction
      */
     public EnemyBullet(double posX, double posY, double theta)
     {
@@ -39,7 +38,7 @@ public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUp
     }
 
     /**
-     * TODO docs
+     * Returns outline of bullet
      */
     @Override
     protected Shape getOutline ()
@@ -47,14 +46,14 @@ public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUp
         return this.bullet;
     }
     /**
-     * TODO docs
+     * Returns existence time of bullet
      */
     public ParticipantCountdownTimer getDuration(){
         return bulletDuration;
     }
 
     /**
-     * TODO docs
+     * Determines if bullet has collides with a particpant
      */
     @Override
     public void collidedWith (Participant p)
@@ -66,7 +65,7 @@ public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUp
     }
 
     /**
-     * TODO docs
+     * Expires bullet after given time
      */
     @Override
     public void countdownComplete(Object payload){
