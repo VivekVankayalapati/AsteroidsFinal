@@ -13,7 +13,7 @@ import asteroids.game.Constants;
 /**
  * Bullet used by alienShip
  */
-public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, ShipDestroyer
+public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, ShipDestroyer, BulletDestroyer
 {
 
     /**
@@ -62,7 +62,6 @@ public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUp
         {
             Participant.expire(this);
         }
-        
     }
 
     /**

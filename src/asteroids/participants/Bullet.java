@@ -10,7 +10,7 @@ import asteroids.game.Constants;
 /**
  * Bullet used by ship
  */
-public class Bullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, AlienShipDestroyer
+public class Bullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, AlienShipDestroyer, EnemyBulletDestroyer
 {
 
     /**

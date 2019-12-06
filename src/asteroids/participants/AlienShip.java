@@ -48,13 +48,21 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     /**
      * Constructs a alien ship at the specified coordinates that is pointed in the given direction.
      */
-    public AlienShip (int x, int y, Controller controller,int level, Ship ship)
+    public AlienShip (Controller controller,int level, Ship ship)
     {
-        xi = x;
+        int location = RANDOM.nextInt(2);
+
+        if(location == 0){
+            xi = 5;
+        }
+        else if (location == 1){
+            xi = 745;
+            setDirection(Math.PI);
+        }
         this.ship = ship;
         this.controller = controller;
         this.level = level;
-        setPosition(x, y);
+        setPosition(xi, RANDOM.nextInt(750));
        
         setSpeed(2);
 
@@ -94,7 +102,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     public void moveShip ()
     {
         
-        if (xi == 0)
+        if (xi == 5)
         {
             if (RANDOM.nextInt(3)==0)
             {
@@ -111,11 +119,12 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
             }
         }
 
-        else
+        else if (xi == 745)
         {
+            System.out.println(xi);
             if (RANDOM.nextInt(3)==0)
             {
-                setDirection(-Math.PI);
+                setDirection(Math.PI);
                 shoot();
             }
             else if (RANDOM.nextInt(3)==1)
@@ -158,7 +167,6 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
      * ALien ship fires randomly or towards ship based on level
      */
     public void shoot(){
-        if(!controller.tooManyBullets()){
             if (this.level >= 3 ){
                 double angle = Math.atan2(this.ship.getY() - getY(), this.ship.getX() - getX());
                 double offset = RANDOM.nextDouble() * (Math.PI / 18) - (Math.PI / 36);
@@ -172,12 +180,6 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
                 controller.addParticipant(bullet);
                 firing.playSound();               
             }
-
-            
-
-
-            
-        }
         
     }
 
@@ -187,12 +189,8 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     @Override
     public void countdownComplete (Object payload)
     {
-        if(payload.equals("replace"))
-        {
-            
-        }
-        // Moves, then schedule another
-        // burst for 1000 msecs from now.
+        // noves, then schedule another
+        // burst for 10000 msecs from now.
         if (payload.equals("move"))
         {
             moveShip();
