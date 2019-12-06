@@ -14,7 +14,7 @@ import asteroids.game.Constants;
  * TODO docs
  * @author Aidan Copinga
  */
-public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, ShipDestroyer
+public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, ShipDestroyer, BulletDestroyer
 {
 
     /**
@@ -63,7 +63,6 @@ public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUp
         {
             Participant.expire(this);
         }
-        System.out.println("collided with: " + p.toString());
     }
 
     /**

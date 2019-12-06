@@ -11,7 +11,7 @@ import asteroids.game.Constants;
  * TODO docs
  * @author Aidan Copinga
  */
-public class Bullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, AlienShipDestroyer
+public class Bullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, AlienShipDestroyer, EnemyBulletDestroyer
 {
 
     /**

@@ -182,13 +182,7 @@ public class Controller2p extends EnhancedController
                 }
         if(level > 1){
             Participant.expire(alien);
-            if(RANDOM.nextInt(2) == 1){
-                alien = new AlienShip(0, RANDOM.nextInt(750), this, this.level, ship);
-                
-            }
-            else{
-                alien = new AlienShip(750, RANDOM.nextInt(750), this, this.level, ship);
-            }
+            alien = new AlienShip(this, this.level, ship);
             
         
             addParticipant(alien);

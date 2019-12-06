@@ -205,12 +205,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         
         if(level > 1){
             Participant.expire(alien);
-            if(RANDOM.nextInt(2) == 1){
-                alien = new AlienShip(0, RANDOM.nextInt(750), this, this.level, this.ship);
-            }
-            else{
-                alien = new AlienShip(750, RANDOM.nextInt(750), this, this.level, this.ship);
-            }
+            alien = new AlienShip(this, this.level, this.ship);
             
         
             addParticipant(alien);
@@ -224,10 +219,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     protected void clear ()
     {
         pstate.clear();
-        heartBeat.setDelay(INITIAL_BEAT);
-        display.setLegend("");
         ship = null;
         alien = null;
+        heartBeat.setDelay(INITIAL_BEAT);
+        display.setLegend("");
+        
     }
 
     /**
@@ -458,7 +454,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     {
         clear();
         level += 1;
-        if(level == 2)
+        if(level >= 2 && !alienTimer.isRunning())
         {
             alienTimer.start();
         }
