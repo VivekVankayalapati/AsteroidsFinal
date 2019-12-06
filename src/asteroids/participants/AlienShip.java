@@ -159,7 +159,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
         {
             if (this.level < 3 )
             {
-               Bullet bullet = new Bullet(getX(), getY(), Math.atan2(-this.ship.getY() + getY(),-this.ship.getX()) + getX(), this); //Randomize later
+               Bullet bullet = new Bullet(getX(), getY(), (Math.atan2(-this.ship.getY() + getY(),-this.ship.getX()) + getX())+ RANDOM.nextDouble()*(Math.PI/18)-(Math.PI/36), this); //Randomize later
                controller.addParticipant(bullet);
                firing.playSound();
             }
