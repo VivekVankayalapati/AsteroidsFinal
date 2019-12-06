@@ -35,6 +35,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /** When this timer goes off, it is time to refresh the animation */
     protected Timer refreshTimer;
 
+    /**
+     * TODO Docs
+     */
+    protected Timer alienTimer;
+
 
     /**
      * Tracks score
@@ -72,6 +77,8 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     protected boolean turnLeft, turnRight, accelerate, fire;
 
+ 
+
     /**
      * Constructs a controller to coordinate the game and screen
      */
@@ -80,9 +87,10 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         // Initialize the ParticipantState
         pstate = new ParticipantState();
 
-        // Set up the refresh timer.
+        // Set up the timers.
         refreshTimer = new Timer(FRAME_INTERVAL, this);
         heartBeat = new Timer(INITIAL_BEAT, this);
+        alienTimer = new Timer(ALIEN_DELAY + RANDOM.nextInt(5001), this);
 
         // Clear the transitionTime
         transitionTime = Long.MAX_VALUE;
@@ -187,14 +195,27 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         }
     }
 
+    /**
+     * TODO Docs
+     */
     protected void placeAliens ()
     {
+        alienTimer.stop();
         // Place a new alien
-        Participant.expire(alien);
-        scheduleTransition(RANDOM.nextInt(5001)+5000);
-        alien = new AlienShip(SIZE / 3, SIZE / 3, -Math.PI / 2, this,2, this.ship);
         
-        addParticipant(alien);
+        if(level > 1){
+            Participant.expire(alien);
+            if(RANDOM.nextInt(2) == 1){
+                alien = new AlienShip(0, RANDOM.nextInt(750), this, this.level, this.ship);
+            }
+            else{
+                alien = new AlienShip(750, RANDOM.nextInt(750), this, this.level, this.ship);
+            }
+            
+        
+            addParticipant(alien);
+        }
+        
     }
 
     /**
@@ -206,6 +227,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         heartBeat.setDelay(INITIAL_BEAT);
         display.setLegend("");
         ship = null;
+        alien = null;
     }
 
     /**
@@ -226,7 +248,6 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
         // Place the ship
         placeShip();
-        placeAliens();
         
 
         // Start listening to events (but don't listen twice)
@@ -268,27 +289,32 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         scheduleTransition(END_DELAY);
     }
 
-    public void AlienDestroyed (AlienShip alien)
+    public void AlienDestroyed (Participant p)
     {
-        this.alien = alien;
         // Null out the ship
         this.alien = null;
-        
-        placeAliens();
+        alienTimer.start();
 
-        
-
-        
-        
+        // Adds the score based off of the level (big or small alien ship)
+        if(level == 2 && (p instanceof Bullet || p instanceof Ship)){
+            score += ALIENSHIP_SCORE[1];
+        }else if(p instanceof Ship || p instanceof Bullet)
+        {
+            score += ALIENSHIP_SCORE[0];
+        }  
     }
 
 
     /**
      * An asteroid has been destroyed
      */
-    public void asteroidDestroyed (int size)
+    public void asteroidDestroyed (int size, Participant p)
     {
-        score += Constants.ASTEROID_SCORE[size];
+        if(p instanceof Bullet || p instanceof Ship)
+        {
+            score += Constants.ASTEROID_SCORE[size];
+        }
+        
         // If all the asteroids are gone, schedule a transition
         if (countAsteroids() == 0)
         {
@@ -352,6 +378,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             heartBeat.setDelay(beatDelay);
             beat2.playSound();
             beat = 1;
+        }
+        else if (e.getSource() == alienTimer){
+                placeAliens(); 
         }
         // Time to refresh the screen and deal with keyboard input
         else if (e.getSource() == refreshTimer)
@@ -429,20 +458,13 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     {
         clear();
         level += 1;
-        if (level ==2)
+        if(level == 2)
         {
-            heartBeat.setDelay(INITIAL_BEAT);
-            placeShip();
-            placeAsteroids();
-            placeAliens(); //different params
+            alienTimer.start();
         }
-        else
-        {
-            heartBeat.setDelay(INITIAL_BEAT);
-            placeShip();
-            placeAsteroids();
-            placeAliens(); //different params
-        }
+        heartBeat.setDelay(INITIAL_BEAT);
+        placeShip();
+        placeAsteroids();   
     }
 
     /**

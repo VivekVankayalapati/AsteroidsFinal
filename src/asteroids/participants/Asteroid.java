@@ -3,10 +3,7 @@ package asteroids.participants;
 import static asteroids.game.Constants.*;
 import java.awt.Shape;
 import java.awt.geom.*;
-import asteroids.destroyers.AsteroidDestroyer;
-import asteroids.destroyers.BulletDestroyer;
-import asteroids.destroyers.OneUpDestroyer;
-import asteroids.destroyers.ShipDestroyer;
+import asteroids.destroyers.*;
 import asteroids.game.Constants;
 import asteroids.game.Controller;
 import asteroids.game.Participant;
@@ -15,7 +12,7 @@ import asteroids.game.SoundManager;
 /**
  * Represents asteroids
  */
-public class Asteroid extends Participant implements ShipDestroyer, BulletDestroyer, OneUpDestroyer
+public class Asteroid extends Participant implements ShipDestroyer, BulletDestroyer, OneUpDestroyer, EnemyBulletDestroyer, AlienShipDestroyer
 {
     /** The size of the asteroid (0 = small, 1 = medium, 2 = large) */
     private int size;
@@ -186,7 +183,7 @@ public class Asteroid extends Participant implements ShipDestroyer, BulletDestro
             }
             destroyed.playSound();
             // Inform the controller2p
-            controller.asteroidDestroyed(this.getSize());
+            controller.asteroidDestroyed(this.getSize(), p);
         }
     }
 }

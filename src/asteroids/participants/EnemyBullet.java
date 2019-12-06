@@ -2,6 +2,9 @@ package asteroids.participants;
 
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import asteroids.destroyers.AsteroidDestroyer;
+import asteroids.destroyers.BulletDestroyer;
+import asteroids.destroyers.OneUpDestroyer;
 import asteroids.destroyers.*;
 import asteroids.game.Participant;
 import asteroids.game.ParticipantCountdownTimer;
@@ -11,7 +14,7 @@ import asteroids.game.Constants;
  * TODO docs
  * @author Aidan Copinga
  */
-public class Bullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, AlienShipDestroyer
+public class EnemyBullet extends Participant implements AsteroidDestroyer, OneUpDestroyer, ShipDestroyer
 {
 
     /**
@@ -27,7 +30,7 @@ public class Bullet extends Participant implements AsteroidDestroyer, OneUpDestr
     /**
      * TODO docs
      */
-    public Bullet(double posX, double posY, double theta)
+    public EnemyBullet(double posX, double posY, double theta)
     {
         this.setPosition(posX, posY);
         this.setVelocity(Constants.BULLET_SPEED, theta);
@@ -56,7 +59,7 @@ public class Bullet extends Participant implements AsteroidDestroyer, OneUpDestr
     @Override
     public void collidedWith (Participant p)
     {
-        if(p instanceof BulletDestroyer)
+        if(p instanceof EnemyBulletDestroyer)
         {
             Participant.expire(this);
         }

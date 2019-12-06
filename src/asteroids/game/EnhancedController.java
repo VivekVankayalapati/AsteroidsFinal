@@ -54,7 +54,7 @@ public class EnhancedController extends Controller
     {
         // The start button has been pressed. Stop whatever we're doing
         // and bring up the initial screen
-        if(e.getSource() instanceof JButton || e.getSource() == heartBeat) {
+        if(e.getSource() instanceof JButton || e.getSource() == heartBeat || e.getSource() == alienTimer) {
             super.actionPerformed(e);
         }
         else if(e.getSource() == invincibilityTimer && hasInvincibility())
