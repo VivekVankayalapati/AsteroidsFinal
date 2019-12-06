@@ -71,11 +71,14 @@ public class Display extends JFrame
         screen.setLegend(s);
     }
 
+    public void setScore(int score, int player){
+        screen.setScore(score, player);
+    }
     /**
      * Places score on screen
      */
     public void setScore(int score){
-        screen.setScore(score);
+        screen.setScore(score, 1);
     }
     /**
      * Places level on screen
@@ -101,4 +104,7 @@ public class Display extends JFrame
     public void setLives(int lives){
         screen.setLives(lives, 1);
     }
+
+	public void showScores() {
+	}
 }

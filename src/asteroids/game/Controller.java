@@ -83,6 +83,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     protected boolean turnLeft, turnRight, accelerate, fire;
 
+    /**
+     * The name of the player
+     */
+    protected String name;
+
  
 
     /**
@@ -109,7 +114,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         beat2 = new SoundManager("/sounds/beat2.wav");
         beat = 1;
 
-        highScoreList = new HighScores("/game/highscores.txt");
+        highScoreList = new HighScores("highscores.txt");
         
 
         // Bring up the splash screen and start the refresh timer
@@ -158,11 +163,13 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     /**
      * The game is over. Displays a message to that effect.
      */
-    private void finalScreen ()
+    protected void finalScreen ()
     {
-        display.setLegend(GAME_OVER);
+        highScoreList.log(name + "\t" + this.score);
+        highScoreList.sortFile();
         display.removeKeyListener(this);
-        //highScoreList.getFile();
+
+        display.showScores();
     }
 
     /**
