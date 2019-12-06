@@ -24,9 +24,17 @@ public class EnhancedController extends Controller
     protected Timer invincibilityTimer;
     /**Sound for a new life */
     protected SoundManager newLife;
+
+    protected ShipNames myFrame;
     /*Controller with additional enhancements */
+
+    /** */
     public EnhancedController(){
         super();
+        myFrame = new ShipNames(this);
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myFrame.pack();
+        myFrame.setVisible(true);
         newLife = new SoundManager("/sounds/smb_1-up.wav");
         powerupTimer = new Timer(POWERUP_TIMER, this);
         powerupTimer.start();

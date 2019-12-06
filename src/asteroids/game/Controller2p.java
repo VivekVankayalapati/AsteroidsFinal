@@ -7,6 +7,7 @@ import javax.swing.*;
 import asteroids.participants.AlienShip;
 import asteroids.participants.Ship;
 
+
 /**
  * Controls a game of Asteroids for strictly 2 players.
  */

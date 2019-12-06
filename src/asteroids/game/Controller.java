@@ -90,6 +90,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     public Controller ()
     {
+        
         // Initialize the ParticipantState
         pstate = new ParticipantState();
 
