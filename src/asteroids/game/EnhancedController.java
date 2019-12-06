@@ -9,21 +9,22 @@ import asteroids.participants.Ship;
 
 
 /**
- * Controls a game of Asteroids.
+ * Controls a game of Asteroids, but enhances
  */
 public class EnhancedController extends Controller
 {
 
     /**
-     * TODO Docs
+     * Constrains score score lives aren't added continously
      */
     protected int lastScore;
-
+    /**Sets timer for powerup reappearance*/
     protected Timer powerupTimer;
+    /**Sets invincibility timer */
     protected Timer invincibilityTimer;
-
+    /**Sound for a new life */
     protected SoundManager newLife;
-
+    /*Controller with additional enhancements */
     public EnhancedController(){
         super();
         newLife = new SoundManager("/sounds/smb_1-up.wav");
@@ -57,6 +58,7 @@ public class EnhancedController extends Controller
         if(e.getSource() instanceof JButton || e.getSource() == heartBeat || e.getSource() == alienTimer) {
             super.actionPerformed(e);
         }
+        //Stops invincibility
         else if(e.getSource() == invincibilityTimer && hasInvincibility())
         {
             invincibilityTimer.stop();
@@ -91,11 +93,12 @@ public class EnhancedController extends Controller
                 ship.accelerate();
 
             }
+            //Displays score
             display.setLevel(this.level);
             display.setScore(this.score);
             display.setLives(this.lives);
 
-                        
+            //Adds life if score reached        
             if(getNewLife(EXTRA_LIFE_SCORE))
             {
                 
@@ -114,7 +117,7 @@ public class EnhancedController extends Controller
     }
 
     /**
-     * TODO Docs
+     * Places ship with an invincibility timer 
      */
     @Override
     protected void placeShip()
@@ -124,7 +127,7 @@ public class EnhancedController extends Controller
     }
 
     /**
-     * TODO Docs
+     * Determines if newlife is warranted
      */
     protected boolean getNewLife(int score){
 
@@ -132,7 +135,7 @@ public class EnhancedController extends Controller
     }
 
     /**
-     * TODO Docs
+     * Determines if ship collides with another ship
      * @param p
      */
     public void OneUpDestroyed(Participant p) 
@@ -166,7 +169,7 @@ public class EnhancedController extends Controller
     }
 
     /**
-     * TODO Docs
+     * Determines if ship currently has invincibility
      */
     @Override
     public boolean hasInvincibility()
