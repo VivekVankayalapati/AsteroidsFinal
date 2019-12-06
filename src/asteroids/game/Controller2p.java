@@ -170,6 +170,7 @@ public class Controller2p extends EnhancedController
     protected void placeAliens(){
         // Place a new alien
         Ship ship;
+        alienTimer.stop();
         if(RANDOM.nextInt(2) == 0)
                 {
                     ship = this.ship1;

@@ -95,7 +95,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     public void moveShip ()
     {
         
-        if (xi < 0)
+        if (xi == 0)
         {
             if (RANDOM.nextInt(3)==0)
             {
@@ -149,7 +149,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
             }
 
             destroyed.playSound();
-            controller.AlienDestroyed();
+            controller.AlienDestroyed(p);
             
         }
     }

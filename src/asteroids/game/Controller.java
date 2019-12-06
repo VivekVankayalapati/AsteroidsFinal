@@ -90,7 +90,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         // Set up the timers.
         refreshTimer = new Timer(FRAME_INTERVAL, this);
         heartBeat = new Timer(INITIAL_BEAT, this);
-        alienTimer = new Timer(ALIEN_DELAY, this);
+        alienTimer = new Timer(ALIEN_DELAY + RANDOM.nextInt(5001), this);
 
         // Clear the transitionTime
         transitionTime = Long.MAX_VALUE;
@@ -200,7 +200,9 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     protected void placeAliens ()
     {
+        alienTimer.stop();
         // Place a new alien
+        
         if(level > 1){
             Participant.expire(alien);
             if(RANDOM.nextInt(2) == 1){
@@ -225,6 +227,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         heartBeat.setDelay(INITIAL_BEAT);
         display.setLegend("");
         ship = null;
+        alien = null;
     }
 
     /**
@@ -286,16 +289,18 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         scheduleTransition(END_DELAY);
     }
 
-    public void AlienDestroyed ()
+    public void AlienDestroyed (Participant p)
     {
         // Null out the ship
         this.alien = null;
+        alienTimer.start();
 
         // Adds the score based off of the level (big or small alien ship)
-        if(level == 2){
-            score += ALIENSHIP_SCORE[0];
-        }else{
+        if(level == 2 && (p instanceof Bullet || p instanceof Ship)){
             score += ALIENSHIP_SCORE[1];
+        }else if(p instanceof Ship || p instanceof Bullet)
+        {
+            score += ALIENSHIP_SCORE[0];
         }  
     }
 
@@ -375,11 +380,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
             beat = 1;
         }
         else if (e.getSource() == alienTimer){
-            if(ship != null && alien == null){
-                placeAliens();
-            }
-            alienTimer.setDelay(ALIEN_DELAY + RANDOM.nextInt(5001));
-            
+                placeAliens(); 
         }
         // Time to refresh the screen and deal with keyboard input
         else if (e.getSource() == refreshTimer)
