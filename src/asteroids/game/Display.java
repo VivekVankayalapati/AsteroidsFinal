@@ -71,6 +71,9 @@ public class Display extends JFrame
         screen.setLegend(s);
     }
 
+    /**
+     * TODO Docs
+     */
     public void setScore(int score){
         screen.setScore(score);
     }

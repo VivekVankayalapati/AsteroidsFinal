@@ -15,7 +15,7 @@ import asteroids.game.SoundManager;
  * Represents ships
  * 
  */
-public class AlienShip extends Participant implements ShipDestroyer, AsteroidDestroyer
+public class AlienShip extends Participant implements ShipDestroyer, AsteroidDestroyer, BulletDestroyer
 {
     /** The outline of the ship */
     private Shape outline;
@@ -32,6 +32,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
      * TODO Docs
      */
     private SoundManager destroyed;
+    private SoundManager saucerSound;
 
     private Ship ship;
 
@@ -49,24 +50,13 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     /**
      * Constructs a alien ship at the specified coordinates that is pointed in the given direction.
      */
-    public AlienShip (int x, int y, double direction, Controller controller,int level, Ship ship)
+    public AlienShip (int x, int y, Controller controller,int level, Ship ship)
     {
-        if (RANDOM.nextInt(2) == 0)
-        {
-            xi = -5;
-        }
-        else
-        {
-            xi = 755;
-        }
-
-        
-        //yi = y;
+        xi = x;
         this.ship = ship;
         this.controller = controller;
         this.level = level;
-        setPosition(xi, RANDOM.nextInt(751));
-        setRotation(direction);
+        setPosition(x, y);
        
         setSpeed(2);
 
@@ -74,6 +64,14 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
 
         
         firing = new SoundManager("/sounds/fire.wav");
+        destroyed = new SoundManager("/sounds/bangAlienShip.wav");
+
+        if(level == 2){
+           saucerSound = new SoundManager("/sounds/saucerBig.wav"); 
+        }
+        else{
+            saucerSound = new SoundManager("/sounds/saucerSmall.wav");
+        }
 
         // Schedule a movement in ten seconds
         new ParticipantCountdownTimer(this, "move", 1000);
@@ -84,6 +82,10 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     @Override
     protected Shape getOutline ()
     {  
+        if(!saucerSound.isRunning())
+        {
+            saucerSound.playSound();
+        }
         return outline;
     }
 
@@ -93,7 +95,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     public void moveShip ()
     {
         
-        if (xi <0)
+        if (xi < 0)
         {
             if (RANDOM.nextInt(3)==0)
             {
@@ -127,8 +129,6 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
             } 
         }
         
-        super.move();
-        
     }
 
     /**
@@ -137,7 +137,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     @Override
     public void collidedWith (Participant p)
     {
-        if (p instanceof ShipDestroyer)
+        if (p instanceof AlienShipDestroyer)
         {
             // Expire the ship from the game
             Participant.expire(this);
@@ -147,6 +147,9 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
             {
                controller.addParticipant(new Debris(this.getX(), this.getY(), this.getSpeed(), 1000, true));
             }
+
+            destroyed.playSound();
+            controller.AlienDestroyed();
             
         }
     }
@@ -155,17 +158,17 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
      * TODO docs
      */
     public void shoot(){
-        if(!controller.tooManyBullets())
-        {
-            if (this.level < 3 )
-            {
-               Bullet bullet = new Bullet(getX(), getY(), (Math.atan2(-this.ship.getY() + getY(),-this.ship.getX()) + getX())+ RANDOM.nextDouble()*(Math.PI/18)-(Math.PI/36), this); //Randomize later
+        if(!controller.tooManyBullets()){
+            if (this.level >= 3 ){
+                double angle = Math.atan2(this.ship.getY() - getY(), this.ship.getX() - getX());
+                double offset = RANDOM.nextDouble() * (Math.PI / 18) - (Math.PI / 36);
+                EnemyBullet bullet = new EnemyBullet(getX(), getY(), angle + offset);
                controller.addParticipant(bullet);
                firing.playSound();
             }
-            else if (this.level <= 3)
+            else if (this.level < 3)
             {
-                Bullet bullet = new Bullet(getX(), getY(), RANDOM.nextDouble()*2*Math.PI, this);
+                EnemyBullet bullet = new EnemyBullet(getX(), getY(), RANDOM.nextDouble()*2*Math.PI);
                 controller.addParticipant(bullet);
                 firing.playSound();               
             }
@@ -189,7 +192,6 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
         if (payload.equals("move"))
         {
             moveShip();
-            //shoot();
             
         new ParticipantCountdownTimer(this, "move", 1000);
         }
@@ -212,7 +214,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
 		poly.lineTo(4, 4);
 		poly.lineTo(9, 0);
         poly.closePath();
-        at.rotate(Math.PI/2);
+        at.rotate(-Math.PI);
         if(this.level == 2){  
             at.scale(2,2);
         }

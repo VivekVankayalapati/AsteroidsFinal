@@ -3,6 +3,8 @@ package asteroids.game;
 import static asteroids.game.Constants.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import asteroids.participants.AlienShip;
 import asteroids.participants.Ship;
 
 /**
@@ -162,6 +164,36 @@ public class Controller2p extends EnhancedController
     }
 
     /**
+     * Creates an alien based off of one of the two ships, randomly chosen.
+     */
+    @Override
+    protected void placeAliens(){
+        // Place a new alien
+        Ship ship;
+        if(RANDOM.nextInt(2) == 0)
+                {
+                    ship = this.ship1;
+                }
+                else
+                {
+                   ship = this.ship2;
+
+                }
+        if(level > 1){
+            Participant.expire(alien);
+            if(RANDOM.nextInt(2) == 1){
+                alien = new AlienShip(0, RANDOM.nextInt(750), this, this.level, ship);
+                
+            }
+            else{
+                alien = new AlienShip(750, RANDOM.nextInt(750), this, this.level, ship);
+            }
+            
+        
+            addParticipant(alien);
+        }
+    }
+    /**
      * The ship has been destroyed
      */
     @Override
@@ -218,7 +250,7 @@ public class Controller2p extends EnhancedController
     {
         // The start button has been pressed. Stop whatever we're doing
         // and bring up the initial screen
-        if(e.getSource() instanceof JButton || e.getSource() == heartBeat || e.getSource() == powerupTimer) {
+        if(e.getSource() instanceof JButton || e.getSource() == heartBeat || e.getSource() == powerupTimer || e.getSource() == alienTimer) {
             super.actionPerformed(e);
         }
         // Time to refresh the screen and deal with keyboard input

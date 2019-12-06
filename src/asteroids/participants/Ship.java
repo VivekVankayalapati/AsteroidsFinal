@@ -13,7 +13,7 @@ import asteroids.game.SoundManager;
 /**
  * Represents ships
  */
-public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroyer
+public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroyer, EnemyBulletDestroyer
 {
     /** The outline of the ship */
     private Shape outline, outlineFlame, outlineInvincibility, outlineFlameInvincibility;
@@ -168,7 +168,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     public void shoot(){
         if(!controller.tooManyBullets())
         {
-            Bullet bullet = new Bullet(getX(), getYNose(), getRotation(), this);
+            Bullet bullet = new Bullet(getX(), getYNose(), getRotation());
             controller.addParticipant(bullet);
 
             firing.playSound();
