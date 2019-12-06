@@ -37,6 +37,12 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
 
     private int level;
 
+    /**TODO Docs
+     * 
+     */
+    private int xi;
+
+    
     
 
 
@@ -45,10 +51,21 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
      */
     public AlienShip (int x, int y, double direction, Controller controller,int level, Ship ship)
     {
+        if (RANDOM.nextInt(2) == 0)
+        {
+            xi = -5;
+        }
+        else
+        {
+            xi = 755;
+        }
+
+        
+        //yi = y;
         this.ship = ship;
         this.controller = controller;
         this.level = level;
-        setPosition(x, y);
+        setPosition(xi, RANDOM.nextInt(751));
         setRotation(direction);
        
         setSpeed(2);
@@ -76,18 +93,38 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     public void moveShip ()
     {
         
-        if (RANDOM.nextInt(3)==0)
+        if (xi <0)
         {
-            setDirection(0);
-            shoot();
+            if (RANDOM.nextInt(3)==0)
+            {
+                setDirection(0);
+                shoot();
+            }
+            else if (RANDOM.nextInt(3)==1)
+            {
+                setDirection(1);
+            }
+            else
+            {
+                setDirection(-1);
+            }
         }
-        else if (RANDOM.nextInt(3)==1)
-        {
-            setDirection(1);
-        }
+
         else
         {
-            setDirection(-1);
+            if (RANDOM.nextInt(3)==0)
+            {
+                setDirection(-Math.PI);
+                shoot();
+            }
+            else if (RANDOM.nextInt(3)==1)
+            {
+                setDirection(Math.PI+1);
+            }
+            else
+            {
+                setDirection(Math.PI-1);
+            } 
         }
         
         super.move();
@@ -120,7 +157,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
     public void shoot(){
         if(!controller.tooManyBullets())
         {
-            if (this.level < 3)
+            if (this.level < 3 )
             {
                Bullet bullet = new Bullet(getX(), getY(), Math.atan2(-this.ship.getY() + getY(),-this.ship.getX()) + getX(), this); //Randomize later
                controller.addParticipant(bullet);
@@ -128,10 +165,14 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
             }
             else if (this.level <= 3)
             {
-                Bullet bullet = new Bullet(getX(), getY(), 2*Math.PI, this);
+                Bullet bullet = new Bullet(getX(), getY(), RANDOM.nextDouble()*2*Math.PI, this);
                 controller.addParticipant(bullet);
                 firing.playSound();               
             }
+
+            
+
+
             
         }
         

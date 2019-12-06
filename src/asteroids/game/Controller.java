@@ -21,12 +21,14 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
     /** The ship (if one is active) or null (otherwise) */
     protected Ship ship;
-
+    /**
+     * The alienship
+     */
     protected AlienShip alien;
     
 
     /**
-     * TODO Docs
+     * Tracks existence state of ship
      */
     protected boolean shipDestroyed;
 
@@ -35,12 +37,12 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
 
     /**
-     * TODO Docs
+     * Tracks score
      */
     protected int score;
 
     /**
-     * TODO Docs
+     * Tracks game level
      */
     protected int level;
 
@@ -58,15 +60,15 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     protected Display display;
 
     /**
-     * TODO Docs
+     * Manages sounds 
      */
-    protected SoundManager beat1;
-    protected SoundManager beat2;
+    protected SoundManager beat1,beat2;
+    
     protected int beat;
     protected Timer heartBeat;
 
     /**
-     * TODO Docs
+     * Tracks motion input by user
      */
     protected boolean turnLeft, turnRight, accelerate, fire;
 
@@ -189,6 +191,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     {
         // Place a new alien
         Participant.expire(alien);
+        scheduleTransition(RANDOM.nextInt(5001)+5000);
         alien = new AlienShip(SIZE / 3, SIZE / 3, -Math.PI / 2, this,2, this.ship);
         
         addParticipant(alien);
@@ -264,6 +267,21 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         // Since the ship was destroyed, schedule a transition
         scheduleTransition(END_DELAY);
     }
+
+    public void AlienDestroyed (AlienShip alien)
+    {
+        this.alien = alien;
+        // Null out the ship
+        this.alien = null;
+        
+        placeAliens();
+
+        
+
+        
+        
+    }
+
 
     /**
      * An asteroid has been destroyed
