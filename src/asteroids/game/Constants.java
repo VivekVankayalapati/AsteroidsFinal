@@ -176,6 +176,6 @@ public class Constants
 	public static final int POWERUP_TIMER = 10000;
     /** Adds additional time between powerup appearance */
     public static final int POWERUP_DELTA = 1000;
-    
+    /**Tracks score for destroying other ship */
     public static final int ONE_UP_SCORE = 1000;
 }
