@@ -28,24 +28,24 @@ public class ShipNames extends JFrame implements ActionListener
       
       // Set frame's title
       setTitle("User Name Input");
-
+        //Labels for the ship name input
       shipLabel1 = new JLabel("Ship Name 1: ");
       shipLabel2 = new JLabel("Ship Name 2: ");
 
-      // Set hourly and yearly salary
+      //Entering text fields for ship 1
       ship1Field = new JTextField(15);
       ship1Field.setEditable(true);
       ship1Field.setText("name");
       
 
- 
+        //Entering text fields for ship 2
       ship2Field = new JTextField(15);
       ship2Field.setEditable(true);
       ship2Field.setText("name");
       
 
-      // Create a "Calculate" button
-      calcButton = new JButton("Calculate");
+      // Create a "Enter Names" button
+      calcButton = new JButton("Enter Names");
       
       // Use "this" class to handle button presses
       calcButton.addActionListener(this);
@@ -95,18 +95,18 @@ public class ShipNames extends JFrame implements ActionListener
       
       // Set frame's title
       setTitle("User Name Input");
-
+      //Labels for the ship name input
       shipLabel1 = new JLabel("Ship Name 1: ");
       
 
-      // Set hourly and yearly salary
+      //Entering text fields for ship 1
       ship1Field = new JTextField(15);
       ship1Field.setEditable(true);
       ship1Field.setText("name");
       
 
-        // Create a "Calculate" button
-      calcButton = new JButton("Calculate");
+        // Create a "Enter Name" button
+      calcButton = new JButton("Enter Name");
       
       // Use "this" class to handle button presses
       calcButton.addActionListener(this);
@@ -153,11 +153,17 @@ public class ShipNames extends JFrame implements ActionListener
       userInput2 = shipLabel2.getText();
        
    }
+   /**
+    * Gets ship name 1
+    */
    public String getUser1()
    {
        return userInput1;
    }
-
+   /**
+    * Gets ship name 2
+    * 
+    */
    public String getUser2()
    {
        return userInput2;
