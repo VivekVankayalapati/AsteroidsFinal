@@ -21,9 +21,13 @@ public class Controller2p extends EnhancedController
     /**
      * Score of each ship.
      */
-    private int score1, score2;
+    private int score1, score2 = 0;
 
     private static String name1, name2;
+
+    private Timer endTimer;
+    
+    private Timer invincibilityTimer2;
     
     /**
      * Values that can track the last ship that was destroyed. Must be set when a ship is destroyed and created.
@@ -39,8 +43,19 @@ public class Controller2p extends EnhancedController
      * Records user input/direction for a two player game
      */
     private boolean turnLeft1, turnRight1, accelerate1, fire1,turnLeft2, turnRight2, accelerate2, fire2;
-    
 
+    /**
+     * TODO Docs
+     */
+    private int lastScore1;
+
+    private int lastScore2;
+    
+    public Controller2p(){
+        super();
+        endTimer = new Timer(1250, this);
+        invincibilityTimer2 = new Timer(1500, this);
+    }
     /**
      * Returns the ship, or null if there isn't one
      */
@@ -72,8 +87,16 @@ public class Controller2p extends EnhancedController
         accelerate2 = false;
 
         display.removeKeyListener(this);
-
-        display.showScores();
+        endTimer.start();
+        String winner = "";
+        if(score1 > score2){
+            winner = name1;
+        }
+        else{
+            winner = name2;
+        }
+        display.setLegend(winner + " wins!");
+        
     }
 
     /**
@@ -85,17 +108,22 @@ public class Controller2p extends EnhancedController
         // Place a new ship
         if(ship == 1){
             if(lives1 > 0){
+                
+                invincibilityTimer.start();
                 Participant.expire(ship1);
                 ship1 = new Ship(SIZE / 3, SIZE / 3, -Math.PI / 2, this);
                 addParticipant(ship1);
+                ship1.setInvincible(true);
                 ship1Destroyed = false;
             }
         }
         else if(ship == 2){
             if(lives2 > 0){
+                invincibilityTimer2.start();
                 Participant.expire(ship2);
                 ship2 = new Ship(2 * SIZE / 3, 2 * SIZE / 3, -Math.PI / 2, this);
                 addParticipant(ship2);
+                ship2.setInvincible(true);
                 ship2Destroyed = false;
             }
         }
@@ -143,11 +171,20 @@ public class Controller2p extends EnhancedController
         name1 = myFrame.getUser1();
         name2 = myFrame.getUser2();
 
+        if(highScore < score1){
+            highScore = score1;
+        }
+        if(highScore < score2){
+            highScore = score2;
+        }
+
         // Reset statistics
         lives1 = 3;
         lives2 = 3;
         score1 = 0;
         score2 = 0;
+        lastScore1 = 0;
+        lastScore2 = 0;
         level = 1;
 
         // Place the ships
@@ -155,11 +192,12 @@ public class Controller2p extends EnhancedController
         placeShip(2);
         //Displays on-screen display
         display.setLevel(this.level);
-        display.setScore(score1, 1);
-        display.setScore(score2, 2);
+        display.setScore(this.score1, 1);
+        display.setScore(this.score2, 2);
         display.setPlayers(2);
-        display.setLives(lives1, 1);
-        display.setLives(lives2, 2);
+        display.setLives(this.lives1, 1);
+        display.setLives(this.lives2, 2);
+        display.setHighScore(this.highScore);
 
 
 
@@ -280,6 +318,19 @@ public class Controller2p extends EnhancedController
         if(e.getSource() instanceof JButton || e.getSource() == heartBeat || e.getSource() == powerupTimer || e.getSource() == alienTimer) {
             super.actionPerformed(e);
         }
+        else if(e.getSource() == invincibilityTimer && ship1.isInvincible()){
+            ship1.setInvincible(false);
+            invincibilityTimer.stop();
+        }
+        else if(e.getSource() == invincibilityTimer2 && ship2.isInvincible()){
+            ship2.setInvincible(false);
+            invincibilityTimer2.stop();
+        }
+        else if(e.getSource() == endTimer){
+            display.setLegend("");
+            display.showScores();
+            endTimer.stop();
+        }
         // Time to refresh the screen and deal with keyboard input
         else if (e.getSource() == refreshTimer)
         {
@@ -315,14 +366,15 @@ public class Controller2p extends EnhancedController
             }
             
             /**
-             * If score is reached, gives a new life bonus to ships
+             * If score is reached, gives a new life bonus to ship
              */
-            if(getNewLife(2 * EXTRA_LIFE_SCORE)){
-                
-                System.out.println(score);
+            if(getNewLife(EXTRA_LIFE_SCORE, score1)){
                 lives1 += 1;
+                lastScore1 = score1; // zero's the score so new lives aren't infinitely added
+            }
+            if(getNewLife(EXTRA_LIFE_SCORE, score2)){
                 lives2 += 1;
-                lastScore = score; // zero's the score so new lives aren't infinitely added
+                lastScore2 = score2; // zero's the score so new lives aren't infinitely added
             }
             //Displays score and level and lives
             display.setLevel(this.level);
@@ -336,6 +388,15 @@ public class Controller2p extends EnhancedController
 
             // Refresh screen
             display.refresh();
+        }
+    }
+
+    private boolean getNewLife(int extraLifeScore, int ship) {
+        if(ship == 1){
+            return extraLifeScore <= score1 - lastScore1;
+        }
+        else{
+            return extraLifeScore <= score2 - lastScore2;
         }
     }
 
@@ -393,47 +454,47 @@ public class Controller2p extends EnhancedController
     @Override
     public void keyPressed (KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship1 != null)
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship2 != null)
         {
             turnRight2 = true;
 
         }       
-        if (e.getKeyCode() == KeyEvent.VK_LEFT && ship1 != null)
+        if (e.getKeyCode() == KeyEvent.VK_LEFT && ship2 != null)
         {
             turnLeft2 = true;
 
         }
-        if (e.getKeyCode() == KeyEvent.VK_UP && ship1 != null)
+        if (e.getKeyCode() == KeyEvent.VK_UP && ship2 != null)
         {
             accelerate2 = true;
 
         }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship1 != null){
+        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship2 != null){
             fire2 = true;
         }
-        if(e.getKeyCode() == KeyEvent.VK_CONTROL && ship1 != null){
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL && ship2 != null){
             ship2.teleport();
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_D && ship2 != null)
+        if (e.getKeyCode() == KeyEvent.VK_D && ship1 != null)
         {
             turnRight1 = true;
 
         }
-        if (e.getKeyCode() == KeyEvent.VK_A && ship2 != null)
+        if (e.getKeyCode() == KeyEvent.VK_A && ship1 != null)
         {
             turnLeft1 = true;
 
         }
-        if (e.getKeyCode() == KeyEvent.VK_W && ship2 != null)
+        if (e.getKeyCode() == KeyEvent.VK_W && ship1 != null)
         {
             accelerate1 = true;
 
         }
-        if(e.getKeyCode() == KeyEvent.VK_S && ship2 != null){
+        if(e.getKeyCode() == KeyEvent.VK_S && ship1 != null){
             fire1 = true;
         }
-        if(e.getKeyCode() == KeyEvent.VK_T && ship2 != null){
+        if(e.getKeyCode() == KeyEvent.VK_T && ship1 != null){
             ship1.teleport();
         }
 
@@ -493,44 +554,44 @@ public class Controller2p extends EnhancedController
     @Override
     public void keyReleased (KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship1 != null)
-        {
-            turnRight1 = false;
-
-        }       
-        if (e.getKeyCode() == KeyEvent.VK_LEFT && ship1 != null)
-        {
-            turnLeft1 = false;
-
-        }
-        if (e.getKeyCode() == KeyEvent.VK_UP && ship1 != null)
-        {
-            ship1.notAccelerating();
-            accelerate1 = false;
-
-        }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship1 != null){
-            fire1 = false;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_D && ship2 != null)
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship2 != null)
         {
             turnRight2 = false;
 
-        }
-        if (e.getKeyCode() == KeyEvent.VK_A && ship2 != null)
+        }       
+        if (e.getKeyCode() == KeyEvent.VK_LEFT && ship2 != null)
         {
             turnLeft2 = false;
 
         }
-        if (e.getKeyCode() == KeyEvent.VK_W && ship2 != null)
+        if (e.getKeyCode() == KeyEvent.VK_UP && ship2 != null)
         {
             ship2.notAccelerating();
             accelerate2 = false;
 
         }
-        if(e.getKeyCode() == KeyEvent.VK_S && ship2 != null){
+        if(e.getKeyCode() == KeyEvent.VK_DOWN && ship2 != null){
             fire2 = false;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_D && ship1 != null)
+        {
+            turnRight1 = false;
+
+        }
+        if (e.getKeyCode() == KeyEvent.VK_A && ship1 != null)
+        {
+            turnLeft1 = false;
+
+        }
+        if (e.getKeyCode() == KeyEvent.VK_W && ship1 != null)
+        {
+            ship1.notAccelerating();
+            accelerate1 = false;
+
+        }
+        if(e.getKeyCode() == KeyEvent.VK_S && ship1 != null){
+            fire1 = false;
         }
     }
 
@@ -569,7 +630,5 @@ public class Controller2p extends EnhancedController
             score2 += ONE_UP_SCORE;
         }
     }
-
-    
 
 }

@@ -33,7 +33,9 @@ public class Screen extends JPanel
     /**Records players */
     private int players;
 
-    /** Game controller2p */
+    private int highScore;
+
+    /** Game controller */
     private Controller controller;
 
     private boolean endGame;
@@ -113,6 +115,15 @@ public class Screen extends JPanel
         endGame = true;
         
     }
+    
+	public void removeScores() {
+        endGame = false;
+	}
+    
+    public void setHighScore(int highScore) 
+    {
+        this.highScore = highScore;
+	}
 
     /**
      * Paint the participants onto this panel
@@ -158,10 +169,18 @@ public class Screen extends JPanel
                 // Centering the score above the ship live counter
                 int levelSize = g.getFontMetrics().stringWidth(this.level);
 
-                
+                String highScoreString = "This Session's High Score is: " + this.highScore;
                 g.drawString(this.level, SIZE - dist - levelSize / 2, 50);
+
+                
+
+                g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+                int highScoreSize = g.getFontMetrics().stringWidth(highScoreString);
+                g.drawString(highScoreString, SIZE / 2 - highScoreSize / 2, 50);
             }
             
+
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 40));
             //Constrains the display of score, lives, etc.
             if(this.players > 1)
             {
@@ -169,12 +188,12 @@ public class Screen extends JPanel
                 {
                     int scoreSize = g.getFontMetrics().stringWidth(this.playerScores[p]);
                     int offset = (int) ((dist + 5 + 14 * (double) maxLives / 2) - scoreSize / 2);
-                    g.drawString(this.playerScores[p], offset, 75 + 40 * (p + 1) + 50 * p);
+                    g.drawString(this.playerScores[p], offset, 85 + 40 * (p + 1) + 50 * p);
 
-                    g.drawString(Controller2p.getName(p + 1) + ": ", dist, 20 + 50 * (p + 1) + 40 * p);
+                    g.drawString(Controller2p.getName(p + 1) + ": ", dist, 30 + 50 * (p + 1) + 40 * p);
                     double stringLength = g.getFontMetrics().stringWidth(Controller2p.getName(p + 1) + ": ");
                     for(int i = 0; i < playerLives[p]; i++){
-                        AffineTransform trans = AffineTransform.getTranslateInstance(dist + stringLength + 10 + 14 * (maxLives - playerLives[p]) + 28 * i,  50 * (p + 1) + 40 * p);
+                        AffineTransform trans = AffineTransform.getTranslateInstance(dist + stringLength + 10 + 14 * (maxLives - playerLives[p]) + 28 * i, 20 +  50 * (p + 1) + 40 * p);
                         trans.rotate( - Math.PI / 2);
                         Shape ship = Ship.shipIcon();
                         Shape newShip = trans.createTransformedShape(ship);
@@ -240,6 +259,8 @@ public class Screen extends JPanel
 
     
     }
+
+
 
 
 }

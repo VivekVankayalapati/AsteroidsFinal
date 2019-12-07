@@ -29,6 +29,7 @@ public class EnhancedController extends Controller
     private String name;
 
     protected ShipNames myFrame;
+
     /**Records highest score in game */
     protected int highScore;
     
@@ -48,7 +49,7 @@ public class EnhancedController extends Controller
         newLife = new SoundManager("/sounds/smb_1-up.wav");
         powerupTimer = new Timer(POWERUP_TIMER, this);
         powerupTimer.start();
-        invincibilityTimer = new Timer(750, this);
+        invincibilityTimer = new Timer(1500, this);
     }
 
     @Override
@@ -65,8 +66,37 @@ public class EnhancedController extends Controller
      */
     protected void initialScreen ()
     {
+        // Clear the screen
+        clear();
+
+        if(highScore < score){
+            highScore = score;
+        }
+
+        // Reset statistics
+        lives = 3;
+        score = 0;
+        level = 1;
+
+        // Place asteroids
+        placeAsteroids();
+
+        // Place the ship
+        placeShip();
         
-        super.initialScreen();
+
+        // Start listening to events (but don't listen twice)
+        display.removeKeyListener(this);
+        display.addKeyListener(this);
+
+        display.setLevel(this.level);
+        display.setScore(this.score);
+        display.setLives(this.lives);
+        display.setHighScore(this.highScore);
+
+        // Give focus to the game screen
+        display.requestFocusInWindow();
+
         name = myFrame.getUser1();
         powerupTimer.stop();
         powerupTimer.setDelay(POWERUP_TIMER);
@@ -122,8 +152,9 @@ public class EnhancedController extends Controller
             super.actionPerformed(e);
         }
         //Stops invincibility
-        else if(e.getSource() == invincibilityTimer && hasInvincibility())
+        else if(e.getSource() == invincibilityTimer)
         {
+            ship.setInvincible(false);
             invincibilityTimer.stop();
         }
         else if (e.getSource() == powerupTimer && level >= 2 && countAsteroids() > 0)
@@ -186,6 +217,7 @@ public class EnhancedController extends Controller
     protected void placeShip()
     {
         super.placeShip();
+        ship.setInvincible(true);
         invincibilityTimer.start();
     }
 
@@ -230,15 +262,6 @@ public class EnhancedController extends Controller
             newLevel();
         }
 
-    }
-
-    /**
-     * Determines if ship currently has invincibility
-     */
-    @Override
-    public boolean hasInvincibility()
-    {
-        return invincibilityTimer.isRunning();
     }
 
 }

@@ -37,6 +37,11 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     private SoundManager thrust;
 
     /**
+     * TODO Docs
+     */
+    private boolean invincible = false;
+
+    /**
      * Constructs a ship at the specified coordinates that is pointed in the given direction.
      */
     public Ship (int x, int y, double direction, Controller controller)
@@ -139,12 +144,20 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     }
 
     /**
+     * TODO Docs
+     */
+    public void setInvincible(boolean val)
+    {
+        invincible = val;
+    }
+
+    /**
      * When a Ship collides with a ShipDestroyer, it expires
      */
     @Override
     public void collidedWith (Participant p)
     {
-        if (p instanceof ShipDestroyer && !controller.hasInvincibility())
+        if (p instanceof ShipDestroyer && !invincible)
         {
             // Expire the ship from the game
             Participant.expire(this);
@@ -210,4 +223,11 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     public void teleport() {
         setPosition(Constants.SIZE * Constants.RANDOM.nextDouble(),Constants.SIZE * Constants.RANDOM.nextDouble());
     }
+
+    /**
+     * TODO Docs
+     */
+	public boolean isInvincible() {
+		return invincible;
+	}
 }

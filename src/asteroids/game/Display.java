@@ -109,4 +109,12 @@ public class Display extends JFrame
     {
         screen.showScores();
 	}
+
+	public void setHighScore(int highScore) {
+        screen.setHighScore(highScore);
+	}
+
+	public void removeScores() {
+        screen.removeScores();
+	}
 }

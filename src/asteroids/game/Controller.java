@@ -267,6 +267,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         display.setScore(this.score);
         display.setLives(this.lives);
 
+
         // Give focus to the game screen
         display.requestFocusInWindow();
     }
@@ -372,6 +373,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
         // and bring up the initial screen
         if (e.getSource() instanceof JButton)
         {
+            display.removeScores();
             initialScreen();
         }
         else if(e.getSource() == heartBeat && beat == 1)
@@ -553,11 +555,6 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
     public boolean getIsAccel(Ship ship)
     {
         return accelerate;
-    }
-    /**Records invincibility state of ship */
-    public boolean hasInvincibility()
-    {
-        return false;
     }
 
 }
