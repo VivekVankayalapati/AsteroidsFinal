@@ -25,13 +25,18 @@ public class EnhancedController extends Controller
     protected Timer invincibilityTimer;
     /**Sound for a new life */
     protected SoundManager newLife;
-
+    /** Name for using in score tabulation*/
     protected String name;
-
+    /**Frame for taking user input for naming ships */
     protected ShipNames myFrame;
-    /*Controller with additional enhancements */
+    /**Records highest score in game */
+    protected int highScore;
+    
 
-    /** */
+    
+    /**
+     * Controller with additional enhancements
+     */
     public EnhancedController(){
         super();
         myFrame = new ShipNames(this);
@@ -60,6 +65,7 @@ public class EnhancedController extends Controller
      */
     protected void initialScreen ()
     {
+        
         super.initialScreen();
         powerupTimer.stop();
         powerupTimer.setDelay(POWERUP_TIMER);
@@ -67,6 +73,7 @@ public class EnhancedController extends Controller
         if(invincibilityTimer.isRunning()){
             invincibilityTimer.stop();
         }
+
     }
 
     @Override
