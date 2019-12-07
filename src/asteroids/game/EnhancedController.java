@@ -36,6 +36,7 @@ public class EnhancedController extends Controller
         super();
         myFrame = new ShipNames(this);
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         myFrame.pack();
         myFrame.setVisible(true);
         highScoreList = new HighScores("highscoresenhanced.txt");
