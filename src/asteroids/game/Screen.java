@@ -28,17 +28,18 @@ public class Screen extends JPanel
     private int lives, maxLives;
     /**stores lives and scores in array for 2p mode */
     private int[] playerLives;
-    /** TODO Docs */
+    /** Records playersscores in array */
     private String[] playerScores;
     /**Records players */
     private int players;
-
+    /**Records high score */
     private int highScore;
 
     /** Game controller */
     private Controller controller;
-
+    /**Records endgame state */
     private boolean endGame;
+    /**Records whether game is enhanced */
     private boolean enhanced;
 
     

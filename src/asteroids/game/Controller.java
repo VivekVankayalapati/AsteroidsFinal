@@ -28,7 +28,7 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
 
 
     /** 
-     * TODO Docs
+     * Lists high scores
      */
     protected HighScores highScoreList;
     

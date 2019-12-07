@@ -1,7 +1,7 @@
 package asteroids.destroyers;
 
 /**
- * TODO Docs
+ * Marks particpant as an alien bullet destroyer
  */
 public interface EnemyBulletDestroyer
 {
