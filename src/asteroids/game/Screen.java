@@ -38,6 +38,9 @@ public class Screen extends JPanel
     /** Game controller */
     private Controller controller;
 
+    /** 
+     * TODO Docs
+     */
     private boolean endGame;
     private boolean enhanced;
 

@@ -25,7 +25,9 @@ public class EnhancedController extends Controller
     protected Timer invincibilityTimer;
     /**Sound for a new life */
     protected SoundManager newLife;
-
+    /**
+     * TODO Docs
+     */
     private String name;
 
     protected ShipNames myFrame;
