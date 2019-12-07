@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JButton;
 
 public class ShipNames extends JFrame implements ActionListener
 {
@@ -13,16 +14,18 @@ public class ShipNames extends JFrame implements ActionListener
     private JLabel shipLabel2;
     private JTextField ship1Field;
     private JTextField ship2Field;
-    private String userInput1;
-    private String userInput2;  
+    private String userInput1="";
+    private String userInput2="";
+    private JButton calcButton;   
 
 
 
-    ShipNames(Controller controller)
+    ShipNames(Controller2p two)
     {
          // Used to specify GUI component layout
       GridBagConstraints layoutConst = null;
 
+      
       // Set frame's title
       setTitle("User Name Input");
 
@@ -41,6 +44,11 @@ public class ShipNames extends JFrame implements ActionListener
       ship2Field.setText("name");
       ship2Field.addActionListener(this);
 
+      // Create a "Calculate" button
+      calcButton = new JButton("Calculate");
+      
+      // Use "this" class to handle button presses
+      calcButton.addActionListener(this);
       // Use a GridBagLayout
       setLayout(new GridBagLayout());
       layoutConst = new GridBagConstraints();
@@ -72,6 +80,64 @@ public class ShipNames extends JFrame implements ActionListener
       layoutConst.gridy = 1;
       layoutConst.insets = new Insets(10, 10, 10, 10);
       add(shipLabel2, layoutConst);
+
+      layoutConst.gridx = 0;
+      layoutConst.gridy = 2;
+      layoutConst.insets = new Insets(10, 10, 10, 10);
+      add(calcButton, layoutConst);
+   }
+
+   ShipNames(EnhancedController enhance)
+    {
+         // Used to specify GUI component layout
+      GridBagConstraints layoutConst = null;
+
+      
+      // Set frame's title
+      setTitle("User Name Input");
+
+      shipLabel1 = new JLabel("Ship Name 1: ");
+      
+
+      // Set hourly and yearly salary
+      ship1Field = new JTextField(15);
+      ship1Field.setEditable(true);
+      ship1Field.setText("name");
+      ship1Field.addActionListener(this);
+
+        // Create a "Calculate" button
+      calcButton = new JButton("Calculate");
+      
+      // Use "this" class to handle button presses
+      calcButton.addActionListener(this);
+      
+
+      // Use a GridBagLayout
+      setLayout(new GridBagLayout());
+      layoutConst = new GridBagConstraints();
+
+      // Specify component's grid location
+      layoutConst.gridx = 0;
+      layoutConst.gridy = 0;
+
+      // 10 pixels of padding around component
+      layoutConst.insets = new Insets(10, 10, 10, 10);
+
+      // Add component using the specified constraints
+      add(shipLabel1, layoutConst);
+
+      layoutConst = new GridBagConstraints();
+      layoutConst.gridx = 1;
+      layoutConst.gridy = 0;
+      layoutConst.insets = new Insets(10, 10, 10, 10);
+      add(shipLabel1, layoutConst);
+
+      layoutConst.gridx = 0;
+      layoutConst.gridy = 2;
+      layoutConst.insets = new Insets(10, 10, 10, 10);
+      add(calcButton, layoutConst);
+
+     
    }
 
    /* Method is automatically called when an event 
