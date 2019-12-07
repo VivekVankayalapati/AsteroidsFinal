@@ -22,7 +22,7 @@ public class ShipNames extends JFrame implements ActionListener
 
 
 
-    ShipNames(Controller2p two)
+    ShipNames(EnhancedController two)
     {
          // Used to specify GUI component layout
       GridBagConstraints layoutConst = null;
@@ -69,7 +69,7 @@ public class ShipNames extends JFrame implements ActionListener
       layoutConst.gridx = 1;
       layoutConst.gridy = 0;
       layoutConst.insets = new Insets(10, 10, 10, 10);
-      add(shipLabel1, layoutConst);
+      add(ship1Field, layoutConst);
 
       layoutConst = new GridBagConstraints();
       layoutConst.gridx = 0;
@@ -81,7 +81,7 @@ public class ShipNames extends JFrame implements ActionListener
       layoutConst.gridx = 1;
       layoutConst.gridy = 1;
       layoutConst.insets = new Insets(10, 10, 10, 10);
-      add(shipLabel2, layoutConst);
+      add(ship2Field, layoutConst);
 
       layoutConst.gridx = 0;
       layoutConst.gridy = 2;
@@ -89,7 +89,7 @@ public class ShipNames extends JFrame implements ActionListener
       add(calcButton, layoutConst);
    }
 
-   ShipNames(EnhancedController enhance)
+   ShipNames(String hi)
     {
          // Used to specify GUI component layout
       GridBagConstraints layoutConst = null;
