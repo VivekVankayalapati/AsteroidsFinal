@@ -49,6 +49,7 @@ public class HighScores
 		    e.printStackTrace();
 		}
     }
+    
 
     
     public void sortFile(){

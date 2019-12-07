@@ -105,6 +105,8 @@ public class Display extends JFrame
         screen.setLives(lives, 1);
     }
 
-	public void showScores() {
+    public void showScores()
+    {
+        screen.showScores();
 	}
 }

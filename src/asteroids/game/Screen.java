@@ -4,6 +4,11 @@ import static asteroids.game.Constants.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import asteroids.participants.Ship;
 
@@ -31,6 +36,8 @@ public class Screen extends JPanel
     /** Game controller2p */
     private Controller controller;
 
+    private boolean endGame;
+
     
 
     /**
@@ -40,6 +47,7 @@ public class Screen extends JPanel
     {
         this.controller = controller;
         legend = "";
+        endGame = false;
         maxLives = 0;
         players = 1;
         setPreferredSize(new Dimension(SIZE, SIZE));
@@ -100,6 +108,12 @@ public class Screen extends JPanel
         }
     }
 
+    public void showScores()
+    {
+        endGame = true;
+        
+    }
+
     /**
      * Paint the participants onto this panel
      */
@@ -125,59 +139,97 @@ public class Screen extends JPanel
         g.drawString(legend, (SIZE - size) / 2, SIZE / 2);
 
 
-
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 40));
         int dist = 40; // represents the length of the display object from the edge of the screen
 
-        // To avoid a null pointer exception when the application opens
-        if(this.score != null && this.level != null)
-        {
-            int offset = 0;
-            if(players == 1){
-                int scoreSize = g.getFontMetrics().stringWidth(this.score);
-                offset = (int) ((dist + 5 + 14 * (double) maxLives / 2) - scoreSize / 2);
-                g.drawString(this.score, offset, 50);
+        if(!endGame){
+            
+
+            // To avoid a null pointer exception when the application opens
+            if(this.score != null && this.level != null)
+            {
+                int offset = 0;
+                if(players == 1){
+                    int scoreSize = g.getFontMetrics().stringWidth(this.score);
+                    offset = (int) ((dist + 5 + 14 * (double) maxLives / 2) - scoreSize / 2);
+                    g.drawString(this.score, offset, 50);
+                }
+                else{
+                    for(int p = 0; p < this.players; p++)
+                    {
+                        int scoreSize = g.getFontMetrics().stringWidth(this.playerScores[p]);
+                        offset = (int) ((dist + 5 + 14 * (double) maxLives / 2) - scoreSize / 2);
+                        g.drawString(this.playerScores[p], offset, 50 + 40 * p);
+                    }
+                }
+                
+                // Centering the score above the ship live counter
+                int levelSize = g.getFontMetrics().stringWidth(this.level);
+
+                
+                g.drawString(this.level, SIZE - dist - levelSize / 2, 50);
             }
-            else{
+            
+            //Constrains the display of score, lives, etc.
+            if(this.players > 1)
+            {
                 for(int p = 0; p < this.players; p++)
                 {
-                    int scoreSize = g.getFontMetrics().stringWidth(this.playerScores[p]);
-                    offset = (int) ((dist + 5 + 14 * (double) maxLives / 2) - scoreSize / 2);
-                    g.drawString(this.playerScores[p], offset, 50 + 40 * p);
+                    g.drawString((p + 1) + ": ", dist, 80 + 45* (p + 1));
+                    for(int i = 0; i < playerLives[p]; i++){
+                        AffineTransform trans = AffineTransform.getTranslateInstance(dist + g.getFontMetrics().stringWidth((p + 1) + ":   ") + 14 * (maxLives - playerLives[p]) + 28 * i, 55 + 45* (p + 1));
+                        trans.rotate( - Math.PI / 2);
+                        Shape ship = Ship.shipIcon();
+                        Shape newShip = trans.createTransformedShape(ship);
+                        g.draw(newShip);
+                    }
                 }
             }
-            
-             // Centering the score above the ship live counter
-            int levelSize = g.getFontMetrics().stringWidth(this.level);
-
-            
-            g.drawString(this.level, SIZE - dist - levelSize / 2, 50);
-        }
-        
-        //Constrains the display of score, lives, etc.
-        if(this.players > 1)
-        {
-            for(int p = 0; p < this.players; p++)
-            {
-                g.drawString((p + 1) + ": ", dist, 80 + 45* (p + 1));
-                for(int i = 0; i < playerLives[p]; i++){
-                    AffineTransform trans = AffineTransform.getTranslateInstance(dist + g.getFontMetrics().stringWidth((p + 1) + ":   ") + 14 * (maxLives - playerLives[p]) + 28 * i, 55 + 45* (p + 1));
+            else if(players == 1){
+                for(int i = 0; i < lives; i++){
+                    AffineTransform trans = AffineTransform.getTranslateInstance(dist + 14 * (maxLives - lives) + 28 * i, 100);
                     trans.rotate( - Math.PI / 2);
                     Shape ship = Ship.shipIcon();
                     Shape newShip = trans.createTransformedShape(ship);
                     g.draw(newShip);
                 }
             }
+
         }
-        else if(players == 1){
-            for(int i = 0; i < lives; i++){
-                AffineTransform trans = AffineTransform.getTranslateInstance(dist + 14 * (maxLives - lives) + 28 * i, 100);
-                trans.rotate( - Math.PI / 2);
-                Shape ship = Ship.shipIcon();
-                Shape newShip = trans.createTransformedShape(ship);
-                g.draw(newShip);
+        else if(endGame){
+            ArrayList<String> scores = new ArrayList<>();
+
+            try(BufferedReader reader = new BufferedReader(new FileReader(new File("highscoresenhanced.txt"))))
+            {
+                String currentLine = reader.readLine();
+                int lineTotal = 0;
+    
+                while (lineTotal < 10 && currentLine != null)
+                {
+                    String[] lines = currentLine.split("\t");
+
+                    scores.add(lines[0] + "\t\t" + lines[1]);
+    
+                    currentLine = reader.readLine();
+                    lineTotal ++;
+                }
+            }catch(IOException e) 
+            {
+                
+            }
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 60));
+            g.drawString("High Scores!", 375 - g.getFontMetrics().stringWidth("High Scores!") / 2, 50);
+            int i = 0;
+            for(String s : scores){
+                
+                int scoreSize = g.getFontMetrics().stringWidth(s);
+                int offset = (int) (375 - scoreSize / 2);
+                g.drawString(s, offset, 120 + 70 * i);
+                i++;
             }
         }
+        
+        
         
         
 

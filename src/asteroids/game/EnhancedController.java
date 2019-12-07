@@ -26,6 +26,8 @@ public class EnhancedController extends Controller
     /**Sound for a new life */
     protected SoundManager newLife;
 
+    protected String name;
+
     protected ShipNames myFrame;
     /*Controller with additional enhancements */
 
@@ -43,6 +45,15 @@ public class EnhancedController extends Controller
         invincibilityTimer = new Timer(750, this);
     }
 
+    @Override
+    protected void finalScreen(){
+        highScoreList.log(name + "\t" + this.score);
+        highScoreList.sortFile();
+        display.removeKeyListener(this);
+
+        display.showScores();
+
+    }
     /**
      * Sets things up and begins a new game.
      */

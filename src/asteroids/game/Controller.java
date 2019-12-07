@@ -83,11 +83,6 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     protected boolean turnLeft, turnRight, accelerate, fire;
 
-    /**
-     * The name of the player
-     */
-    protected String name;
-
  
 
     /**
@@ -166,11 +161,11 @@ public class Controller implements KeyListener, ActionListener, Iterable<Partici
      */
     protected void finalScreen ()
     {
-        highScoreList.log(name + "\t" + this.score);
+        highScoreList.log("" + this.score);
         highScoreList.sortFile();
         display.removeKeyListener(this);
 
-        display.showScores();
+        display.setLegend("Game Over!");
     }
 
     /**
