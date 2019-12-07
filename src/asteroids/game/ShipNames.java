@@ -36,13 +36,13 @@ public class ShipNames extends JFrame implements ActionListener
       ship1Field = new JTextField(15);
       ship1Field.setEditable(true);
       ship1Field.setText("name");
-      ship1Field.addActionListener(this);
+      
 
  
       ship2Field = new JTextField(15);
       ship2Field.setEditable(true);
       ship2Field.setText("name");
-      ship2Field.addActionListener(this);
+      
 
       // Create a "Calculate" button
       calcButton = new JButton("Calculate");
@@ -103,7 +103,7 @@ public class ShipNames extends JFrame implements ActionListener
       ship1Field = new JTextField(15);
       ship1Field.setEditable(true);
       ship1Field.setText("name");
-      ship1Field.addActionListener(this);
+      
 
         // Create a "Calculate" button
       calcButton = new JButton("Calculate");
@@ -145,8 +145,7 @@ public class ShipNames extends JFrame implements ActionListener
    @Override
    public void actionPerformed(ActionEvent event) 
    {
-      String userInput1;
-      String userInput2;      
+           
 
       // Get user's input
       userInput1 = shipLabel1.getText();
