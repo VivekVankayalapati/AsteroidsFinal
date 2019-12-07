@@ -45,11 +45,10 @@ public class Controller2p extends EnhancedController
     private boolean turnLeft1, turnRight1, accelerate1, fire1,turnLeft2, turnRight2, accelerate2, fire2;
 
     /**
-     * TODO Docs
+     * Determines the last score of the ships to prevent infitine live generation
      */
-    private int lastScore1;
+    private int lastScore1,lastScore2;
 
-    private int lastScore2;
     
     public Controller2p(){
         super();
@@ -246,7 +245,7 @@ public class Controller2p extends EnhancedController
             addParticipant(alien);
         }
     }
-
+    /**Gets the names of the ships */
     public static String getName(int ship){
         if(ship == 1){
             return name1;
@@ -391,6 +390,7 @@ public class Controller2p extends EnhancedController
         }
     }
 
+    /**Determines whether ships gets new life */
     private boolean getNewLife(int extraLifeScore, int ship) {
         if(ship == 1){
             return extraLifeScore <= score1 - lastScore1;

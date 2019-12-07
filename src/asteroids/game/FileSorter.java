@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
+/**Sorts high score file */
 public class FileSorter {
 
 	public static void sort(File highScoreList)
@@ -54,7 +54,7 @@ public class FileSorter {
 			
 		}
 	}
-
+	/**Manages scoring */
 	static class Score
 	{
        String name;
@@ -68,7 +68,7 @@ public class FileSorter {
               this.marks = score;
        }
 	}
-
+	/**Compares scores to determine high scores */
 	static class marksCompare implements Comparator<Score>
 {
 		@Override

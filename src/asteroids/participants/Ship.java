@@ -16,7 +16,7 @@ import asteroids.game.SoundManager;
 public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroyer, EnemyBulletDestroyer, ShipDestroyer
 {
     /** The outline of the ship */
-    private Shape outline, outlineFlame, outlineInvincibility, outlineFlameInvincibility;
+    private Shape outline, outlineFlame;
 
     /** Game controller2p */
     private Controller controller;
@@ -37,7 +37,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     private SoundManager thrust;
 
     /**
-     * TODO Docs
+     * Tracks whether ship is invincible
      */
     private boolean invincible = false;
 
@@ -144,7 +144,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     }
 
     /**
-     * TODO Docs
+     * Sets invincibility state
      */
     public void setInvincible(boolean val)
     {
@@ -225,7 +225,7 @@ public class Ship extends Participant implements AsteroidDestroyer, OneUpDestroy
     }
 
     /**
-     * TODO Docs
+     * Determines if ship is invincible
      */
 	public boolean isInvincible() {
 		return invincible;
