@@ -152,9 +152,8 @@ public class EnhancedController extends Controller
             super.actionPerformed(e);
         }
         //Stops invincibility
-        else if(e.getSource() == invincibilityTimer)
+        else if(e.getSource() == invincibilityTimer && ship.isInvincible())
         {
-            System.out.println("test");
             ship.setInvincible(false);
             invincibilityTimer.stop();
         }
