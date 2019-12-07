@@ -39,6 +39,7 @@ public class Screen extends JPanel
     private Controller controller;
 
     private boolean endGame;
+    private boolean enhanced;
 
     
 
@@ -122,6 +123,7 @@ public class Screen extends JPanel
     
     public void setHighScore(int highScore) 
     {
+        enhanced = true;
         this.highScore = highScore;
 	}
 
@@ -173,10 +175,12 @@ public class Screen extends JPanel
                 g.drawString(this.level, SIZE - dist - levelSize / 2, 50);
 
                 
-
-                g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+                if(enhanced){
+                    g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
                 int highScoreSize = g.getFontMetrics().stringWidth(highScoreString);
                 g.drawString(highScoreString, SIZE / 2 - highScoreSize / 2, 50);
+                }
+                
             }
             
 

@@ -41,7 +41,7 @@ public class EnhancedController extends Controller
     public EnhancedController(){
         super();
         myFrame = new ShipNames(this);
-        myFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         myFrame.pack();
         myFrame.setVisible(true);

@@ -64,7 +64,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
         this.level = level;
         setPosition(xi, RANDOM.nextInt(750));
        
-        setSpeed(2);
+        setSpeed(4);
 
         outline = AlienIcon();
 
@@ -121,7 +121,6 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
 
         else if (xi == 745)
         {
-            System.out.println(xi);
             if (RANDOM.nextInt(3)==0)
             {
                 setDirection(Math.PI);
@@ -221,6 +220,7 @@ public class AlienShip extends Participant implements ShipDestroyer, AsteroidDes
         at.rotate(-Math.PI);
         if(this.level == 2){  
             at.scale(2,2);
+            setSpeed(2);
         }
         poly.transform(at);
         return poly;
