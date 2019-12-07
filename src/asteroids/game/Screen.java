@@ -196,19 +196,20 @@ public class Screen extends JPanel
             }
 
         }
-        else if(endGame){
-            ArrayList<String> scores = new ArrayList<>();
+        else if(endGame)
+        {
+            ArrayList<String[]> scores = new ArrayList<>();
 
             try(BufferedReader reader = new BufferedReader(new FileReader(new File("highscoresenhanced.txt"))))
             {
                 String currentLine = reader.readLine();
                 int lineTotal = 0;
     
-                while (lineTotal < 10 && currentLine != null)
+                while (lineTotal < 9 && currentLine != null)
                 {
                     String[] lines = currentLine.split("\t");
 
-                    scores.add(lines[0] + "\t\t" + lines[1]);
+                    scores.add(lines);
     
                     currentLine = reader.readLine();
                     lineTotal ++;
@@ -217,14 +218,21 @@ public class Screen extends JPanel
             {
                 
             }
-            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 60));
+            g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 65));
             g.drawString("High Scores!", 375 - g.getFontMetrics().stringWidth("High Scores!") / 2, 50);
             int i = 0;
-            for(String s : scores){
-                
-                int scoreSize = g.getFontMetrics().stringWidth(s);
-                int offset = (int) (375 - scoreSize / 2);
-                g.drawString(s, offset, 120 + 70 * i);
+            int wantedSize = 400;
+            for(String[] s : scores){
+                String drawnString = (i + 1) + ": " +  s[0];
+                int scoreSize = g.getFontMetrics().stringWidth(drawnString + s[1]);
+                while(scoreSize <= wantedSize){
+                    drawnString += " ";
+                    scoreSize = g.getFontMetrics().stringWidth(drawnString + s[1]);
+                }
+                drawnString += s[1];
+                scoreSize = g.getFontMetrics().stringWidth(drawnString);
+                int offset = (int) (SIZE / 2 - scoreSize / 2);
+                g.drawString(drawnString, offset, 120 + 70 * i);
                 i++;
             }
         }
