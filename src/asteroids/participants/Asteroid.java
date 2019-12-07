@@ -155,6 +155,9 @@ public class Asteroid extends Participant implements ShipDestroyer, BulletDestro
     {
         if (p instanceof AsteroidDestroyer)
         {
+            if(p instanceof Ship && ((Ship) p).isInvincible()){
+                return;
+            }
             // Expire the asteroid
             Participant.expire(this);
 
