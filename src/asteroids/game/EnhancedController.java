@@ -52,6 +52,7 @@ public class EnhancedController extends Controller
         invincibilityTimer = new Timer(1500, this);
     }
 
+    /**Displays the scores at the final screen */
     @Override
     protected void finalScreen(){
         highScoreList.log(name + "\t" + this.score);
@@ -106,7 +107,7 @@ public class EnhancedController extends Controller
         }
 
     }
-
+    /** Determines if alienship is destroyed */
     @Override
     public void AlienDestroyed (Participant p)
     {

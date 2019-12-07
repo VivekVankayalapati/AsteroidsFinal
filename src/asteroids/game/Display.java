@@ -105,15 +105,16 @@ public class Display extends JFrame
         screen.setLives(lives, 1);
     }
 
+    /**Shows scores */
     public void showScores()
     {
         screen.showScores();
 	}
-
+    /**Sets the high score on the screen */
 	public void setHighScore(int highScore) {
         screen.setHighScore(highScore);
 	}
-
+    /**Clears display of scores */
 	public void removeScores() {
         screen.removeScores();
 	}
