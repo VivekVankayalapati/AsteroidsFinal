@@ -16,8 +16,8 @@ public class ShipNames extends JFrame implements ActionListener
     private JLabel shipLabel2;
     private JTextField ship1Field;
     private JTextField ship2Field;
-    private String userInput1="";
-    private String userInput2="";
+    private String userInput1="ship1";
+    private String userInput2="ship2";
     private JButton calcButton;   
 
 
@@ -30,21 +30,6 @@ public class ShipNames extends JFrame implements ActionListener
       
       // Set frame's title
       setTitle("User Name Input");
-        //Labels for the ship name input
-      shipLabel1 = new JLabel("Ship Name 1: ");
-      shipLabel2 = new JLabel("Ship Name 2: ");
-
-      //Entering text fields for ship 1
-      ship1Field = new JTextField(15);
-      ship1Field.setEditable(true);
-      ship1Field.setText("name");
-      
-
-        //Entering text fields for ship 2
-      ship2Field = new JTextField(15);
-      ship2Field.setEditable(true);
-      ship2Field.setText("name");
-      
 
       // Create a "Enter Names" button
       calcButton = new JButton("Enter Names");
@@ -62,15 +47,18 @@ public class ShipNames extends JFrame implements ActionListener
       // 10 pixels of padding around component
       layoutConst.insets = new Insets(10, 10, 10, 10);
 
-      // Add component using the specified constraints
-      add(shipLabel1, layoutConst);
+        //Labels for the ship name input
+      shipLabel1 = new JLabel("Ship Name 1: ");
 
-      layoutConst = new GridBagConstraints();
-      layoutConst.gridx = 1;
-      layoutConst.gridy = 0;
-      layoutConst.insets = new Insets(10, 10, 10, 10);
-      add(ship1Field, layoutConst);
+      if(two instanceof Controller2p){
 
+        shipLabel2 = new JLabel("Ship Name 2: ");
+         //Entering text fields for ship 2
+        ship2Field = new JTextField(15);
+        ship2Field.setEditable(true);
+        ship2Field.setText("name");
+
+        
       layoutConst = new GridBagConstraints();
       layoutConst.gridx = 0;
       layoutConst.gridy = 1;
@@ -82,6 +70,24 @@ public class ShipNames extends JFrame implements ActionListener
       layoutConst.gridy = 1;
       layoutConst.insets = new Insets(10, 10, 10, 10);
       add(ship2Field, layoutConst);
+        
+      }
+      
+
+      //Entering text fields for ship 1
+      ship1Field = new JTextField(15);
+      ship1Field.setEditable(true);
+      ship1Field.setText("name");
+
+      // Add component using the specified constraints
+      add(shipLabel1, layoutConst);
+
+      layoutConst = new GridBagConstraints();
+      layoutConst.gridx = 1;
+      layoutConst.gridy = 0;
+      layoutConst.insets = new Insets(10, 10, 10, 10);
+      add(ship1Field, layoutConst);
+
 
       layoutConst.gridx = 0;
       layoutConst.gridy = 2;
@@ -89,7 +95,7 @@ public class ShipNames extends JFrame implements ActionListener
       add(calcButton, layoutConst);
    }
 
-   ShipNames(String hi)
+   ShipNames()
     {
          // Used to specify GUI component layout
       GridBagConstraints layoutConst = null;
@@ -150,9 +156,14 @@ public class ShipNames extends JFrame implements ActionListener
            
 
       // Get user's input
-      userInput1 = shipLabel1.getText();
+      userInput1 = ship1Field.getText();
+      if(ship2Field != null)
+      {
+        userInput2 = ship2Field.getText();
+      }
 
-      userInput2 = shipLabel2.getText();
+
+      setVisible(false);
        
    }
    /**

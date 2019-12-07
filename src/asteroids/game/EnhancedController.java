@@ -26,7 +26,7 @@ public class EnhancedController extends Controller
     /**Sound for a new life */
     protected SoundManager newLife;
 
-    protected String name;
+    private String name;
 
     protected ShipNames myFrame;
     /*Controller with additional enhancements */
@@ -35,7 +35,7 @@ public class EnhancedController extends Controller
     public EnhancedController(){
         super();
         myFrame = new ShipNames(this);
-        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         
         myFrame.pack();
         myFrame.setVisible(true);
@@ -61,6 +61,7 @@ public class EnhancedController extends Controller
     protected void initialScreen ()
     {
         super.initialScreen();
+        name = myFrame.getUser1();
         powerupTimer.stop();
         powerupTimer.setDelay(POWERUP_TIMER);
         powerupTimer.start();
@@ -198,6 +199,7 @@ public class EnhancedController extends Controller
         if(p instanceof Ship && p.equals(this.ship))
         {
             lives += 1;
+            score += ONE_UP_SCORE;
             newLife.playSound();
         }
 	}

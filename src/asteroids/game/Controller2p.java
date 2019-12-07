@@ -22,6 +22,8 @@ public class Controller2p extends EnhancedController
      * Score of each ship.
      */
     private int score1, score2;
+
+    private static String name1, name2;
     
     /**
      * Values that can track the last ship that was destroyed. Must be set when a ship is destroyed and created.
@@ -53,7 +55,9 @@ public class Controller2p extends EnhancedController
     @Override
     protected void finalScreen ()
     {
-        highScoreList.log(name + "\t" + this.score);
+        highScoreList.log(name1 + "\t" + this.score1);
+        highScoreList.log(name2 + "\t" + this.score2);
+        
         highScoreList.sortFile();
         // Reset rocket one values
         turnLeft1 = false;
@@ -68,6 +72,8 @@ public class Controller2p extends EnhancedController
         accelerate2 = false;
 
         display.removeKeyListener(this);
+
+        display.showScores();
     }
 
     /**
@@ -134,6 +140,9 @@ public class Controller2p extends EnhancedController
         // Place asteroids
         placeAsteroids();
 
+        name1 = myFrame.getUser1();
+        name2 = myFrame.getUser2();
+
         // Reset statistics
         lives1 = 3;
         lives2 = 3;
@@ -146,7 +155,8 @@ public class Controller2p extends EnhancedController
         placeShip(2);
         //Displays on-screen display
         display.setLevel(this.level);
-        display.setScore(this.score);
+        display.setScore(score1, 1);
+        display.setScore(score2, 2);
         display.setPlayers(2);
         display.setLives(lives1, 1);
         display.setLives(lives2, 2);
@@ -196,6 +206,18 @@ public class Controller2p extends EnhancedController
             
         
             addParticipant(alien);
+        }
+    }
+
+    public static String getName(int ship){
+        if(ship == 1){
+            return name1;
+        }
+        else if(ship == 2){
+            return name2;
+        }
+        else{
+            throw new IllegalArgumentException("You need to put a number between 1 and 2.");
         }
     }
     /**
@@ -373,46 +395,46 @@ public class Controller2p extends EnhancedController
     {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship1 != null)
         {
-            turnRight1 = true;
+            turnRight2 = true;
 
         }       
         if (e.getKeyCode() == KeyEvent.VK_LEFT && ship1 != null)
         {
-            turnLeft1 = true;
+            turnLeft2 = true;
 
         }
         if (e.getKeyCode() == KeyEvent.VK_UP && ship1 != null)
         {
-            accelerate1 = true;
+            accelerate2 = true;
 
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN && ship1 != null){
-            fire1 = true;
+            fire2 = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_CONTROL && ship1 != null){
-            ship1.teleport();
+            ship2.teleport();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_D && ship2 != null)
         {
-            turnRight2 = true;
+            turnRight1 = true;
 
         }
         if (e.getKeyCode() == KeyEvent.VK_A && ship2 != null)
         {
-            turnLeft2 = true;
+            turnLeft1 = true;
 
         }
         if (e.getKeyCode() == KeyEvent.VK_W && ship2 != null)
         {
-            accelerate2 = true;
+            accelerate1 = true;
 
         }
         if(e.getKeyCode() == KeyEvent.VK_S && ship2 != null){
-            fire2 = true;
+            fire1 = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_T && ship2 != null){
-            ship2.teleport();
+            ship1.teleport();
         }
 
     }
@@ -539,10 +561,12 @@ public class Controller2p extends EnhancedController
         if(ship instanceof Ship && ship.equals(this.ship1))
         {
             lives1 += 1;
+            score1 += ONE_UP_SCORE;
         }
         else if(ship instanceof Ship && ship.equals(this.ship2))
         {
             lives2 += 1;
+            score2 += ONE_UP_SCORE;
         }
     }
 
