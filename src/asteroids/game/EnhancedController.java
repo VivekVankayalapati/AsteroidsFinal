@@ -69,7 +69,9 @@ public class EnhancedController extends Controller
     {
         // Clear the screen
         clear();
-
+        if(invincibilityTimer.isRunning()){
+            invincibilityTimer.stop();
+        }
         if(highScore < score){
             highScore = score;
         }
@@ -102,9 +104,7 @@ public class EnhancedController extends Controller
         powerupTimer.stop();
         powerupTimer.setDelay(POWERUP_TIMER);
         powerupTimer.start();
-        if(invincibilityTimer.isRunning()){
-            invincibilityTimer.stop();
-        }
+        
 
     }
     /** Determines if alienship is destroyed */
@@ -153,7 +153,7 @@ public class EnhancedController extends Controller
             super.actionPerformed(e);
         }
         //Stops invincibility
-        else if(e.getSource() == invincibilityTimer)
+        else if(e.getSource() == invincibilityTimer && ship.isInvincible())
         {
             ship.setInvincible(false);
             invincibilityTimer.stop();
@@ -218,8 +218,9 @@ public class EnhancedController extends Controller
     protected void placeShip()
     {
         super.placeShip();
-        ship.setInvincible(true);
         invincibilityTimer.start();
+        ship.setInvincible(true);
+        
     }
 
     /**
