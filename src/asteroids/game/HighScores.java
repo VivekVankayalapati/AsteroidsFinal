@@ -1,23 +1,20 @@
 package asteroids.game;
 
-import java.io.BufferedInputStream;
+
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 
+import java.io.FileWriter;
+
+import java.io.PrintWriter;
+/**Manages high score table */
 public class HighScores
 {
-    private PrintWriter writer;
-
+    
+    /**File for tracking high scores */
     private File highScoreList;
 
-    private FileOutputStream highScores;
+    
 
     /**
      * Creates a high score text file (if there isn't one defined with that name)
@@ -51,7 +48,9 @@ public class HighScores
     }
     
 
-    
+    /**
+     * sorts the file by high scores
+     */
     public void sortFile(){
         sortFile(this.highScoreList);
     }
