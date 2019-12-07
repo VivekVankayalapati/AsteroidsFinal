@@ -15,6 +15,9 @@ public class ShipNames extends JFrame implements ActionListener
 {
   private static final long serialVersionUID = 1L;
 
+  /**
+   * TODO Docs
+   */
   private JLabel shipLabel1;
     private JLabel shipLabel2;
     private JTextField ship1Field;
