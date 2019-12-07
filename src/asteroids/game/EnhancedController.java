@@ -29,9 +29,14 @@ public class EnhancedController extends Controller
     private String name;
 
     protected ShipNames myFrame;
-    /*Controller with additional enhancements */
+    /**Records highest score in game */
+    protected int highScore;
+    
 
-    /** */
+    
+    /**
+     * Controller with additional enhancements
+     */
     public EnhancedController(){
         super();
         myFrame = new ShipNames(this);
@@ -60,6 +65,7 @@ public class EnhancedController extends Controller
      */
     protected void initialScreen ()
     {
+        
         super.initialScreen();
         name = myFrame.getUser1();
         powerupTimer.stop();
@@ -68,6 +74,7 @@ public class EnhancedController extends Controller
         if(invincibilityTimer.isRunning()){
             invincibilityTimer.stop();
         }
+
     }
 
     @Override
