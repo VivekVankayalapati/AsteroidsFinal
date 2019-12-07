@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import asteroids.participants.AlienShip;
+import asteroids.participants.Bullet;
 import asteroids.participants.Ship;
 
 
@@ -16,6 +17,11 @@ public class Controller2p extends EnhancedController
 
     /** The ships (if one is active) or null (otherwise) */
     private Ship ship1,ship2;
+
+    /**
+     * Score of each ship.
+     */
+    private int score1, score2;
     
     /**
      * Values that can track the last ship that was destroyed. Must be set when a ship is destroyed and created.
@@ -44,10 +50,11 @@ public class Controller2p extends EnhancedController
     /**
      * The game is over. Displays a message to that effect.
      */
-    private void finalScreen ()
+    @Override
+    protected void finalScreen ()
     {
-        display.setLegend(GAME_OVER);
-
+        highScoreList.log(name + "\t" + this.score);
+        highScoreList.sortFile();
         // Reset rocket one values
         turnLeft1 = false;
         turnRight1 = false;
@@ -130,7 +137,8 @@ public class Controller2p extends EnhancedController
         // Reset statistics
         lives1 = 3;
         lives2 = 3;
-        score = 0;
+        score1 = 0;
+        score2 = 0;
         level = 1;
 
         // Place the ships
@@ -296,7 +304,8 @@ public class Controller2p extends EnhancedController
             }
             //Displays score and level and lives
             display.setLevel(this.level);
-            display.setScore(this.score);
+            display.setScore(this.score1, 1);
+            display.setScore(this.score2, 2);
             display.setLives(lives1, 1);
             display.setLives(lives2, 2);
             
@@ -406,6 +415,54 @@ public class Controller2p extends EnhancedController
             ship2.teleport();
         }
 
+    }
+
+    public void AlienDestroyed (Participant p)
+    {
+        // Null out the ship
+        this.alien = null;
+        alienTimer.start();
+
+        // Adds the score based off of the level (big or small alien ship)
+        if((p instanceof Bullet && ((Bullet) p).getParent().equals(ship1)))
+        {
+            if(level == 2){
+                score1 += ALIENSHIP_SCORE[1];
+            }else
+            {
+                score1 += ALIENSHIP_SCORE[0];
+            }  
+        }
+        else if((p instanceof Bullet && ((Bullet) p).getParent().equals(ship2)))
+        {
+            if(level == 2){
+                score2 += ALIENSHIP_SCORE[1];
+            }else
+            {
+                score2 += ALIENSHIP_SCORE[0];
+            } 
+        }
+    }
+
+    /**
+     * An asteroid has been destroyed
+     */
+    @Override
+    public void asteroidDestroyed (int size, Participant p)
+    {
+        if((p instanceof Bullet && ((Bullet) p).getParent().equals(ship1)))
+        {
+            score1 += Constants.ASTEROID_SCORE[size];
+        }
+        else if((p instanceof Bullet && ((Bullet) p).getParent().equals(ship2))){
+            score2 += Constants.ASTEROID_SCORE[size];
+        }
+        
+        // If all the asteroids are gone, schedule a transition
+        if (countAsteroids() == 0)
+        {
+            scheduleTransition(END_DELAY);
+        }
     }
 
     /** 

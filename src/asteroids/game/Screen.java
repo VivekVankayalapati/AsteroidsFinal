@@ -21,8 +21,10 @@ public class Screen extends JPanel
     private String level = "";
     /**Records and caps lives */
     private int lives, maxLives;
-    /**stores lives in array for 2p mode */
+    /**stores lives and scores in array for 2p mode */
     private int[] playerLives;
+    /** TODO Docs */
+    private String[] playerScores;
     /**Records players */
     private int players;
 
@@ -56,9 +58,6 @@ public class Screen extends JPanel
         this.legend = legend;
     }
     //These methods converts score, level, players, lives to strings for display
-    public void setScore(int score){
-        this.score = score + "";
-    }
 
     public void setLevel(int level){
         this.level = level + "";
@@ -88,6 +87,17 @@ public class Screen extends JPanel
             this.playerLives[player - 1] = lives;
         }
         
+    }
+    public void setScore(int score, int player){
+        if(players == 1){
+            this.score = score + "";
+        }
+        else{
+            if(playerScores == null){
+                playerScores = new String[players];
+            }
+            this.playerScores[player - 1] = score + "";
+        }
     }
 
     /**
@@ -122,11 +132,25 @@ public class Screen extends JPanel
         // To avoid a null pointer exception when the application opens
         if(this.score != null && this.level != null)
         {
-            int scoreSize = g.getFontMetrics().stringWidth(this.score);
-            int offset = (int) ((dist + 5 + 14 * (double) maxLives / 2) - scoreSize / 2); // Centering the score above the ship live counter
+            int offset = 0;
+            if(players == 1){
+                int scoreSize = g.getFontMetrics().stringWidth(this.score);
+                offset = (int) ((dist + 5 + 14 * (double) maxLives / 2) - scoreSize / 2);
+                g.drawString(this.score, offset, 50);
+            }
+            else{
+                for(int p = 0; p < this.players; p++)
+                {
+                    int scoreSize = g.getFontMetrics().stringWidth(this.playerScores[p]);
+                    offset = (int) ((dist + 5 + 14 * (double) maxLives / 2) - scoreSize / 2);
+                    g.drawString(this.playerScores[p], offset, 50 + 40 * p);
+                }
+            }
+            
+             // Centering the score above the ship live counter
             int levelSize = g.getFontMetrics().stringWidth(this.level);
 
-            g.drawString(this.score, offset, 50);
+            
             g.drawString(this.level, SIZE - dist - levelSize / 2, 50);
         }
         
@@ -135,7 +159,7 @@ public class Screen extends JPanel
         {
             for(int p = 0; p < this.players; p++)
             {
-                g.drawString((p + 1) + ": ", dist, 70 + 45* (p + 1));
+                g.drawString((p + 1) + ": ", dist, 80 + 45* (p + 1));
                 for(int i = 0; i < playerLives[p]; i++){
                     AffineTransform trans = AffineTransform.getTranslateInstance(dist + g.getFontMetrics().stringWidth((p + 1) + ":   ") + 14 * (maxLives - playerLives[p]) + 28 * i, 55 + 45* (p + 1));
                     trans.rotate( - Math.PI / 2);

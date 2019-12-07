@@ -4,6 +4,7 @@ import static asteroids.game.Constants.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import asteroids.participants.Bullet;
 import asteroids.participants.OneUp;
 import asteroids.participants.Ship;
 
@@ -35,6 +36,7 @@ public class EnhancedController extends Controller
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.pack();
         myFrame.setVisible(true);
+        highScoreList = new HighScores("highscoresenhanced.txt");
         newLife = new SoundManager("/sounds/smb_1-up.wav");
         powerupTimer = new Timer(POWERUP_TIMER, this);
         powerupTimer.start();
@@ -55,6 +57,39 @@ public class EnhancedController extends Controller
         }
     }
 
+    @Override
+    public void AlienDestroyed (Participant p)
+    {
+        // Null out the ship
+        this.alien = null;
+        alienTimer.start();
+
+        // Adds the score based off of the level (big or small alien ship)
+        if(level == 2 && (p instanceof Bullet)){
+            score += ALIENSHIP_SCORE[1];
+        }else if(p instanceof Bullet)
+        {
+            score += ALIENSHIP_SCORE[0];
+        }  
+    }
+
+    /**
+     * An asteroid has been destroyed
+     */
+    @Override
+    public void asteroidDestroyed (int size, Participant p)
+    {
+        if(p instanceof Bullet)
+        {
+            score += Constants.ASTEROID_SCORE[size];
+        }
+        
+        // If all the asteroids are gone, schedule a transition
+        if (countAsteroids() == 0)
+        {
+            scheduleTransition(END_DELAY);
+        }
+    }
     /**
      * This method will be invoked because of button presses and timer events.
      */

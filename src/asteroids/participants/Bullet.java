@@ -23,15 +23,22 @@ public class Bullet extends Participant implements AsteroidDestroyer, OneUpDestr
      */
     private ParticipantCountdownTimer bulletDuration;
 
+    private Ship parent;
+
     /**
      * Intilizalizes the bullet in a given position and direction
      */
-    public Bullet(double posX, double posY, double theta)
+    public Bullet(double posX, double posY, double theta, Ship parent)
     {
+        this.parent = parent;
         this.setPosition(posX, posY);
         this.setVelocity(Constants.BULLET_SPEED, theta);
         this.bullet = new Ellipse2D.Double(0, 0, 1, 1);
         this.bulletDuration = new ParticipantCountdownTimer(this, Constants.BULLET_DURATION);
+    }
+
+    public Ship getParent(){
+        return parent;
     }
 
     /**
